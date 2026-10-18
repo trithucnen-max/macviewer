@@ -52,6 +52,9 @@ Bản phát hành chính thức v2.2.2 — Ký số doanh nghiệp bởi **BASAN
 69fe873a0729cec37018b343c0660a30d08891aa040e533d7addd68e15146a2b  Utralview-for-Mac-v2.2.2-Universal.dmg
 2055bb52344fa5e1116cb89285b1d06091458a2b24f00a5fd74698d100f447f6  Utralview-for-Mac-v2.2.2-arm64.dmg
 43dcddf286eda7b61b7b407d24e711543132a38a23cde7f41ccf4cf1a1deaa6a  Utralview-for-Mac-v2.2.2-x86_64.dmg
+e76d87e5b013f1f852d47db4fbcae95f3b09c8813830c4e2f91fd1220b911865  Utralview-v2.2.2-windows-arm64-surface.zip
+bc2d52adeb844896335d660a957ff53d2ff580674c18bd7cd824e062953166ea  Utralview-v2.2.2-windows-x86_64.zip
+15bbc085277ff0527e81a571ec4bce701da5ef25cf08bd8a7c4f923a07cb2e7a  Utralview-v2.2.2-linux-x86_64.tar.gz
 4489319054d09fd08569a3e419e79db8164752965829a3c6b59a174fa62994ba  utralview-cli-v2.2.2-macos-universal
 ```
 
