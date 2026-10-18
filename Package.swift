@@ -7,7 +7,7 @@ let package = Package(
     platforms: [.macOS(.v14), .iOS(.v17)],
     products: [
         .library(name: "UltraViewerProtocol", targets: ["UltraViewerProtocol"]),
-        .executable(name: "UtralviewMobile", targets: ["UtralviewMobile"]),
+        .library(name: "UtralviewMobile", targets: ["UtralviewMobile"]),
         .executable(name: "MacViewer", targets: ["MacViewer"]),
     ],
     targets: [
@@ -48,8 +48,8 @@ let package = Package(
                           path: "Sources/Utralview",
                           exclude: ["Utralview.entitlements"],
                           resources: [.process("Resources")]),
-        .executableTarget(name: "UtralviewMobile", dependencies: ["UltraViewerProtocol"],
-                          path: "Sources/UtralviewMobile"),
+        .target(name: "UtralviewMobile", dependencies: ["UltraViewerProtocol"],
+                path: "Sources/UtralviewMobile"),
         .testTarget(name: "UltraViewerProtocolTests", dependencies: ["UltraViewerProtocol"]),
         .testTarget(name: "MacViewerTests", dependencies: ["MacViewer"],
                     path: "Tests/UtralviewTests"),
