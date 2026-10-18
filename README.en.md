@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/images/app-icon.png" width="128" alt="MacViewer Icon">
+<img src="docs/images/app-icon.png" width="128" alt="Ultraview for Mac Icon">
 
-# MacViewer v2.0
+# Ultraview for Mac v2.0 (Utralview for Mac)
 ### BasanCorp Enterprise Edition
 
 **Run UltraViewer natively on macOS: high-speed, secure remote desktop client engineered for Apple Silicon (M1/M2/M3/M4) and Intel Macs.**

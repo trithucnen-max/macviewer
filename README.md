@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/images/app-icon.png" width="128" alt="Biểu tượng MacViewer">
+<img src="docs/images/app-icon.png" width="128" alt="Biểu tượng Ultraview for Mac">
 
-# MacViewer v2.0
+# Ultraview for Mac v2.0 (Utralview for Mac)
 ### BasanCorp Enterprise Edition
 
 **Dùng UltraViewer ngay trên máy Mac: điều khiển máy tính từ xa tốc độ cao, bảo mật tuyệt đối, hỗ trợ hoàn hảo Apple Silicon (M1/M2/M3/M4) và Intel.**

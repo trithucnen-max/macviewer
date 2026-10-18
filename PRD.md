@@ -1,11 +1,11 @@
 # Product Requirements Document (PRD)
-## Dự án: MacViewer v2.0 — BasanCorp Enterprise Edition
+## Dự án: Ultraview for Mac v2.0 — BasanCorp Enterprise Edition
 
 ---
 
 | **Thuộc tính** | **Chi tiết** |
 | :--- | :--- |
-| **Tên sản phẩm** | **MacViewer v2.0** |
+| **Tên sản phẩm** | **Ultraview for Mac v2.0 (Utralview for Mac)** |
 | **Đơn vị phát triển** | **BASAN CORPORATION (BasanCorp)** |
 | **Bản quyền** | © 2026 BASAN CORPORATION. All rights reserved. |
 | **Chứng chỉ ký số** | `Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)` |

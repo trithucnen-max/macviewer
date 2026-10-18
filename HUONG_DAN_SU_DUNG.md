@@ -1,11 +1,11 @@
-# Hướng Dẫn Sử Dụng MacViewer v2.0
+# Hướng Dẫn Sử Dụng Ultraview for Mac v2.0 (Utralview for Mac)
 ### Phát triển và bảo trợ bởi BASAN CORPORATION (BasanCorp)
 
 ---
 
 ## 1. Giới thiệu tổng quan
 
-**MacViewer v2.0** là giải pháp phần mềm chuyên dụng cho người dùng macOS để kết nối, điều khiển hoặc chia sẻ màn hình với các máy tính đang chạy phần mềm UltraViewer trên Windows (hoặc MacViewer trên máy Mac khác).
+**Ultraview for Mac v2.0** (Utralview for Mac) là giải pháp phần mềm chuyên dụng cho người dùng macOS để kết nối, điều khiển hoặc chia sẻ màn hình với các máy tính đang chạy phần mềm UltraViewer trên Windows (hoặc trên máy Mac khác).
 
 Phiên bản **v2.0** sở hữu động cơ xử lý hình ảnh và giao thức thế hệ mới, giao diện Dark/Light tối giản chuẩn 3 màu, đồng thời hỗ trợ trọn vẹn cả hai thế hệ chip: **Apple Silicon (M1, M2, M3, M4)** và **Intel (x86_64)**.
 
