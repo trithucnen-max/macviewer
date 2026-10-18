@@ -1,18 +1,18 @@
 # Product Requirements Document (PRD)
-## Dự án: Ultraview for Mac v2.0 — BasanCorp Enterprise Edition
+## Dự án: Utralview for Mac v2.1.1 — BasanCorp Enterprise Edition
 
 ---
 
 | **Thuộc tính** | **Chi tiết** |
 | :--- | :--- |
-| **Tên sản phẩm** | **Ultraview for Mac v2.0 (Utralview for Mac)** |
+| **Tên sản phẩm** | **Utralview for Mac v2.1.1** |
 | **Đơn vị phát triển** | **BASAN CORPORATION (BasanCorp)** |
 | **Bản quyền** | © 2026 BASAN CORPORATION. All rights reserved. |
 | **Chứng chỉ ký số** | `Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)` |
-| **Mã định danh (Bundle ID)** | `com.basancorp.macviewer` |
-| **Phiên bản** | `v2.0.0` (Build 200) |
+| **Mã định danh (Bundle ID)** | `com.basancorp.utralview` |
+| **Phiên bản** | `v2.1.1` (Build 211) |
 | **Trạng thái** | Phát hành chính thức (Production Ready) |
-| **Kho mã nguồn** | `https://github.com/Trithucnen/macviewer` |
+| **Kho mã nguồn** | `https://github.com/trithucnen-max/macviewer` |
 
 ---
 
@@ -21,7 +21,7 @@
 ### 1.1 Bối cảnh
 UltraViewer là giải pháp điều khiển máy tính từ xa phổ biến rộng rãi tại Việt Nam và khu vực, tuy nhiên phần mềm gốc chỉ hỗ trợ hệ điều hành Windows. Trước đây, người dùng máy Mac hoàn toàn bị cô lập hoặc phải chạy qua máy ảo nặng nề, không bảo đảm tính ổn định và bảo mật.
 
-**MacViewer v2.0** do **BASAN CORPORATION** phát triển và bảo trợ là phiên bản kiến trúc thế hệ mới, tái thiết kế toàn bộ hệ thống từ tầng protocol, engine tính toán cho đến giao diện hiển thị người dùng, mang lại trải nghiệm điều khiển từ xa nguyên bản, tốc độ cao, tiêu thụ tài nguyên tối thiểu và tuân thủ các chuẩn mực bảo mật khắt khe nhất của Apple và các nền tảng hiện đại.
+**Utralview for Mac v2.1.1** do **BASAN CORPORATION** phát triển và bảo trợ là phiên bản kiến trúc thế hệ mới, tái thiết kế toàn bộ hệ thống từ tầng protocol, engine tính toán cho đến giao diện hiển thị người dùng, mang lại trải nghiệm điều khiển từ xa nguyên bản, tốc độ cao, tiêu thụ tài nguyên tối thiểu và tuân thủ các chuẩn mực bảo mật khắt khe nhất của Apple và các nền tảng hiện đại.
 
 ### 1.2 Mục tiêu cốt lõi
 1. **Bảo mật tuyệt đối (Zero Windows Execution on Mac):** Tuyệt đối không thực thi binary Windows (`.exe`/`.dll`), không sử dụng Wine. Toàn bộ logic giao thức được thiết kế và thực thi an toàn trong môi trường sandbox của macOS.

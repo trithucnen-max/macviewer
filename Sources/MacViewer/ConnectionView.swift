@@ -52,7 +52,7 @@ struct ConnectionView: View {
             Button("Let Windows connect to this Mac") { requestSideSwitch() }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("MacViewer will share this Mac’s connection ID and password with the connected Windows computer. You will approve its incoming request here.")
+            Text("Utralview will share this Mac’s connection ID and password with the connected Windows computer. You will approve its incoming request here.")
         }
         .confirmationDialog("Windows requests a control switch", isPresented: Binding(
             get: { hosting.pendingSideSwitch != nil },
@@ -100,11 +100,11 @@ struct ConnectionView: View {
         .buttonStyle(.borderedProminent)
         .tint(MacTheme.accent)
         .controlSize(.small)
-        .help("Install the new version and restart MacViewer")
+        .help("Install the new version and restart Utralview for Mac")
     }
 
     private var updateAlertTitle: LocalizedStringKey {
-        if case .failed = updater.state { "Update failed" } else { "MacViewer is up to date" }
+        if case .failed = updater.state { "Update failed" } else { "Utralview for Mac is up to date" }
     }
 
     private var appHeader: some View {
@@ -117,7 +117,7 @@ struct ConnectionView: View {
                 .background(MacTheme.accent, in: RoundedRectangle(cornerRadius: MacTheme.radiusControl))
 
             VStack(alignment: .leading, spacing: 1) {
-                Text("Ultraview for Mac")
+                Text("Utralview for Mac")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(MacTheme.textPrimary)
                 Text("Bảo mật & Tốc độ cao • Tương thích UltraViewer")
@@ -614,7 +614,7 @@ struct ConnectionView: View {
 
             Spacer()
 
-            Text("Ultraview for Mac v2.0 • BasanCorp")
+            Text("Utralview for Mac v2.1.1 • BasanCorp")
                 .font(.system(size: 11))
                 .foregroundStyle(MacTheme.textSecondary)
         }

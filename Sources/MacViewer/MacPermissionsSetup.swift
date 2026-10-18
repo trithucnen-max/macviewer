@@ -36,7 +36,7 @@ final class MacPermissionsSetupWindowController: NSWindowController, NSWindowDel
             styleMask: [.titled, .closable, .utilityWindow],
             backing: .buffered, defer: false
         )
-        panel.title = L("Allow MacViewer access")
+        panel.title = L("Allow Utralview access")
         panel.level = .floating
         panel.hidesOnDeactivate = false
         panel.isReleasedWhenClosed = false
@@ -59,7 +59,7 @@ final class MacPermissionsSetupWindowController: NSWindowController, NSWindowDel
         let wasVisible = window?.isVisible == true
         self.hosting = hosting
         hosting.refreshPermissions()
-        window?.title = L("Allow MacViewer access")
+        window?.title = L("Allow Utralview access")
         let height = max(400, min(660, (NSScreen.main?.visibleFrame.height ?? 740) - 80))
         window?.contentView = NSHostingView(rootView: MacPermissionsSetupGuide(
             hosting: hosting, initialPermission: initialPermission,
@@ -97,7 +97,7 @@ final class MacPermissionsSetupWindowController: NSWindowController, NSWindowDel
             refreshTimer = nil
             return
         }
-        window?.title = L("Allow MacViewer access")
+        window?.title = L("Allow Utralview access")
         hosting?.refreshPermissions()
     }
 }
@@ -138,8 +138,8 @@ private struct MacPermissionsSetupGuide: View {
             }
 
             VStack(alignment: .leading, spacing: 10) {
-                stepTitle(2, "Drag MacViewer into the app list, then enable it")
-                Text(LF("Drop the app below into the real %@ window. Turn on the switch next to MacViewer.", L(selected.title)))
+                stepTitle(2, "Drag Utralview into the app list, then enable it")
+                Text(LF("Drop the app below into the real %@ window. Turn on the switch next to Utralview.", L(selected.title)))
                     .font(.callout).foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
 
@@ -149,7 +149,7 @@ private struct MacPermissionsSetupGuide: View {
                             .frame(width: 100, height: 100)
                             .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 18))
                             .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(.secondary.opacity(0.2)))
-                        Text("MacViewer.app").font(.callout.weight(.medium))
+                        Text("Utralview for Mac.app").font(.callout.weight(.medium))
                         Text("Drag this app").font(.caption).foregroundStyle(.secondary)
                     }
                     Image(systemName: "arrow.right")
@@ -167,12 +167,12 @@ private struct MacPermissionsSetupGuide: View {
                 .frame(maxWidth: .infinity).padding(.vertical, 4)
 
                 if !isAppBundle {
-                    Text("Open the packaged MacViewer.app to drag it here.")
+                    Text("Open the packaged Utralview for Mac.app to drag it here.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
             }
 
-            Text("If MacViewer is already listed, enable its switch. After allowing Screen Recording, quit and reopen MacViewer if it still shows unavailable.")
+            Text("If Utralview is already listed, enable its switch. After allowing Screen Recording, quit and reopen Utralview if it still shows unavailable.")
                 .font(.caption).foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -257,8 +257,8 @@ private final class MacPermissionAppDragSource: NSView, NSDraggingSource {
     required init?(coder: NSCoder) { return nil }
 
     func refreshLocalizedLabels() {
-        toolTip = L("Drag this MacViewer app into System Settings.")
-        setAccessibilityLabel(L("MacViewer application. Drag into the System Settings permission list."))
+        toolTip = L("Drag this Utralview app into System Settings.")
+        setAccessibilityLabel(L("Utralview application. Drag into the System Settings permission list."))
     }
 
     private var iconRect: NSRect {

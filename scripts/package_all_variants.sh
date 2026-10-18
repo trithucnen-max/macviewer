@@ -5,10 +5,11 @@ project_root="${0:A:h:h}"
 cd "$project_root"
 
 signing_identity="Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)"
-version="2.0.0"
-build_number="200"
+version="2.1.1"
+build_number="211"
+app_name="Utralview for Mac"
 
-echo "=== Building Ultraview for Mac v$version for arm64 & x86_64 ==="
+echo "=== Building $app_name v$version for arm64 & x86_64 ==="
 
 swift build -c release --triple arm64-apple-macosx14.0 --product MacViewer
 swift build -c release --triple x86_64-apple-macosx14.0 --product MacViewer
@@ -27,7 +28,7 @@ iconutil -c icns "$icon_directory" -o "$project_root/.build/MacViewer.icns"
 create_bundle() {
   local arch="$1"
   local bin_src="$2"
-  local app_dir="$project_root/dist/$arch/Ultraview for Mac.app"
+  local app_dir="$project_root/dist/$arch/$app_name.app"
 
   rm -rf "$app_dir"
   mkdir -p "$app_dir/Contents/MacOS" "$app_dir/Contents/Resources"
@@ -49,8 +50,8 @@ create_bundle() {
   cp ThirdParty/g722/LICENSE "$app_dir/Contents/Resources/Licenses/G722/LICENSE"
   cp ThirdParty/g722/WEBRTC_LICENSE "$app_dir/Contents/Resources/Licenses/G722/WEBRTC_LICENSE"
 
-  cp "$bin_src" "$app_dir/Contents/MacOS/Ultraview"
-  chmod +x "$app_dir/Contents/MacOS/Ultraview"
+  cp "$bin_src" "$app_dir/Contents/MacOS/Utralview"
+  chmod +x "$app_dir/Contents/MacOS/Utralview"
   cp Sources/UltraViewerProtocol/Resources/8bit.dat "$app_dir/Contents/Resources/8bit.dat"
 
   cat > "$app_dir/Contents/Info.plist" <<PLIST
@@ -58,10 +59,10 @@ create_bundle() {
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>CFBundleExecutable</key><string>Ultraview</string>
-  <key>CFBundleIdentifier</key><string>com.basancorp.ultraview</string>
-  <key>CFBundleName</key><string>Ultraview for Mac</string>
-  <key>CFBundleDisplayName</key><string>Ultraview for Mac</string>
+  <key>CFBundleExecutable</key><string>Utralview</string>
+  <key>CFBundleIdentifier</key><string>com.basancorp.utralview</string>
+  <key>CFBundleName</key><string>$app_name</string>
+  <key>CFBundleDisplayName</key><string>$app_name</string>
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>CFBundleIconFile</key><string>MacViewer.icns</string>
   <key>CFBundleDevelopmentRegion</key><string>en</string>
@@ -88,45 +89,45 @@ create_bundle "arm64" ".build/arm64-apple-macosx/release/MacViewer"
 create_bundle "x86_64" ".build/x86_64-apple-macosx/release/MacViewer"
 create_bundle "universal" ".build/universal/MacViewer"
 
-# Copy Universal to dist/Ultraview for Mac.app as main app
-rm -rf "$project_root/dist/Ultraview for Mac.app"
-cp -R "$project_root/dist/universal/Ultraview for Mac.app" "$project_root/dist/Ultraview for Mac.app"
+# Copy Universal to dist/Utralview for Mac.app as main app
+rm -rf "$project_root/dist/$app_name.app"
+cp -R "$project_root/dist/universal/$app_name.app" "$project_root/dist/$app_name.app"
 
 echo "=== Building DMG Installers with Gatekeeper Bypass Helper ==="
 create_dmg() {
   local arch="$1"
-  local dmg_name="Ultraview-for-Mac-v$version-$arch.dmg"
+  local dmg_name="Utralview-for-Mac-v$version-$arch.dmg"
   local dmg_path="$project_root/dist/$dmg_name"
   local staging_dir="$(mktemp -d)"
 
   echo "Creating DMG for $arch -> $dmg_name..."
-  cp -R "$project_root/dist/$arch/Ultraview for Mac.app" "$staging_dir/"
+  cp -R "$project_root/dist/$arch/$app_name.app" "$staging_dir/"
   ln -s /Applications "$staging_dir/Applications"
 
   # Helper script for 1-click Gatekeeper bypass
-  cat > "$staging_dir/Mo-Ultraview-Lan-Dau.command" <<'LAUNCHER'
+  cat > "$staging_dir/Mo-Utralview-Lan-Dau.command" <<'LAUNCHER'
 #!/bin/bash
 clear
 echo "=========================================================="
-echo "  Kích hoạt Ultraview for Mac (Bỏ chặn Apple Gatekeeper)  "
+echo "  Kích hoạt Utralview for Mac (Bỏ chặn Apple Gatekeeper)  "
 echo "  Bản quyền © 2026 BASAN CORPORATION                     "
 echo "=========================================================="
 echo ""
 echo "Đang cấp phép mở ứng dụng an toàn..."
-xattr -cr /Applications/"Ultraview for Mac.app" 2>/dev/null || true
-xattr -cr "$(dirname "$0")"/"Ultraview for Mac.app" 2>/dev/null || true
+xattr -cr /Applications/"Utralview for Mac.app" 2>/dev/null || true
+xattr -cr "$(dirname "$0")"/"Utralview for Mac.app" 2>/dev/null || true
 echo "✅ Đã gỡ bỏ giới hạn cách ly (Quarantine Flag) thành công!"
-echo "🚀 Đang khởi động Ultraview for Mac..."
-open /Applications/"Ultraview for Mac.app" 2>/dev/null || open "$(dirname "$0")"/"Ultraview for Mac.app"
+echo "🚀 Đang khởi động Utralview for Mac..."
+open /Applications/"Utralview for Mac.app" 2>/dev/null || open "$(dirname "$0")"/"Utralview for Mac.app"
 exit 0
 LAUNCHER
-  chmod +x "$staging_dir/Mo-Ultraview-Lan-Dau.command"
+  chmod +x "$staging_dir/Mo-Utralview-Lan-Dau.command"
 
   rm -f "$dmg_path"
-  hdiutil create -volname "Ultraview for Mac" -srcfolder "$staging_dir" -ov -format UDZO "$dmg_path"
+  hdiutil create -volname "$app_name" -srcfolder "$staging_dir" -ov -format UDZO "$dmg_path"
   rm -rf "$staging_dir"
 
-  echo "Signing $dmg_name..."
+  echo "Signing $dmg_name with Developer ID..."
   codesign --force --sign "$signing_identity" --timestamp "$dmg_path"
   codesign --verify --verbose "$dmg_path"
   echo "Verified $dmg_name: OK"
@@ -137,4 +138,4 @@ create_dmg "arm64"
 create_dmg "x86_64"
 
 echo "=== All DMG variants packaged and signed! ==="
-ls -lh "$project_root/dist/"*.dmg
+ls -lh "$project_root/dist/"Utralview-for-Mac-v$version-*.dmg

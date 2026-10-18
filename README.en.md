@@ -1,21 +1,21 @@
 <div align="center">
 
-<img src="docs/images/app-icon.png" width="128" alt="Ultraview for Mac Icon">
+<img src="docs/images/app-icon.png" width="128" alt="Utralview for Mac Icon">
 
-# Ultraview for Mac v2.0 (Utralview for Mac)
+# Utralview for Mac v2.1.1
 ### BasanCorp Enterprise Edition
 
-**Run UltraViewer natively on macOS: high-speed, secure remote desktop client engineered for Apple Silicon (M1/M2/M3/M4) and Intel Macs.**
+**Run UltraViewer on macOS: High-performance remote desktop, airtight security, full native support for Apple Silicon (M1/M2/M3/M4) and Intel.**
 
-[Tiếng Việt](README.md) · **English** · [PRD](PRD.md) · [User Guide](HUONG_DAN_SU_DUNG.md)
+[Tiếng Việt](README.md) · **English** · [PRD Document](PRD.md) · [User Guide](HUONG_DAN_SU_DUNG.md)
 
-### [Download MacViewer v2.0 for macOS (GitHub Releases)](https://github.com/Trithucnen/macviewer/releases/latest)
+### [Download Utralview for Mac v2.1.1 (GitHub Releases)](https://github.com/trithucnen-max/macviewer/releases/tag/v2.1.1)
 
-Official v2.0.0 Release — Digitally signed by **BASAN CORPORATION**
+Official Release v2.1.1 — Digitally signed by **BASAN CORPORATION**
 
-[![Release](https://img.shields.io/github/v/release/Trithucnen/macviewer?sort=semver)](https://github.com/Trithucnen/macviewer/releases/latest)
+[![Release](https://img.shields.io/github/v/release/trithucnen-max/macviewer?sort=semver)](https://github.com/trithucnen-max/macviewer/releases/tag/v2.1.1)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-![Platform](https://img.shields.io/badge/platform-macOS%2014%2B%20%7C%20Windows%20%7C%20Linux-lightgrey)
+![Platform](https://img.shields.io/badge/platform-macOS%2014%2B%20%7C%20Windows%20%7C%20Linux%20%7C%20Surface-lightgrey)
 ![Architecture](https://img.shields.io/badge/architecture-Universal%20(arm64%20%2B%20x86__64)-green)
 ![Security](https://img.shields.io/badge/signed-BASAN%20CORPORATION-success)
 
@@ -23,49 +23,72 @@ Official v2.0.0 Release — Digitally signed by **BASAN CORPORATION**
 
 ---
 
-[UltraViewer](https://ultraviewer.net) is a popular remote desktop tool originally built for Windows. **MacViewer v2.0**, backed and developed by **BASAN CORPORATION**, brings a pure native solution to macOS and cross-platform ecosystems. It connects directly to computers running UltraViewer (or MacViewer) with exceptional responsiveness, ultra-low latency, and minimal resource usage.
+## 🚀 About Utralview for Mac
 
-Built with **Swift 6 & SwiftUI** on macOS paired with a high-performance **Rust core engine**, it runs zero Windows executables (`.exe`/`.dll`) and has zero Wine dependencies.
+[UltraViewer](https://ultraviewer.net/en/) is a widely used remote desktop application on Windows. **Utralview for Mac v2.1.1**, developed by **BASAN CORPORATION**, is a high-performance native solution for macOS and cross-platform ecosystems. It enables swift, low-latency connections to computers running UltraViewer or Utralview with minimal CPU and memory footprints.
+
+Built with **Swift 6 & SwiftUI** (for macOS) paired with a high-performance **Rust** protocol core engine, requiring no Windows `.exe`/`.dll` binaries or Wine emulation.
 
 > [!NOTE]
-> All official DMG release bundles are digitally signed with `Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)` with Apple Hardened Runtime and Timestamping, passing Apple Gatekeeper verification out of the box.
+> All official DMG installers are digitally signed using `Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)` with Apple Hardened Runtime, Entitlements, and secure Timestamping in full compliance with Apple Gatekeeper.
 
 ---
 
-## What's New in v2.0
+## 📦 Download Installers for All Platforms (v2.1.1)
 
-### 1. True Cross-Platform Architecture
-- **macOS Universal (M1/M2/M3/M4 + Intel)**: A single unified package `MacViewer-2.0.0-Universal.dmg` running natively on all Apple Silicon and Intel machines running macOS Sonoma (14.0) or later.
-- **Windows x86_64 & Windows ARM64 (Surface / Copilot+ PC)**: Lightweight cross-platform Rust engine for remote operations on Microsoft Surface Pro X and modern Windows ARM64 devices.
-- **Linux x86_64 & aarch64**: Lean background daemon and CLI for server administrators.
-
-### 2. Strict 3-Color Design System
-- Focused industrial aesthetic with no distracting color clutter.
-- Cohesive Dark Mode (Slate `#0D1117`) and Light Mode anchored by Cobalt Blue (`#2563EB`) and connection status Emerald Green (`#10B981`).
-
-### 3. High Performance Remote Desktop
-- End-to-end AES-128 and 3DES protocol support.
-- Automatic Local Network Direct P2P discovery for maximum framerates.
-- Retina 4K/5K multi-monitor support.
-- Smart keyboard translation (<kbd>⌘</kbd> to Win, <kbd>⌥</kbd> to Alt, <kbd>⌃</kbd> to Ctrl).
-- Integrated low-latency audio streaming powered by G.722 WebRTC decoder.
-- Real-time in-session Chat and bidirectional Clipboard synchronization.
+| Platform / Device | Release Artifact | Direct Download Link | Description & Architecture |
+| :--- | :--- | :---: | :--- |
+| 🍏 **macOS Universal** (Recommended) | `Utralview-for-Mac-v2.1.1-Universal.dmg` | [Download (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.1.1/Utralview-for-Mac-v2.1.1-Universal.dmg) | Combined binary for Apple Silicon (M1-M4) & Intel Macs |
+| 🍏 **macOS Apple Silicon** | `Utralview-for-Mac-v2.1.1-arm64.dmg` | [Download (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.1.1/Utralview-for-Mac-v2.1.1-arm64.dmg) | Lightweight package dedicated for M1/M2/M3/M4 chips |
+| 🍏 **macOS Intel** | `Utralview-for-Mac-v2.1.1-x86_64.dmg` | [Download (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.1.1/Utralview-for-Mac-v2.1.1-x86_64.dmg) | Dedicated package for Intel CPU Macs |
+| 🪟 **Windows 64-bit** | `Utralview-v2.1.1-windows-x86_64.zip` | [Download (.zip)](https://github.com/trithucnen-max/macviewer/releases/download/v2.1.1/Utralview-v2.1.1-windows-x86_64.zip) | For Windows 10/11 64-bit PCs & Laptops |
+| 💻 **Microsoft Surface / Copilot+ PC** | `Utralview-v2.1.1-windows-arm64-surface.zip` | [Download (.zip)](https://github.com/trithucnen-max/macviewer/releases/download/v2.1.1/Utralview-v2.1.1-windows-arm64-surface.zip) | Optimized for Surface Pro X & ARM64 laptops |
+| 🐧 **Linux 64-bit** | `Utralview-v2.1.1-linux-x86_64.tar.gz` | [Download (.tar.gz)](https://github.com/trithucnen-max/macviewer/releases/download/v2.1.1/Utralview-v2.1.1-linux-x86_64.tar.gz) | Ubuntu, Debian, Fedora, Arch Linux (CLI & Daemon) |
+| ⚙️ **macOS CLI (Universal)** | `utralview-cli-v2.1.1-macos-universal` | [Download](https://github.com/trithucnen-max/macviewer/releases/download/v2.1.1/utralview-cli-v2.1.1-macos-universal) | Standalone command-line tool for scripting and devops |
+| 🛡️ **Checksums** | `SHA256SUMS.txt` | [View Hashes](https://github.com/trithucnen-max/macviewer/releases/download/v2.1.1/SHA256SUMS.txt) | SHA256 file verification hashes |
 
 ---
 
-## Installation
+## 🛠️ Installation & macOS First-Time Launch Guide
 
-1. Visit [**GitHub Releases**](https://github.com/Trithucnen/macviewer/releases/latest).
-2. Download the appropriate image:
-   - **`MacViewer-2.0.0-Universal.dmg`**: Recommended for both Apple Silicon and Intel Macs.
-   - **`MacViewer-2.0.0-arm64.dmg`**: Optimized for M1/M2/M3/M4.
-   - **`MacViewer-2.0.0-x86_64.dmg`**: For Intel Macs.
-3. Open the `.dmg` and drag `MacViewer.app` to your `/Applications` directory.
+### 1. Standard Installation
+1. Download the `.dmg` installer (the **Universal** edition is recommended).
+2. Double-click the downloaded DMG file.
+3. Drag the **`Utralview for Mac.app`** icon into `/Applications`.
+
+### 2. Resolving Gatekeeper Warning ("Apple cannot verify the developer")
+When downloading apps via web browsers, macOS marks them with a quarantine flag. You can quickly launch the app via any of the following methods:
+
+- **Method 1: Integrated 1-Click Launch Tool (Recommended)**
+  - Double-click **`Mo-Utralview-Lan-Dau.command`** located directly inside the DMG.
+  - The script clears the quarantine attribute and launches the application automatically.
+- **Method 2: System Settings**
+  - Go to **System Settings** > **Privacy & Security**.
+  - Scroll down to the **Security** section where you will see *"Utralview for Mac was blocked..."*.
+  - Click **"Open Anyway"** and confirm with your macOS password or Touch ID.
+- **Method 3: Right-Click in Finder**
+  - In `/Applications`, right-click (or hold `Control` and click) **`Utralview for Mac`**.
+  - Select **Open** from the context menu, then click **Open** in the prompt dialog.
+- **Method 4: Terminal Command**
+  ```bash
+  xattr -cr "/Applications/Utralview for Mac.app"
+  ```
 
 ---
 
-## Copyright & License
+## 🌟 Key Features in v2.1.1
 
-- Copyright © 2026 **BASAN CORPORATION** (BasanCorp). All rights reserved.
+- **Cross-Platform**: Support across macOS (Apple Silicon + Intel), Windows x86_64, Windows ARM64 (Surface), and Linux x86_64.
+- **Native 2-Column macOS Interface**: Dedicated hosting sidebar + clean partner workspace.
+- **Strict 3-Color Visual Hierarchy**: Slate `#0D1117`, Cobalt Blue `#2563EB`, and Emerald Green `#10B981`.
+- **Low-Latency & High Performance**: Hardware-accelerated rendering, AES-128 & 3DES encryption, LAN Direct P2P auto-discovery.
+- **Audio & Peripherals**: Real-time G.722 audio streaming, bidirectional clipboard sync, smart modifier key translation.
+- **Privacy & Security**: Zero telemetry, and saved credentials secured via macOS Keychain.
+
+---
+
+## 📜 License & Copyright
+
+- Copyright © 2026 **BASAN CORPORATION** (BasanCorp).
 - Released as open source under the [MIT License](LICENSE).
-- UltraViewer is a trademark of its respective owner, mentioned solely for protocol interoperability.
+- UltraViewer is a registered trademark of its respective owner and is mentioned solely to state protocol interoperability.

@@ -11,7 +11,7 @@ struct MacViewerApp: App {
     @AppStorage(AppLanguage.defaultsKey) private var language = AppLanguage.system.rawValue
 
     var body: some Scene {
-        WindowGroup("Ultraview for Mac") {
+        WindowGroup("Utralview for Mac") {
             ConnectionView(model: model, hosting: hosting, remoteCapture: capture, updater: updater)
                 .frame(minWidth: 780, minHeight: 520)
                 .onAppear {
@@ -90,7 +90,7 @@ struct MacViewerSettings: View {
                 LabeledContent("Scroll speed", value: String(format: "%.2g×", scrollSensitivity))
             }
             Section("About") {
-                LabeledContent("Application", value: "MacViewer \(Self.version)")
+                LabeledContent("Application", value: "Utralview for Mac \(Self.version)")
                 Toggle("Automatically check for updates", isOn: $checkForUpdates)
                 Button(L("Check for Updates…")) { updater.check(userInitiated: true) }
                     .disabled(updater.state == .checking)

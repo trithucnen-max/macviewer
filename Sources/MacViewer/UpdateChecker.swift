@@ -24,7 +24,7 @@ final class UpdateChecker: ObservableObject {
 
     static let automaticKey = "MacViewer.checkForUpdates"
     static let lastCheckKey = "MacViewer.lastUpdateCheck"
-    static let latestReleaseURL = URL(string: "https://api.github.com/repos/DeanOpen/MacViewer/releases/latest")!
+    static let latestReleaseURL = URL(string: "https://api.github.com/repos/trithucnen-max/macviewer/releases/latest")!
 
     @Published private(set) var state = State.idle
     /// Set when the user asked for the check, or an install failed, so the result is shown.
@@ -146,7 +146,7 @@ final class UpdateChecker: ObservableObject {
         let payload = try JSONDecoder().decode(Payload.self, from: data)
         guard payload.draft != true, payload.prerelease != true else { throw URLError(.cannotParseResponse) }
         let version = payload.tag_name.hasPrefix("v") ? String(payload.tag_name.dropFirst()) : payload.tag_name
-        let dmg = payload.assets.first { $0.name.hasPrefix("MacViewer-") && $0.name.hasSuffix(".dmg") }
+        let dmg = payload.assets.first { ($0.name.contains("Utralview") || $0.name.contains("Ultraview") || $0.name.contains("MacViewer")) && $0.name.hasSuffix(".dmg") }
         guard dmg.map({ $0.browser_download_url.host == "github.com" }) ?? true else { throw URLError(.cannotParseResponse) }
         return Release(version: version, pageURL: payload.html_url, dmgURL: dmg?.browser_download_url,
                        notes: releaseNotes(payload.body ?? ""))
