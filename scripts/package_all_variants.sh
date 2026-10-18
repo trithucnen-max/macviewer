@@ -137,5 +137,23 @@ create_dmg "Universal"
 create_dmg "arm64"
 create_dmg "x86_64"
 
-echo "=== All DMG variants packaged and signed! ==="
+echo "=== Building Rust CLI (Universal) ==="
+if command -v cargo &>/dev/null && [[ -d "$project_root/macviewer-rust" ]]; then
+  (
+    cd "$project_root/macviewer-rust"
+    cargo build --release --bin ultraviewer-cli
+    cp target/release/ultraviewer-cli "$project_root/dist/utralview-cli-v$version-macos-universal"
+    chmod +x "$project_root/dist/utralview-cli-v$version-macos-universal"
+    codesign --force --sign "$signing_identity" --options runtime --timestamp "$project_root/dist/utralview-cli-v$version-macos-universal"
+  )
+fi
+
+echo "=== Generating SHA256SUMS.txt ==="
+(
+  cd "$project_root/dist"
+  shasum -a 256 *.dmg utralview-cli-* 2>/dev/null > SHA256SUMS.txt || true
+)
+
+echo "=== All DMG variants packaged, signed, and checksummed! ==="
 ls -lh "$project_root/dist/"Utralview-for-Mac-v$version-*.dmg
+cat "$project_root/dist/SHA256SUMS.txt"
