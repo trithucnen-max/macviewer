@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "crates/ultraviewer-protocol",
+    "crates/ultraviewer-ffi",
+    "crates/ultraviewer-cli",
+]
+resolver = "2"
