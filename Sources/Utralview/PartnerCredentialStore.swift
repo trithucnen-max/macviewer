@@ -55,7 +55,8 @@ final class KeychainPartnerCredentialStore: PartnerCredentialStore {
         }
     }
 
-    static let service = "dev.macviewer.partner"
+    static let service = "com.itngon.utralview.credential"
+    private static let legacyService = "dev.macviewer.partner"
     private let serviceName: String
     private let operations: Operations
     private static let maximumPasswordBytes = 64 * 1024
@@ -78,7 +79,23 @@ final class KeychainPartnerCredentialStore: PartnerCredentialStore {
         query[kSecReturnData as String] = true
         query[kSecMatchLimit as String] = kSecMatchLimitOne
         let (status, result) = operations.copy(query)
-        if status == errSecItemNotFound { return nil }
+        if status == errSecItemNotFound {
+            // Check legacy service for seamless migration if using default service
+            if serviceName == Self.service {
+                var legacyQuery = try itemQuery(identifier: identifier)
+                legacyQuery[kSecAttrService as String] = Self.legacyService
+                legacyQuery[kSecReturnData as String] = true
+                legacyQuery[kSecMatchLimit as String] = kSecMatchLimitOne
+                let (legacyStatus, legacyResult) = operations.copy(legacyQuery)
+                if legacyStatus == errSecSuccess, let data = legacyResult as? Data,
+                   let pass = String(data: data, encoding: .utf8), !pass.isEmpty {
+                    // Migrate to new service
+                    try? store(password: pass, forID: identifier)
+                    return pass
+                }
+            }
+            return nil
+        }
         try check(status)
         guard let data = result as? Data, data.count <= Self.maximumPasswordBytes,
               let password = String(data: data, encoding: .utf8), !password.isEmpty else {
@@ -98,7 +115,7 @@ final class KeychainPartnerCredentialStore: PartnerCredentialStore {
         guard status == errSecItemNotFound else { throw Error.keychain(status) }
         var item = query
         item[kSecValueData as String] = data
-        item[kSecAttrLabel as String] = "MacViewer partner password"
+        item[kSecAttrLabel as String] = "Utralview partner password"
         let added = operations.add(item)
         if added == errSecDuplicateItem {
             // Another writer can create the same item after our update query.

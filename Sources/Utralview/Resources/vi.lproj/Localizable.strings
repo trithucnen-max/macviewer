@@ -1,4 +1,4 @@
-/* MacViewer interface translations. */
+/* Utralview interface translations. */
 "Language" = "Ngôn ngữ";
 "App language" = "Ngôn ngữ ứng dụng";
 "System language" = "Theo hệ thống";
@@ -307,7 +307,7 @@
 "Black" = "Đen";
 "White" = "Trắng";
 "Let Windows connect to this Mac" = "Cho phép máy khác kết nối đến máy Mac này";
-"MacViewer will share this Mac’s connection ID and password with the connected Windows computer. You will approve its incoming request here." = "Utralview sẽ gửi ID kết nối và mật khẩu của máy Mac này cho máy đang kết nối. Bạn sẽ chấp thuận yêu cầu truy cập đến tại đây.";
+"Utralview will share this Mac’s connection ID and password with the connected Windows computer. You will approve its incoming request here." = "Utralview sẽ gửi ID kết nối và mật khẩu của máy Mac này cho máy đang kết nối. Bạn sẽ chấp thuận yêu cầu truy cập đến tại đây.";
 "Windows requests a control switch" = "Máy kia yêu cầu đổi chiều điều khiển";
 "End this incoming session and connect to the same Windows computer? Control will stay off until you enable it." = "Kết thúc phiên truy cập đến này và kết nối đến cùng máy đó? Chức năng điều khiển sẽ vẫn tắt cho đến khi bạn bật.";
 "Connected directly over the local network." = "Đã kết nối trực tiếp qua mạng nội bộ.";

@@ -44,9 +44,11 @@ let package = Package(
         .target(name: "UltraViewerProtocol", dependencies: ["CZstd", "CG722"],
                 resources: [.copy("Resources/8bit.dat")]),
         .executableTarget(name: "MacViewer", dependencies: ["UltraViewerProtocol"],
-                          exclude: ["Ultraview.entitlements"],
+                          path: "Sources/Utralview",
+                          exclude: ["Utralview.entitlements"],
                           resources: [.process("Resources")]),
         .testTarget(name: "UltraViewerProtocolTests", dependencies: ["UltraViewerProtocol"]),
-        .testTarget(name: "MacViewerTests", dependencies: ["MacViewer"]),
+        .testTarget(name: "MacViewerTests", dependencies: ["MacViewer"],
+                    path: "Tests/UtralviewTests"),
     ]
 )

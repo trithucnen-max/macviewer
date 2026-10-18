@@ -28,3 +28,5 @@ public enum MacTheme {
     public static let radiusControl: CGFloat = 8
     public static let radiusBadge: CGFloat = 6
 }
+
+public typealias UtralviewTheme = MacTheme

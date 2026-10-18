@@ -28,7 +28,7 @@ final class RemoteCaptureController: ObservableObject {
     private var captureDirectory: URL {
         lastCaptureURL?.deletingLastPathComponent()
             ?? FileManager.default.urls(for: .picturesDirectory, in: .userDomainMask)[0]
-                .appendingPathComponent("MacViewer Captures", isDirectory: true)
+                .appendingPathComponent("Utralview Captures", isDirectory: true)
     }
 
     func saveScreenshot(_ image: CGImage, peerName: String) {

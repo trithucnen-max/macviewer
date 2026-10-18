@@ -5,7 +5,7 @@ import UltraViewerProtocol
 /// The boundary between the native app and a verified UltraViewer session engine.
 /// An adapter must emit `connected` only after the peer has authenticated the session.
 @MainActor
-protocol MacViewerSessionAdapter: AnyObject {
+protocol UtralviewSessionAdapter: AnyObject {
     var availability: SessionAvailability { get }
 
     func connect(
@@ -25,7 +25,9 @@ protocol MacViewerSessionAdapter: AnyObject {
     func waitUntilClosed() async
 }
 
-extension MacViewerSessionAdapter {
+typealias MacViewerSessionAdapter = UtralviewSessionAdapter
+
+extension UtralviewSessionAdapter {
     func sendChat(_ text: String) async throws { throw NativeSessionError.unavailable("Chat is unavailable for this connection.") }
     func sendTyping(_ typing: Bool) async throws {}
     func sendCommand(_ message: RemoteControlCommands.Message, requiresControl: Bool) async throws {

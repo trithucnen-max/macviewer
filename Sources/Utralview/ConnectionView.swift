@@ -5,8 +5,8 @@ import UltraViewerProtocol
 struct ConnectionView: View {
     @ObservedObject var model: ConnectionModel
     @ObservedObject var hosting: MacHostingModel
-    @AppStorage("MacViewer.smoothScreen") private var smoothScreen = true
-    @AppStorage("MacViewer.scrollSensitivity") private var scrollSensitivity = 1.0
+    @AppStorage("Utralview.smoothScreen") private var smoothScreen = true
+    @AppStorage("Utralview.scrollSensitivity") private var scrollSensitivity = 1.0
     @ObservedObject var remoteCapture: RemoteCaptureController
     @ObservedObject var updater: UpdateChecker
     @State private var remoteDisplayScale: RemoteDisplayScale = .fit
@@ -614,7 +614,7 @@ struct ConnectionView: View {
 
             Spacer()
 
-            Text("Utralview for Mac v2.1.1 • BasanCorp")
+            Text("Utralview for Mac v2.1.1 • itngon.com")
                 .font(.system(size: 11))
                 .foregroundStyle(MacTheme.textSecondary)
         }

@@ -22,8 +22,8 @@ final class UpdateChecker: ObservableObject {
         case failed(String)
     }
 
-    static let automaticKey = "MacViewer.checkForUpdates"
-    static let lastCheckKey = "MacViewer.lastUpdateCheck"
+    static let automaticKey = "Utralview.checkForUpdates"
+    static let lastCheckKey = "Utralview.lastUpdateCheck"
     static let latestReleaseURL = URL(string: "https://api.github.com/repos/trithucnen-max/macviewer/releases/latest")!
 
     @Published private(set) var state = State.idle
@@ -233,7 +233,7 @@ struct SelfInstaller: Sendable {
     }
 
     func install(from dmg: URL) async throws {
-        let mountPoint = FileManager.default.temporaryDirectory.appendingPathComponent("MacViewer-update-\(UUID().uuidString)")
+        let mountPoint = FileManager.default.temporaryDirectory.appendingPathComponent("Utralview-update-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: mountPoint, withIntermediateDirectories: true)
         guard try await Self.run("/usr/bin/hdiutil", ["attach", dmg.path, "-nobrowse", "-noautoopen", "-readonly",
                                                       "-mountpoint", mountPoint.path]) == 0
@@ -250,7 +250,7 @@ struct SelfInstaller: Sendable {
         guard Bundle(url: newApp)?.bundleIdentifier == Bundle(url: appURL)?.bundleIdentifier else { throw Failure.notSameApp }
 
         // Copy next to the current app (same volume), verify that copy, then swap.
-        let staged = appURL.deletingLastPathComponent().appendingPathComponent(".MacViewer-update-\(UUID().uuidString).app")
+        let staged = appURL.deletingLastPathComponent().appendingPathComponent(".Utralview-update-\(UUID().uuidString).app")
         try FileManager.default.copyItem(at: newApp, to: staged)
         do {
             guard Self.isValid(staged, team: teamIdentifier) else { throw Failure.signatureRejected }

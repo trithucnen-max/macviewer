@@ -2,12 +2,12 @@ import AppKit
 import SwiftUI
 
 @main
-struct MacViewerApp: App {
-    @StateObject private var model = ConnectionModel(adapter: NativeUltraViewerAdapter())
+struct UtralviewApp: App {
+    @StateObject private var model = ConnectionModel(adapter: NativeUtralviewAdapter())
     @StateObject private var hosting = MacHostingModel()
     @StateObject private var capture = RemoteCaptureController()
     @StateObject private var updater = UpdateChecker()
-    @NSApplicationDelegateAdaptor(MacViewerAppDelegate.self) private var applicationDelegate
+    @NSApplicationDelegateAdaptor(UtralviewAppDelegate.self) private var applicationDelegate
     @AppStorage(AppLanguage.defaultsKey) private var language = AppLanguage.system.rawValue
 
     var body: some Scene {
@@ -39,21 +39,23 @@ struct MacViewerApp: App {
         }
 
         Settings {
-            MacViewerSettings(model: model, updater: updater).appLanguage()
+            UtralviewSettings(model: model, updater: updater).appLanguage()
         }
     }
 }
 
-struct MacViewerSettings: View {
-    private static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "dev"
+struct UtralviewSettings: View {
+    private static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "2.1.1"
     @ObservedObject var model: ConnectionModel
     @ObservedObject var updater: UpdateChecker
     @AppStorage(ConnectionModel.rememberPartnersKey) private var rememberPartners = true
-    @AppStorage("MacViewer.smoothScreen") private var smoothScreen = true
-    @AppStorage("MacViewer.scrollSensitivity") private var scrollSensitivity = 1.0
+    @AppStorage("Utralview.smoothScreen") private var smoothScreen = true
+    @AppStorage("Utralview.scrollSensitivity") private var scrollSensitivity = 1.0
+    @AppStorage("Utralview.preferLANDirect") private var preferLANDirect = true
     @AppStorage(AppLanguage.defaultsKey) private var language = AppLanguage.system.rawValue
     @AppStorage(UpdateChecker.automaticKey) private var checkForUpdates = true
     @AppStorage(SessionToolsModel.shareClipboardKey) private var shareClipboard = true
+    @AppStorage(SessionToolsModel.clipboardGuardKey) private var clipboardGuard = true
 
     var body: some View {
         Form {
@@ -77,9 +79,17 @@ struct MacViewerSettings: View {
                     .disabled(model.recentPartners.isEmpty)
                 Button("Forget saved passwords", action: model.forgetSavedPasswords)
             }
-            Section("Clipboard") {
+            Section("Network & Performance") {
+                Toggle("Ưu tiên kết nối trực tiếp LAN P2P khi cùng mạng Wi-Fi", isOn: $preferLANDirect)
+                Text("Tự động bỏ qua máy chủ trung gian khi đối tác ở cùng mạng nội bộ để đạt độ trễ cực thấp.")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            Section("Clipboard & Security") {
                 Toggle("Share clipboard with the other computer", isOn: $shareClipboard)
                 Text("Text copied on either computer can be pasted on the other. Applies to new sessions.")
+                    .font(.caption).foregroundStyle(.secondary)
+                Toggle("Clipboard Guard (Bảo vệ thông tin nhạy cảm)", isOn: $clipboardGuard)
+                Text("Cảnh báo và ngăn chặn chia sẻ tự động khi sao chép mật khẩu hoặc token cá nhân.")
                     .font(.caption).foregroundStyle(.secondary)
             }
             Section("Remote screen") {
@@ -90,7 +100,9 @@ struct MacViewerSettings: View {
                 LabeledContent("Scroll speed", value: String(format: "%.2g×", scrollSensitivity))
             }
             Section("About") {
-                LabeledContent("Application", value: "Utralview for Mac \(Self.version)")
+                LabeledContent("Application", value: "Utralview for Mac v\(Self.version)")
+                LabeledContent("Developed by", value: "itngon.com")
+                LabeledContent("Website", value: "https://itngon.com")
                 Toggle("Automatically check for updates", isOn: $checkForUpdates)
                 Button(L("Check for Updates…")) { updater.check(userInitiated: true) }
                     .disabled(updater.state == .checking)
@@ -100,25 +112,25 @@ struct MacViewerSettings: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 490, height: 540)
+        .frame(width: 520, height: 600)
     }
 }
 
+typealias MacViewerApp = UtralviewApp
+typealias MacViewerSettings = UtralviewSettings
+
 @MainActor
-final class MacViewerAppDelegate: NSObject, NSApplicationDelegate {
+final class UtralviewAppDelegate: NSObject, NSApplicationDelegate {
     weak var capture: RemoteCaptureController?
     weak var model: ConnectionModel?
     weak var hosting: MacHostingModel?
     private var isFinishing = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // LaunchServices may retain a generic icon from the first local build.
-        // Give the running application its bundled icon directly as well.
         if let url = Bundle.main.url(forResource: "MacViewer", withExtension: "icns"),
            let icon = NSImage(contentsOf: url) { NSApp.applicationIconImage = icon }
     }
 
-    // Closing the only window ends MacViewer, and with it every connection.
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
@@ -128,9 +140,6 @@ final class MacViewerAppDelegate: NSObject, NSApplicationDelegate {
             if let capture, capture.isRecording || capture.isFinishingRecording || capture.isPreparingRecording {
                 await capture.stopRecording()
             }
-            // Tell the other computer the session is over before the process
-            // exits; otherwise it waits for a relay timeout. Never block quit
-            // for long on an unresponsive network.
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await self.closeConnections() }
                 group.addTask { try? await Task.sleep(for: .seconds(2)) }
@@ -147,3 +156,5 @@ final class MacViewerAppDelegate: NSObject, NSApplicationDelegate {
         await hosting?.shutdown()
     }
 }
+
+typealias MacViewerAppDelegate = UtralviewAppDelegate

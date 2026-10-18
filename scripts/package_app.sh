@@ -43,7 +43,7 @@ swift scripts/make_app_icon.swift "$icon_directory"
 iconutil -c icns "$icon_directory" -o "$app_directory/Contents/Resources/MacViewer.icns"
 for language in en vi; do
   mkdir -p "$app_directory/Contents/Resources/$language.lproj"
-  cp "Sources/MacViewer/Resources/$language.lproj/Localizable.strings" "$app_directory/Contents/Resources/$language.lproj/Localizable.strings"
+  cp "Sources/Utralview/Resources/$language.lproj/Localizable.strings" "$app_directory/Contents/Resources/$language.lproj/Localizable.strings"
 done
 cp -R "$binary_directory/MacViewer_MacViewer.bundle" "$app_directory/Contents/Resources/"
 mkdir -p "$app_directory/Contents/Resources/Licenses/Zstandard"

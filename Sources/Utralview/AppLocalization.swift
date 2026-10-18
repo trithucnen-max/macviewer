@@ -3,14 +3,18 @@ import SwiftUI
 
 enum AppLanguage: String, CaseIterable, Identifiable {
     case system, en, vi
-    static let defaultsKey = "MacViewer.language"
+    static let defaultsKey = "Utralview.language"
+    private static let legacyDefaultsKey = "MacViewer.language"
     var id: Self { self }
     var title: String {
         switch self { case .system: "System language"; case .en: "English"; case .vi: "Tiếng Việt" }
     }
     var locale: Locale { self == .system ? .current : Locale(identifier: rawValue) }
     static var current: AppLanguage {
-        AppLanguage(rawValue: UserDefaults.standard.string(forKey: defaultsKey) ?? "system") ?? .system
+        let stored = UserDefaults.standard.string(forKey: defaultsKey)
+            ?? UserDefaults.standard.string(forKey: legacyDefaultsKey)
+            ?? "system"
+        return AppLanguage(rawValue: stored) ?? .system
     }
     static func localized(_ key: String, language: AppLanguage = current) -> String {
         let identifier = language == .system

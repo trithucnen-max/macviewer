@@ -44,13 +44,17 @@ final class SessionToolsModel: ObservableObject {
 
     /// Like UltraViewer on Windows, clipboard sharing starts with each session
     /// unless turned off in Settings.
-    static let shareClipboardKey = "MacViewer.shareClipboard"
+    static let shareClipboardKey = "Utralview.shareClipboard"
+    static let clipboardGuardKey = "Utralview.clipboardGuard"
+    private static let legacyShareClipboardKey = "MacViewer.shareClipboard"
     private let defaults: UserDefaults
 
     init(pasteboard: NSPasteboard = .general, defaults: UserDefaults = .standard) {
         self.pasteboard = pasteboard
         self.defaults = defaults
-        defaults.register(defaults: [Self.shareClipboardKey: true])
+        let initialShare = defaults.object(forKey: Self.shareClipboardKey) as? Bool
+            ?? defaults.bool(forKey: Self.legacyShareClipboardKey)
+        defaults.register(defaults: [Self.shareClipboardKey: initialShare, Self.clipboardGuardKey: true])
     }
 
     func activate(sendChat: @escaping SendText, sendClipboard: @escaping SendText,
@@ -190,12 +194,24 @@ final class SessionToolsModel: ObservableObject {
         guard text.utf16.count <= 524_288 else {
             errorMessage = "Clipboard text exceeds the 1 MB sharing limit."; return
         }
+        if defaults.bool(forKey: Self.clipboardGuardKey) && isSensitiveText(text) {
+            errorMessage = "Clipboard Guard: Đã chặn chia sẻ nội dung nhạy cảm."
+            return
+        }
         latestClipboardText = text
         do { try await sendClipboard(text) }
         catch {
             guard generation == token, clipboardGeneration == revision, !Task.isCancelled else { return }
             errorMessage = "Clipboard text could not be sent."
         }
+    }
+
+    private func isSensitiveText(_ text: String) -> Bool {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.hasPrefix("-----BEGIN") && trimmed.contains("PRIVATE KEY-----") { return true }
+        if trimmed.hasPrefix("ghp_") || trimmed.hasPrefix("github_pat_") || trimmed.hasPrefix("sk-") { return true }
+        if trimmed.hasPrefix("eyJh") && trimmed.contains(".") && trimmed.count > 40 { return true }
+        return false
     }
 
     private func append(_ text: String, outgoing: Bool) {

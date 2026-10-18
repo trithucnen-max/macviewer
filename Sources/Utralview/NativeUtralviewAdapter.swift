@@ -4,7 +4,7 @@ import UltraViewerProtocol
 
 /// Main-actor UI bridge; networking and software decoding run on the session actor.
 @MainActor
-final class NativeUltraViewerAdapter: MacViewerSessionAdapter {
+final class NativeUtralviewAdapter: UtralviewSessionAdapter {
     let availability = SessionAvailability.available
     private var engine: UltraViewerRelaySession?
     private var reader: Task<Void, Never>?
@@ -25,11 +25,12 @@ final class NativeUltraViewerAdapter: MacViewerSessionAdapter {
         var configuration = UltraViewerRelaySession.Configuration(registration: profile,
             localScreenWidth: Int32(clamping: CGDisplayPixelsWide(display)),
             localScreenHeight: Int32(clamping: CGDisplayPixelsHigh(display)), displayName: "Utralview for Mac")
+        configuration.enableLANDirect = UserDefaults.standard.object(forKey: "Utralview.preferLANDirect") as? Bool ?? true
         // Explicit developer opt-in only. Screens stay in a private local folder.
-        if UserDefaults.standard.bool(forKey: "MacViewer.captureProtocolFrames"),
+        if UserDefaults.standard.bool(forKey: "Utralview.captureProtocolFrames"),
            let support = FileManager.default.urls(for: .applicationSupportDirectory,
                                                  in: .userDomainMask).first {
-            configuration.captureDirectory = support.appendingPathComponent("MacViewer/Development")
+            configuration.captureDirectory = support.appendingPathComponent("Utralview/Development")
                 .appendingPathComponent("gui-capture-\(UUID().uuidString)")
         }
         let session = UltraViewerRelaySession()
@@ -171,3 +172,5 @@ final class NativeUltraViewerAdapter: MacViewerSessionAdapter {
 
     func waitUntilClosed() async { await closing?.value }
 }
+
+typealias NativeUltraViewerAdapter = NativeUtralviewAdapter

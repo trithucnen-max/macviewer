@@ -36,7 +36,7 @@ create_bundle() {
 
   for language in en vi; do
     mkdir -p "$app_dir/Contents/Resources/$language.lproj"
-    cp "Sources/MacViewer/Resources/$language.lproj/Localizable.strings" "$app_dir/Contents/Resources/$language.lproj/Localizable.strings"
+    cp "Sources/Utralview/Resources/$language.lproj/Localizable.strings" "$app_dir/Contents/Resources/$language.lproj/Localizable.strings"
   done
 
   if [[ -d ".build/arm64-apple-macosx/release/MacViewer_MacViewer.bundle" ]]; then
@@ -79,7 +79,7 @@ PLIST
 
   echo "Signing $arch bundle with entitlements..."
   codesign --force --sign "$signing_identity" \
-    --entitlements "$project_root/Sources/MacViewer/Ultraview.entitlements" \
+    --entitlements "$project_root/Sources/Utralview/Utralview.entitlements" \
     --options runtime --timestamp "$app_dir"
   codesign --verify --deep --strict "$app_dir"
   echo "Verified $arch bundle: OK"
