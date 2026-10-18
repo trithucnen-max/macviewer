@@ -32,4 +32,14 @@ public struct UtralviewMobileApp: App {
         }
     }
 }
+#else
+@main
+public struct UtralviewMobilePlaceholderApp: App {
+    public init() {}
+    public var body: some Scene {
+        WindowGroup {
+            Text("Utralview Mobile (iOS)")
+        }
+    }
+}
 #endif

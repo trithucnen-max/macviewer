@@ -97,14 +97,21 @@ jobs:
           version="${TAG#v}"
           echo "VERSION=$version" >> "$GITHUB_ENV"
 
-      - name: Build iOS Target with SwiftPM
+      - name: Build iOS Target with SwiftPM & Package IPA
         run: |
           IPHONE_SDK=$(xcrun --sdk iphoneos --show-sdk-path)
           swift build --target UtralviewMobile -c release --triple arm64-apple-ios17.0 \
             -Xswiftc -sdk -Xswiftc "$IPHONE_SDK" \
             -Xcc -isysroot -Xcc "$IPHONE_SDK"
+          
+          mkdir -p Payload/Utralview.app
+          cp .build/arm64-apple-ios17.0/release/UtralviewMobile Payload/Utralview.app/Utralview
+          cp ios/Info.plist Payload/Utralview.app/Info.plist
+          find .build/arm64-apple-ios17.0/release -name "*.bundle" -exec cp -R {} Payload/Utralview.app/ \; 2>/dev/null || true
+          
           mkdir -p ios-artifacts
-          zip -j "ios-artifacts/Utralview-v${{ env.VERSION }}-ios-client.zip" Sources/UtralviewMobile/*.swift Package.swift
+          zip -r "ios-artifacts/Utralview-v${{ env.VERSION }}-ios.ipa" Payload
+          zip -j "ios-artifacts/Utralview-v${{ env.VERSION }}-ios-client.zip" Sources/UtralviewMobile/*.swift Package.swift ios/Info.plist
           echo "Utralview iOS v${{ env.VERSION }} for iPhone & iPad" > ios-artifacts/README-iOS.txt
           cd ios-artifacts && sha256sum * > SHA256SUMS-IOS.txt || true
 
