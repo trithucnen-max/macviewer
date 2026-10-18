@@ -4,9 +4,10 @@ import PackageDescription
 let package = Package(
     name: "MacViewer",
     defaultLocalization: "en",
-    platforms: [.macOS(.v14)],
+    platforms: [.macOS(.v14), .iOS(.v17)],
     products: [
         .library(name: "UltraViewerProtocol", targets: ["UltraViewerProtocol"]),
+        .library(name: "UtralviewMobile", targets: ["UtralviewMobile"]),
         .executable(name: "MacViewer", targets: ["MacViewer"]),
     ],
     targets: [

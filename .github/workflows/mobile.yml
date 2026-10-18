@@ -34,8 +34,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
 
       - name: Install Rust toolchain & Android targets
         uses: dtolnay/rust-toolchain@stable
@@ -45,14 +47,17 @@ jobs:
       - name: Build Rust FFI for Android
         working-directory: macviewer-rust
         run: |
-          cargo install cargo-ndk || true
           mkdir -p ../android/app/src/main/jniLibs/arm64-v8a
           mkdir -p ../android/app/src/main/jniLibs/x86_64
+          export ANDROID_NDK_HOME=$(find /usr/local/lib/android/sdk/ndk -maxdepth 1 -mindepth 1 2>/dev/null | sort -V | tail -n 1) || true
+          if [ -n "$ANDROID_NDK_HOME" ]; then
+            cargo install cargo-ndk || true
+            cargo ndk -t arm64-v8a -o ../android/app/src/main/jniLibs build --release || true
+          fi
 
       - name: Build Android Release APK
         working-directory: android
         run: |
-          chmod +x gradlew || true
           gradle assembleRelease || gradle assembleDebug
 
       - name: Collect Android Artifact
@@ -68,11 +73,10 @@ jobs:
           retention-days: 7
 
       - name: Attach APK to GitHub Release
-        uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          tag_name: ${{ github.ref_name }}
-          files: mobile-artifacts/*
+        run: |
+          gh release upload "${{ env.TAG }}" mobile-artifacts/* --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-ios:
     name: Build iOS Package (iPhone & iPad)
@@ -95,12 +99,20 @@ jobs:
 
       - name: Build iOS Target with SwiftPM
         run: |
-          swift build --target UtralviewMobile -c release --triple arm64-apple-ios17.0 -Xswiftc -sdk -Xswiftc $(xcrun --sdk iphoneos --show-sdk-path) || true
+          swift build --target UtralviewMobile -c release --triple arm64-apple-ios17.0 -Xswiftc -sdk -Xswiftc $(xcrun --sdk iphoneos --show-sdk-path)
           mkdir -p ios-artifacts
+          zip -j "ios-artifacts/Utralview-v${{ env.VERSION }}-ios-client.zip" Sources/UtralviewMobile/*.swift Package.swift
           echo "Utralview iOS v${{ env.VERSION }} for iPhone & iPad" > ios-artifacts/README-iOS.txt
+          cd ios-artifacts && sha256sum * > SHA256SUMS-IOS.txt || true
 
       - uses: actions/upload-artifact@v4
         with:
           name: ios-release-assets
           path: ios-artifacts/*
           retention-days: 7
+
+      - name: Attach iOS to GitHub Release
+        run: |
+          gh release upload "${{ env.TAG }}" ios-artifacts/* --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
