@@ -52,15 +52,11 @@ final class SessionToolsModel: ObservableObject {
     init(pasteboard: NSPasteboard = .general, defaults: UserDefaults = .standard) {
         self.pasteboard = pasteboard
         self.defaults = defaults
-        let initialShare: Bool
-        if let current = defaults.object(forKey: Self.shareClipboardKey) as? Bool {
-            initialShare = current
-        } else if let legacy = defaults.object(forKey: Self.legacyShareClipboardKey) as? Bool {
-            initialShare = legacy
-        } else {
-            initialShare = true
-        }
-        defaults.register(defaults: [Self.shareClipboardKey: initialShare, Self.clipboardGuardKey: true])
+        defaults.register(defaults: [
+            Self.shareClipboardKey: true,
+            Self.legacyShareClipboardKey: true,
+            Self.clipboardGuardKey: true
+        ])
     }
 
     private var isClipboardSharingEnabled: Bool {

@@ -20,7 +20,10 @@ struct SessionToolsModelTests {
         #expect(board.string(forType: .string) == "existing private fixture")
         #expect(sent.isEmpty)
         model.setClipboardEnabled(true)
-        for _ in 0..<100 where !model.clipboardEnabled { try? await Task.sleep(for: .milliseconds(10)) }
+        for _ in 0..<100 where !model.clipboardEnabled {
+            await Task.yield()
+            try? await Task.sleep(for: .milliseconds(5))
+        }
         #expect(model.clipboardEnabled)
         await model.pollClipboardOnce()
         #expect(sent.isEmpty)
@@ -53,7 +56,10 @@ struct SessionToolsModelTests {
         let model = SessionToolsModel(pasteboard: board, defaults: defaults)
         var sent: [String] = []
         model.activate(sendChat: { _ in }, sendClipboard: { sent.append($0) }, setSharing: { _ in })
-        for _ in 0..<100 where !model.clipboardEnabled { try? await Task.sleep(for: .milliseconds(10)) }
+        for _ in 0..<100 where !model.clipboardEnabled {
+            await Task.yield()
+            try? await Task.sleep(for: .milliseconds(5))
+        }
         #expect(model.clipboardEnabled)
         await model.pollClipboardOnce()
         #expect(sent.isEmpty)
@@ -71,10 +77,16 @@ struct SessionToolsModelTests {
         model.activate(sendChat: { _ in await withCheckedContinuation { pending = $0 } },
                        sendClipboard: { _ in }, setSharing: { _ in })
         model.draft = "old fixture"; model.sendDraft()
-        for _ in 0..<100 where pending == nil { try? await Task.sleep(for: .milliseconds(10)) }
+        for _ in 0..<100 where pending == nil {
+            await Task.yield()
+            try? await Task.sleep(for: .milliseconds(5))
+        }
         model.activate(sendChat: { _ in }, sendClipboard: { _ in }, setSharing: { _ in })
         pending?.resume()
-        for _ in 0..<10 { try? await Task.sleep(for: .milliseconds(10)) }
+        for _ in 0..<10 {
+            await Task.yield()
+            try? await Task.sleep(for: .milliseconds(5))
+        }
         #expect(model.messages.isEmpty)
         #expect(!model.isSending)
         model.deactivate()
