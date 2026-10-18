@@ -1,13 +1,13 @@
-# Hướng Dẫn Sử Dụng Utralview for Mac v2.1.1
+# Hướng Dẫn Sử Dụng Utralview for Mac v2.2.2
 ### Phát triển và bảo trợ bởi BASAN CORPORATION (BasanCorp)
 
 ---
 
 ## 1. Giới thiệu tổng quan
 
-**Utralview for Mac v2.1.1** là giải pháp phần mềm chuyên dụng cho người dùng macOS để kết nối, điều khiển hoặc chia sẻ màn hình với các máy tính đang chạy phần mềm UltraViewer trên Windows (hoặc trên máy Mac khác).
+**Utralview for Mac v2.2.2** là giải pháp phần mềm chuyên dụng cho người dùng macOS để kết nối, điều khiển hoặc chia sẻ màn hình với các máy tính đang chạy phần mềm UltraViewer trên Windows (hoặc trên máy Mac khác).
 
-Phiên bản **v2.1.1** sở hữu động cơ xử lý hình ảnh và giao thức thế hệ mới, bố cục 2 cột gọn gàng chuẩn mực, đồng thời hỗ trợ trọn vẹn cả hai thế hệ chip: **Apple Silicon (M1, M2, M3, M4)** và **Intel (x86_64)**.
+Phiên bản **v2.2.2** sở hữu động cơ xử lý hình ảnh và giao thức thế hệ mới, bố cục 2 cột gọn gàng chuẩn mực, tính năng **Smart Clipboard Guard** bảo vệ dữ liệu nhạy cảm, tăng tốc kết nối mạng nội bộ **LAN Direct**, đồng thời hỗ trợ trọn vẹn cả hai thế hệ chip: **Apple Silicon (M1, M2, M3, M4)** và **Intel (x86_64)**.
 
 ---
 
@@ -15,9 +15,9 @@ Phiên bản **v2.1.1** sở hữu động cơ xử lý hình ảnh và giao th�
 
 ### Cách 1: Tải file cài đặt DMG (Khuyên dùng)
 1. Tải phiên bản phù hợp từ trang GitHub Releases:
-   - **`Utralview-for-Mac-v2.1.1-Universal.dmg`**: Bản hợp nhất, chạy hoàn hảo trên cả chip Apple Silicon (M1/M2/M3/M4) và chip Intel.
-   - **`Utralview-for-Mac-v2.1.1-arm64.dmg`**: Dành riêng cho MacBook, Mac mini, iMac, Mac Studio dùng chip Apple Silicon.
-   - **`Utralview-for-Mac-v2.1.1-x86_64.dmg`**: Dành riêng cho các dòng máy Mac dùng vi xử lý Intel.
+   - **`Utralview-for-Mac-v2.2.2-Universal.dmg`**: Bản hợp nhất, chạy hoàn hảo trên cả chip Apple Silicon (M1/M2/M3/M4) và chip Intel.
+   - **`Utralview-for-Mac-v2.2.2-arm64.dmg`**: Dành riêng cho MacBook, Mac mini, iMac, Mac Studio dùng chip Apple Silicon.
+   - **`Utralview-for-Mac-v2.2.2-x86_64.dmg`**: Dành riêng cho các dòng máy Mac dùng vi xử lý Intel.
 2. Nhấp đúp chuột để mở file `.dmg`.
 3. Kéo biểu tượng **`Utralview for Mac.app`** và thả vào thư mục **Applications**.
 4. Mở ứng dụng từ Launchpad, Spotlight (`⌘ + Space`) hoặc thư mục Applications.
@@ -27,6 +27,10 @@ Bản phát hành chính thức đã được ký số bằng chứng chỉ `Dev
 - **Cách nhanh nhất:** Nhấp đúp vào tệp `Mo-Utralview-Lan-Dau.command` có sẵn bên trong file DMG để tự động cấp phép và mở app.
 - **Hoặc:** Vào **Cài đặt hệ thống (System Settings)** → **Quyền riêng tư & Bảo mật (Privacy & Security)** → cuộn xuống mục Bảo mật và bấm **"Vẫn mở" (Open Anyway)**.
 - **Hoặc:** Giữ phím `Control` (hoặc nhấp chuột phải) vào `Utralview for Mac` trong Applications → Chọn **Mở (Open)** → Bấm **Mở**.
+- **Hoặc lệnh Terminal:**
+  ```bash
+  xattr -cr "/Applications/Utralview for Mac.app"
+  ```
 
 ---
 
@@ -58,7 +62,7 @@ Khi bạn muốn người khác xem hoặc điều khiển máy Mac của mình,
 2. Tại giao diện chính của Utralview for Mac:
    - Nhập **ID đối tác** vào ô "ID đối tác".
    - Nhập **Mật khẩu** vào ô "Mật khẩu".
-   - *(Tùy chọn)* Đánh dấu tích vào "Ghi nhớ mật khẩu" nếu muốn lưu vào Keychain cho lần sau.
+   - *(Tùy chọn)* Đánh dấu tích vào "Ghi nhớ mật khẩu" nếu muốn lưu an toàn vào Keychain cho lần sau.
 3. Bấm nút màu xanh **Kết nối đến máy khác**.
 4. Cửa sổ màn hình từ xa sẽ xuất hiện. Bạn có thể:
    - Nhìn thấy màn hình làm việc của đối tác theo thời gian thực (hỗ trợ độ phân giải lên đến 4K).
@@ -76,6 +80,10 @@ Khi bạn muốn người khác xem hoặc điều khiển máy Mac của mình,
    - Utralview for Mac sẽ hiển thị bảng thông báo yêu cầu xác nhận.
    - Bạn có thể lựa chọn: **Chỉ cho phép xem màn hình** hoặc **Cho phép toàn quyền điều khiển chuột/bàn phím**.
 4. Bạn có toàn quyền bấm **Ngắt kết nối** bất kỳ lúc nào để chấm dứt phiên làm việc ngay lập tức.
+
+### 4.3 Tính năng an toàn: Smart Clipboard Guard
+- Khi chia sẻ bảng tạm hai chiều giữa hai máy, Clipboard Guard tự động quét nội dung text được copy.
+- Nếu phát hiện các chuỗi khoá bảo mật (`BEGIN PRIVATE KEY`, API keys `sk-`, `ghp-`, chuỗi JWT token), Utralview sẽ chặn gửi sang máy kia và phát cảnh báo trên thanh trạng thái để bảo vệ tài khoản của bạn.
 
 ---
 
@@ -110,4 +118,4 @@ Khi bạn muốn người khác xem hoặc điều khiển máy Mac của mình,
 - **Tổ chức chủ quản:** BASAN CORPORATION (BasanCorp)
 - **Kho lưu trữ mã nguồn:** `https://github.com/trithucnen-max/macviewer`
 - **Email hỗ trợ kỹ thuật:** `contact@basancorp.com` / `support@trithucnen.vn`
-- **Phiên bản tài liệu:** v2.1.1 (Cập nhật tháng 10/2026)
+- **Phiên bản tài liệu:** v2.2.2 (Cập nhật tháng 10/2026)

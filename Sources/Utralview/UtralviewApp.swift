@@ -45,7 +45,7 @@ struct UtralviewApp: App {
 }
 
 struct UtralviewSettings: View {
-    private static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "2.1.1"
+    private static let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "2.2.2"
     @ObservedObject var model: ConnectionModel
     @ObservedObject var updater: UpdateChecker
     @AppStorage(ConnectionModel.rememberPartnersKey) private var rememberPartners = true

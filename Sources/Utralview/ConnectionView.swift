@@ -614,7 +614,7 @@ struct ConnectionView: View {
 
             Spacer()
 
-            Text("Utralview for Mac v2.1.1 • itngon.com")
+            Text("Utralview for Mac v2.2.2 • itngon.com")
                 .font(.system(size: 11))
                 .foregroundStyle(MacTheme.textSecondary)
         }

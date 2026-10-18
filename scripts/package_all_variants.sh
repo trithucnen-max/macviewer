@@ -5,8 +5,8 @@ project_root="${0:A:h:h}"
 cd "$project_root"
 
 signing_identity="Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)"
-version="2.1.1"
-build_number="211"
+version="2.2.2"
+build_number="222"
 app_name="Utralview for Mac"
 
 echo "=== Building $app_name v$version for arm64 & x86_64 ==="

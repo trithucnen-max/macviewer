@@ -1,16 +1,16 @@
 # Product Requirements Document (PRD)
-## Dự án: Utralview for Mac v2.1.1 — BasanCorp Enterprise Edition
+## Dự án: Utralview for Mac v2.2.2 — BasanCorp Enterprise Edition
 
 ---
 
 | **Thuộc tính** | **Chi tiết** |
 | :--- | :--- |
-| **Tên sản phẩm** | **Utralview for Mac v2.1.1** |
+| **Tên sản phẩm** | **Utralview for Mac v2.2.2** |
 | **Đơn vị phát triển** | **BASAN CORPORATION (BasanCorp)** |
 | **Bản quyền** | © 2026 BASAN CORPORATION. All rights reserved. |
 | **Chứng chỉ ký số** | `Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)` |
 | **Mã định danh (Bundle ID)** | `com.basancorp.utralview` |
-| **Phiên bản** | `v2.1.1` (Build 211) |
+| **Phiên bản** | `v2.2.2` (Build 222) |
 | **Trạng thái** | Phát hành chính thức (Production Ready) |
 | **Kho mã nguồn** | `https://github.com/trithucnen-max/macviewer` |
 
@@ -21,11 +21,11 @@
 ### 1.1 Bối cảnh
 UltraViewer là giải pháp điều khiển máy tính từ xa phổ biến rộng rãi tại Việt Nam và khu vực, tuy nhiên phần mềm gốc chỉ hỗ trợ hệ điều hành Windows. Trước đây, người dùng máy Mac hoàn toàn bị cô lập hoặc phải chạy qua máy ảo nặng nề, không bảo đảm tính ổn định và bảo mật.
 
-**Utralview for Mac v2.1.1** do **BASAN CORPORATION** phát triển và bảo trợ là phiên bản kiến trúc thế hệ mới, tái thiết kế toàn bộ hệ thống từ tầng protocol, engine tính toán cho đến giao diện hiển thị người dùng, mang lại trải nghiệm điều khiển từ xa nguyên bản, tốc độ cao, tiêu thụ tài nguyên tối thiểu và tuân thủ các chuẩn mực bảo mật khắt khe nhất của Apple và các nền tảng hiện đại.
+**Utralview for Mac v2.2.2** do **BASAN CORPORATION** phát triển và bảo trợ là phiên bản kiến trúc thế hệ mới, tái thiết kế toàn bộ hệ thống từ tầng protocol, engine tính toán cho đến giao diện hiển thị người dùng, mang lại trải nghiệm điều khiển từ xa nguyên bản, tốc độ cao, tiêu thụ tài nguyên tối thiểu và tuân thủ các chuẩn mực bảo mật khắt khe nhất của Apple và các nền tảng hiện đại.
 
 ### 1.2 Mục tiêu cốt lõi
 1. **Bảo mật tuyệt đối (Zero Windows Execution on Mac):** Tuyệt đối không thực thi binary Windows (`.exe`/`.dll`), không sử dụng Wine. Toàn bộ logic giao thức được thiết kế và thực thi an toàn trong môi trường sandbox của macOS.
-2. **Ký số định danh doanh nghiệp (Developer ID Application):** Ứng dụng và bộ cài đặt DMG được ký số chính thức bởi `BASAN CORPORATION (JFT5TLZ3HK)` với Apple Hardened Runtime và Secure Timestamping, vượt qua kiểm định Apple Gatekeeper không cảnh báo rủi ro.
+2. **Ký số định danh doanh nghiệp (Developer ID Application):** Ứng dụng và bộ cài đặt DMG được ký số chính thức bởi `BASAN CORPORATION (JFT5TLZ3HK)` với Apple Hardened Runtime, Entitlements và Secure Timestamping, vượt qua kiểm định Apple Gatekeeper không cảnh báo rủi ro.
 3. **Đa nền tảng toàn diện:**
    - **macOS Apple Silicon (M1/M2/M3/M4)**: Tối ưu hoá tối đa cho kiến trúc ARM64 Apple Silicon.
    - **macOS Intel (x86_64)**: Hỗ trợ trọn vẹn cho các dòng Mac Intel trước đây.
@@ -33,12 +33,13 @@ UltraViewer là giải pháp điều khiển máy tính từ xa phổ biến r�
    - **Windows x86_64 & Windows ARM64 (Surface Pro / Copilot+ PC)**: Engine Rust độc lập phục vụ điều khiển và tự động hoá CLI/GUI.
    - **Linux x86_64 & aarch64**: Binary daemon và CLI siêu nhẹ cho server và máy trạm Linux.
 4. **Hệ thống thiết kế tối giản Chuẩn 3 Màu (Strict 3-Color Visual System):** Triệt tiêu hoàn toàn sự lộn xộn về màu sắc, mang lại diện mạo cơ khí hiện đại, tập trung vào năng suất và độ chính xác.
+5. **Smart Clipboard Guard:** Ngăn chặn lộ lọt các chuỗi khoá nhạy cảm (Private Key, API token, JWT) khi bật tính năng đồng bộ clipboard.
 
 ---
 
 ## 2. Kiến trúc kỹ thuật (System Architecture)
 
-### 2.1 Tầng Giao thức & Động cơ lõi (Core Engine - Rust)
+### 2.1 Tầng Giao thức & Động cơ lõi (Core Engine - Rust & Swift)
 - **Crate `ultraviewer-protocol`**:
   - **Mã hoá lệnh (Legacy Command Cipher - 3DES)**: Tương thích thuật toán 3DES cấu hình tĩnh với khóa chuyển đổi chuẩn, xử lý an toàn unicode password và block boundary.
   - **Mã hoá AES truyền thông (Legacy AES)**: Tương thích cơ chế MD5 overlap key derivation đặc thù, sinh vector khởi tạo (IV) ngẫu nhiên tươi mới cho từng frame dữ liệu.
@@ -55,6 +56,7 @@ UltraViewer là giải pháp điều khiển máy tính từ xa phổ biến r�
   - **Xem màn hình (Screen Recording)**: Hướng dẫn người dùng cấp quyền rõ ràng theo chuẩn Privacy & Security của macOS Sequoia / Sonoma.
   - **Điều khiển chuột & bàn phím (Accessibility)**: Quyền điều khiển được cách ly độc lập, người dùng có thể cấp quyền xem mà không cho phép thao tác chuột/phím.
   - **Quản lý mật khẩu an toàn (macOS Keychain)**: Mật khẩu đối tác và mật khẩu ngẫu nhiên lưu trữ mã hóa trong Keychain của máy, không lưu plain text.
+  - **Bảo vệ Bảng tạm (Clipboard Guard)**: Kiểm tra tự động các mẫu chuỗi bảo mật trước khi gửi qua mạng.
 
 ---
 
@@ -72,24 +74,25 @@ Tuân thủ nghiêm ngặt nguyên tắc thiết kế chuyên nghiệp không d�
 
 ---
 
-## 4. Ma trận hỗ trợ nền tảng & Gói cài đặt
+## 4. Ma trận hỗ trợ nền tảng & Gói cài đặt v2.2.2
 
 | Nền tảng | Kiến trúc chip | Tên gói phát hành | Định dạng | Trạng thái ký số |
 | :--- | :--- | :--- | :--- | :--- |
-| **macOS Universal** | Apple Silicon & Intel | `MacViewer-2.0.0-Universal.dmg` | DMG Drag-and-Drop | Ký số Developer ID: BASAN CORPORATION |
-| **macOS Apple Silicon** | M1/M2/M3/M4 (arm64) | `MacViewer-2.0.0-arm64.dmg` | DMG Drag-and-Drop | Ký số Developer ID: BASAN CORPORATION |
-| **macOS Intel** | Intel Core i5/i7/i9 (x86_64) | `MacViewer-2.0.0-x86_64.dmg` | DMG Drag-and-Drop | Ký số Developer ID: BASAN CORPORATION |
-| **Windows x86_64** | Intel / AMD 64-bit | `macviewer-windows-x86_64.zip` | Portable Binary / Executable | CI/CD Automated Build |
-| **Windows ARM64** | Surface Pro / Copilot+ PC | `macviewer-windows-arm64.zip` | Portable Binary / Executable | CI/CD Automated Build |
-| **Linux x86_64** | Ubuntu / Debian / RHEL | `macviewer-linux-x86_64.tar.gz` | Tarball / Systemd service | CI/CD Automated Build |
+| **macOS Universal** | Apple Silicon & Intel | `Utralview-for-Mac-v2.2.2-Universal.dmg` | DMG Drag-and-Drop | Ký số Developer ID: BASAN CORPORATION |
+| **macOS Apple Silicon** | M1/M2/M3/M4 (arm64) | `Utralview-for-Mac-v2.2.2-arm64.dmg` | DMG Drag-and-Drop | Ký số Developer ID: BASAN CORPORATION |
+| **macOS Intel** | Intel Core i5/i7/i9 (x86_64) | `Utralview-for-Mac-v2.2.2-x86_64.dmg` | DMG Drag-and-Drop | Ký số Developer ID: BASAN CORPORATION |
+| **macOS CLI** | Universal (arm64 + x86_64) | `utralview-cli-v2.2.2-macos-universal` | Mach-O Universal Binary | Ký số Developer ID: BASAN CORPORATION |
+| **Windows x86_64** | Intel / AMD 64-bit | `Utralview-v2.2.2-windows-x86_64.zip` | Portable Zip | CI/CD Automated Build |
+| **Windows ARM64** | Surface Pro / Copilot+ PC | `Utralview-v2.2.2-windows-arm64-surface.zip` | Portable Zip | CI/CD Automated Build |
+| **Linux x86_64** | Ubuntu / Debian / RHEL | `Utralview-v2.2.2-linux-x86_64.tar.gz` | Tarball Archive | CI/CD Automated Build |
 
 ---
 
-## 5. Tiêu chuẩn chất lượng & Kiểm thử (Verification & Clean Code)
+## 5. Tiêu chuẩn chất lượng & Kiểm thử (Verification & Quality Assurance)
 
-1. **Rust Core Tests:** Đạt 100% (21/21 test suites passed) bao gồm kiểm tra block padding, AES overlap, 3DES static key vectors, G.722 audio decoding, và Zstd decompression.
-2. **Swift Compilation:** Biên dịch cảnh báo 0-error với Swift 6 release profile.
-3. **Apple Gatekeeper Verification:** Lệnh `codesign --verify --deep --strict` và `spctl -a -t exec -vv` xác nhận tính hợp lệ của chữ ký BASAN CORPORATION.
+1. **Swift Test Suite:** Đạt 100% (210 tests / 10 suites passed) bao gồm kiểm thử logic điều khiển từ xa, clipboard bảo mật, session tools, xác thực Keychain, nén giải nén hình ảnh và giải mã đa kênh.
+2. **Rust Core Tests:** Đạt 100% (21/21 test suites passed) bao gồm kiểm tra block padding, AES overlap, 3DES static key vectors, G.722 audio decoding, và Zstd decompression.
+3. **Apple Gatekeeper Verification:** Lệnh `codesign --verify --deep --strict` và `spctl` xác nhận tính hợp lệ của chữ ký BASAN CORPORATION.
 4. **Không thu thập dữ liệu (No Telemetry):** Không gửi dữ liệu người dùng, vị trí địa lý hoặc telemetry về bất kỳ máy chủ bên thứ ba nào.
 
 ---
