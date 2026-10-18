@@ -44,6 +44,8 @@ Built with **Swift 6 & SwiftUI** (for macOS) alongside a high-throughput **Rust*
 | 🪟 **Windows 64-bit** | `Utralview-v2.2.2-windows-x86_64.zip` | [Download (.zip)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-windows-x86_64.zip) | For Windows 10/11 64-bit PCs & Laptops |
 | 💻 **Microsoft Surface / Copilot+ PC** | `Utralview-v2.2.2-windows-arm64-surface.zip` | [Download (.zip)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-windows-arm64-surface.zip) | Optimized for Surface Pro X & ARM64 laptops |
 | 🐧 **Linux 64-bit** | `Utralview-v2.2.2-linux-x86_64.tar.gz` | [Download (.tar.gz)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-linux-x86_64.tar.gz) | Ubuntu, Debian, Fedora, Arch Linux (CLI & Daemon) |
+| 🤖 **Android (APK)** | `Utralview-v2.2.2-android.apk` | [Download (.apk)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-android.apk) | Direct APK package for Android smartphones and tablets |
+| 📱 **iOS (iPhone & iPad)** | `Utralview-v2.2.2-ios.zip` | [Download](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-ios.zip) | Touch-optimized client for iOS 17+ (SwiftUI Touch) |
 | ⚙️ **macOS CLI (Universal)** | `utralview-cli-v2.2.2-macos-universal` | [Download](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/utralview-cli-v2.2.2-macos-universal) | Standalone command-line tool for scripting and devops |
 | 🛡️ **Checksums** | `SHA256SUMS.txt` | [View Hashes](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/SHA256SUMS.txt) | SHA256 file verification hashes |
 

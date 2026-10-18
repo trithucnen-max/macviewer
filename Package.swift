@@ -47,6 +47,8 @@ let package = Package(
                           path: "Sources/Utralview",
                           exclude: ["Utralview.entitlements"],
                           resources: [.process("Resources")]),
+        .target(name: "UtralviewMobile", dependencies: ["UltraViewerProtocol"],
+                path: "Sources/UtralviewMobile"),
         .testTarget(name: "UltraViewerProtocolTests", dependencies: ["UltraViewerProtocol"]),
         .testTarget(name: "MacViewerTests", dependencies: ["MacViewer"],
                     path: "Tests/UtralviewTests"),

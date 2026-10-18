@@ -44,6 +44,8 @@ Bản phát hành chính thức v2.2.2 — Ký số doanh nghiệp bởi **BASAN
 | 🪟 **Windows 64-bit** | `Utralview-v2.2.2-windows-x86_64.zip` | [Tải về (.zip)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-windows-x86_64.zip) | Dành cho Windows 10/11 64-bit PC & Laptop |
 | 💻 **Microsoft Surface / Copilot+ PC** | `Utralview-v2.2.2-windows-arm64-surface.zip` | [Tải về (.zip)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-windows-arm64-surface.zip) | Bản tối ưu cho Surface Pro X, Surface Laptop ARM64 |
 | 🐧 **Linux 64-bit** | `Utralview-v2.2.2-linux-x86_64.tar.gz` | [Tải về (.tar.gz)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-linux-x86_64.tar.gz) | Ubuntu, Debian, Fedora, Arch Linux (CLI & Daemon) |
+| 🤖 **Android (APK)** | `Utralview-v2.2.2-android.apk` | [Tải về (.apk)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-android.apk) | Bộ cài đặt trực tiếp cho điện thoại & máy tính bảng Android |
+| 📱 **iOS (iPhone & iPad)** | `Utralview-v2.2.2-ios.zip` | [Tải về](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-ios.zip) | Bản dành cho iPhone & iPad chạy iOS 17+ (SwiftUI Touch) |
 | ⚙️ **macOS CLI (Universal)** | `utralview-cli-v2.2.2-macos-universal` | [Tải về](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/utralview-cli-v2.2.2-macos-universal) | Command-line tool độc lập cho lập trình viên & tự động hóa |
 | 🛡️ **Bảng mã băm kiểm tra** | `SHA256SUMS.txt` | [Xem mã băm](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/SHA256SUMS.txt) | Dùng để đối soát tính toàn vẹn và bảo mật của tập tin |
 
