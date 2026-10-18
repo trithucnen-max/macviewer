@@ -63,13 +63,23 @@ final class SessionToolsModel: ObservableObject {
         defaults.register(defaults: [Self.shareClipboardKey: initialShare, Self.clipboardGuardKey: true])
     }
 
+    private var isClipboardSharingEnabled: Bool {
+        if let current = defaults.object(forKey: Self.shareClipboardKey) as? Bool {
+            return current
+        }
+        if let legacy = defaults.object(forKey: Self.legacyShareClipboardKey) as? Bool {
+            return legacy
+        }
+        return true
+    }
+
     func activate(sendChat: @escaping SendText, sendClipboard: @escaping SendText,
                   setSharing: @escaping SetSharing, sendTyping: SendTyping? = nil) {
         deactivate()
         self.sendChat = sendChat; self.sendClipboard = sendClipboard; self.setSharing = setSharing
         self.sendTyping = sendTyping
         messages = []; draft = ""; errorMessage = nil; isActive = true
-        if defaults.bool(forKey: Self.shareClipboardKey) { setClipboardEnabled(true) }
+        if isClipboardSharingEnabled { setClipboardEnabled(true) }
     }
 
     func deactivate() {
