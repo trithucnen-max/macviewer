@@ -11,9 +11,9 @@ struct MacViewerApp: App {
     @AppStorage(AppLanguage.defaultsKey) private var language = AppLanguage.system.rawValue
 
     var body: some Scene {
-        WindowGroup("MacViewer") {
+        WindowGroup("Ultraview for Mac") {
             ConnectionView(model: model, hosting: hosting, remoteCapture: capture, updater: updater)
-                .frame(minWidth: 960, minHeight: 680)
+                .frame(minWidth: 780, minHeight: 520)
                 .onAppear {
                     applicationDelegate.capture = capture
                     applicationDelegate.model = model
@@ -22,7 +22,7 @@ struct MacViewerApp: App {
                 }
                 .appLanguage()
         }
-        .defaultSize(width: 1120, height: 800)
+        .defaultSize(width: 840, height: 560)
         .commands {
             CommandGroup(replacing: .newItem) {}
             CommandGroup(after: .appInfo) {

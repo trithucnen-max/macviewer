@@ -109,7 +109,7 @@ struct ConnectionView: View {
 
     private var appHeader: some View {
         HStack(spacing: 12) {
-            // Clean Logo Icon with solid Electric Cobalt background
+            // App Icon with Electric Cobalt background
             Image(systemName: "display.2")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(.white)
@@ -117,10 +117,10 @@ struct ConnectionView: View {
                 .background(MacTheme.accent, in: RoundedRectangle(cornerRadius: MacTheme.radiusControl))
 
             VStack(alignment: .leading, spacing: 1) {
-                Text("MacViewer")
+                Text("Ultraview for Mac")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(MacTheme.textPrimary)
-                Text("Works with UltraViewer on Windows")
+                Text("Bảo mật & Tốc độ cao • Tương thích UltraViewer")
                     .font(.system(size: 11))
                     .foregroundStyle(MacTheme.textSecondary)
             }
@@ -159,7 +159,7 @@ struct ConnectionView: View {
                     Circle()
                         .fill(hosting.isRunning ? MacTheme.signal : MacTheme.textSecondary)
                         .frame(width: 6, height: 6)
-                    Text(LocalizedStringKey(hosting.isRunning ? "Ready for connections" : "Incoming access paused"))
+                    Text(LocalizedStringKey(hosting.isRunning ? "Sẵn sàng nhận kết nối" : "Đã tạm dừng truy cập"))
                         .font(.system(size: 12))
                         .foregroundStyle(MacTheme.textSecondary)
                 }
@@ -175,7 +175,7 @@ struct ConnectionView: View {
                     .foregroundStyle(MacTheme.textSecondary)
             }
             .buttonStyle(.plain)
-            .help("Settings")
+            .help("Cài đặt")
             .padding(.leading, 8)
         }
         .padding(.horizontal, 16)
@@ -184,338 +184,443 @@ struct ConnectionView: View {
     }
 
     private var dashboard: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                // Header Value Proposition
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Remote Desktop")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(MacTheme.textPrimary)
-                    Text("Fast, secure remote control between Mac and Windows computers.")
-                        .font(.system(size: 13))
-                        .foregroundStyle(MacTheme.textSecondary)
-                }
-                .padding(.top, 4)
+        VStack(spacing: 0) {
+            HStack(alignment: .top, spacing: 0) {
+                // Left Panel: Máy của bạn (Allow Remote Access)
+                hostingSidebar
+                    .frame(width: 320)
 
-                // 2-Column Balanced Cards (Hick's Law)
-                HStack(alignment: .top, spacing: 16) {
-                    partnerCard
-                    hostingCard
-                }
-                .fixedSize(horizontal: false, vertical: true)
+                Divider().overlay(MacTheme.cardBorder)
 
-                if !model.recentPartners.isEmpty {
-                    recentPartners
-                }
+                // Right Panel: Điều khiển máy từ xa (Control Remote Computer) + Gần đây
+                partnerWorkspace
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .frame(maxWidth: 880)
-            .padding(.horizontal, 24)
-            .padding(.vertical, 20)
-            .frame(maxWidth: .infinity, alignment: .top)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            Divider().overlay(MacTheme.cardBorder)
+
+            // Bottom Native Status Bar
+            statusBar
         }
-        .scrollBounceBehavior(.basedOnSize)
-        .clipped()
     }
 
-    // Card 1: Remote Control (Mac -> Windows)
-    private var partnerCard: some View {
-        utilityPanel(title: "Control Remote Computer", direction: "MAC → WINDOWS", symbol: "display") {
+    // Left Column: Native macOS Sidebar
+    private var hostingSidebar: some View {
+        ScrollView {
             VStack(alignment: .leading, spacing: 14) {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Partner ID")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(MacTheme.textPrimary)
+                // Machine Profile Header
+                HStack(spacing: 10) {
+                    Image(systemName: "laptopcomputer")
+                        .font(.system(size: 17, weight: .medium))
+                        .foregroundStyle(MacTheme.accent)
+                        .frame(width: 32, height: 32)
+                        .background(MacTheme.accentSubtle, in: Circle())
 
-                    if model.isSessionActive {
-                        Text(formattedID(model.remoteInfo?.partnerID ?? model.partnerID.filter { $0.isNumber }))
-                            .font(.system(size: 19, weight: .semibold, design: .monospaced))
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(Host.current().localizedName ?? "Máy Mac của bạn")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(MacTheme.textPrimary)
                             .lineLimit(1)
-                            .frame(maxWidth: .infinity, minHeight: 34, alignment: .leading)
-                    } else {
-                        TextField("e.g. 12 345 678", text: $model.partnerID)
-                            .font(.system(size: 14, weight: .medium, design: .monospaced))
-                            .textFieldStyle(.roundedBorder)
-                            .controlSize(.large)
-                            .focused($focusedField, equals: .partner)
-                            .onSubmit { focusedField = .password }
-                    }
-                }
-
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Partner Password")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(MacTheme.textPrimary)
-
-                    if model.isSessionActive {
-                        HStack(spacing: 6) {
-                            Image(systemName: "lock.shield")
-                                .font(.system(size: 12))
-                                .foregroundStyle(MacTheme.signal)
-                            Text("Session Authenticated")
-                                .font(.system(size: 13))
-                                .foregroundStyle(MacTheme.textSecondary)
-                        }
-                        .frame(maxWidth: .infinity, minHeight: 34, alignment: .leading)
-                    } else {
-                        SecureField("Password from remote PC", text: $model.password)
-                            .font(.system(size: 14))
-                            .textFieldStyle(.roundedBorder)
-                            .controlSize(.large)
-                            .focused($focusedField, equals: .password)
-                            .onSubmit { if model.canConnect { model.connect() } }
-                    }
-                }
-
-                if !model.isSessionActive {
-                    Toggle("Save credentials securely in Keychain", isOn: Binding(
-                        get: { model.rememberPassword }, set: { model.setRememberPassword($0) }))
-                        .toggleStyle(.checkbox)
-                        .font(.system(size: 12))
-                        .foregroundStyle(MacTheme.textSecondary)
-                }
-
-                if model.isSessionActive {
-                    HStack(spacing: 10) {
-                        Circle().fill(MacTheme.signal).frame(width: 8, height: 8)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(LocalizedStringKey(model.phase == .connected ? "Windows is connected" : "Connecting…"))
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundStyle(MacTheme.textPrimary)
-                            Text(L(model.status))
+                        HStack(spacing: 5) {
+                            Circle().fill(hosting.isRunning ? MacTheme.signal : MacTheme.textSecondary).frame(width: 6, height: 6)
+                            Text(LocalizedStringKey(hosting.isRunning ? "Sẵn sàng nhận kết nối" : "Đã tạm dừng chia sẻ"))
                                 .font(.system(size: 11))
                                 .foregroundStyle(MacTheme.textSecondary)
                         }
                     }
-                    .padding(10)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(MacTheme.surfaceSubtle, in: RoundedRectangle(cornerRadius: MacTheme.radiusControl))
+                }
+                .padding(.bottom, 2)
+
+                // Your Credentials Card
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("CHO PHÉP TRUY CẬP MÁY MAC")
+                        .font(.system(size: 10, weight: .bold))
+                        .tracking(0.6)
+                        .foregroundStyle(MacTheme.textSecondary)
+
+                    VStack(spacing: 0) {
+                        // Your Connection ID
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("ID của bạn")
+                                .font(.system(size: 11, weight: .medium))
+                                .foregroundStyle(MacTheme.textSecondary)
+
+                            HStack(spacing: 8) {
+                                if let id = hosting.identifier {
+                                    Text(formattedID(id))
+                                        .font(.system(size: 20, weight: .bold, design: .monospaced))
+                                        .foregroundStyle(MacTheme.textPrimary)
+                                        .textSelection(.enabled)
+
+                                    Spacer(minLength: 0)
+
+                                    Button {
+                                        copy(id)
+                                        copiedID = true
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { copiedID = false }
+                                    } label: {
+                                        HStack(spacing: 4) {
+                                            Image(systemName: copiedID ? "checkmark" : "doc.on.doc")
+                                            Text(copiedID ? "Đã chép" : "Sao chép")
+                                                .font(.system(size: 11, weight: .medium))
+                                        }
+                                        .font(.system(size: 11))
+                                        .foregroundStyle(copiedID ? MacTheme.signal : MacTheme.accent)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 4)
+                                        .background(MacTheme.accentSubtle, in: RoundedRectangle(cornerRadius: MacTheme.radiusControl))
+                                    }
+                                    .buttonStyle(.plain)
+                                } else {
+                                    HStack(spacing: 6) {
+                                        if hosting.phase == .registering {
+                                            ProgressView().controlSize(.small)
+                                        }
+                                        Text(LocalizedStringKey(hosting.phase == .registering ? "Đang tạo mã kết nối…" : "Bấm nút dưới để tạo ID"))
+                                            .font(.system(size: 12))
+                                            .foregroundStyle(MacTheme.textSecondary)
+                                    }
+                                    .frame(minHeight: 28)
+                                }
+                            }
+                        }
+                        .padding(12)
+
+                        Divider().overlay(MacTheme.cardBorder)
+
+                        // Your Password
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Mật khẩu")
+                                .font(.system(size: 11, weight: .medium))
+                                .foregroundStyle(MacTheme.textSecondary)
+
+                            HStack(spacing: 8) {
+                                if hosting.identifier != nil {
+                                    Text(revealPassword ? hosting.password : "••••••••")
+                                        .font(.system(size: 16, weight: .semibold, design: .monospaced))
+                                        .foregroundStyle(MacTheme.textPrimary)
+
+                                    Spacer()
+
+                                    Button { revealPassword.toggle() } label: {
+                                        Image(systemName: revealPassword ? "eye.slash" : "eye")
+                                            .font(.system(size: 12))
+                                            .foregroundStyle(MacTheme.textSecondary)
+                                    }
+                                    .buttonStyle(.plain)
+
+                                    Button {
+                                        copy(hosting.password)
+                                        copiedPassword = true
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { copiedPassword = false }
+                                    } label: {
+                                        Image(systemName: copiedPassword ? "checkmark" : "doc.on.doc")
+                                            .font(.system(size: 12))
+                                            .foregroundStyle(copiedPassword ? MacTheme.signal : MacTheme.accent)
+                                    }
+                                    .buttonStyle(.plain)
+                                } else {
+                                    Text("••••••••")
+                                        .font(.system(size: 15, design: .monospaced))
+                                        .foregroundStyle(MacTheme.textSecondary.opacity(0.5))
+                                }
+                            }
+                        }
+                        .padding(12)
+                    }
+                    .background(MacTheme.cardBackground, in: RoundedRectangle(cornerRadius: MacTheme.radiusCard))
+                    .overlay(RoundedRectangle(cornerRadius: MacTheme.radiusCard).strokeBorder(MacTheme.cardBorder))
                 }
 
-                if let error = model.errorMessage {
-                    errorLabel(error)
+                // System Permissions Card
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("QUYỀN TRUY CẬP HỆ THỐNG")
+                        .font(.system(size: 10, weight: .bold))
+                        .tracking(0.6)
+                        .foregroundStyle(MacTheme.textSecondary)
+
+                    permissionRows
                 }
 
-                Spacer(minLength: 8)
-            }
-        } actions: {
-            VStack(alignment: .leading, spacing: 8) {
-                if model.isSessionActive {
-                    HStack(spacing: 10) {
-                        Button { showSession = true } label: {
-                            Label("Open Window", systemImage: "arrow.up.right.square")
+                // Sharing Action Button
+                VStack(spacing: 6) {
+                    if hosting.phase == .sharing {
+                        HStack(spacing: 8) {
+                            SessionToolsButton(tools: hosting.tools, peerName: incomingPeerName, context: "Incoming")
+                                .buttonStyle(.bordered)
+                            Button("Kết thúc", role: .destructive, action: hosting.endViewer)
+                                .buttonStyle(.bordered)
+                                .disabled(hosting.isEndingViewer)
+                        }
+                    } else if hosting.isRunning {
+                        Button(action: hosting.stop) {
+                            Label("Tạm dừng chia sẻ", systemImage: "pause.fill")
+                                .font(.system(size: 12, weight: .medium))
+                                .frame(maxWidth: .infinity, minHeight: 30)
+                        }
+                        .buttonStyle(.bordered)
+                    } else {
+                        Button(action: hosting.start) {
+                            Label(LocalizedStringKey(hosting.phase == .failed ? "Thử chia sẻ lại" : "Bắt đầu chia sẻ máy Mac"),
+                                  systemImage: "antenna.radiowaves.left.and.right")
+                                .font(.system(size: 12, weight: .semibold))
                                 .frame(maxWidth: .infinity, minHeight: 32)
                         }
                         .buttonStyle(.borderedProminent)
                         .tint(MacTheme.accent)
+                    }
 
-                        Button("Disconnect", role: .destructive, action: model.disconnect)
-                            .buttonStyle(.bordered)
-                            .controlSize(.regular)
-                    }
-                } else {
-                    Button(action: model.connect) {
-                        Label("Connect to Partner", systemImage: "arrow.right")
-                            .font(.system(size: 13, weight: .semibold))
-                            .frame(maxWidth: .infinity, minHeight: 34)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(MacTheme.accent)
-                    .disabled(!model.canConnect)
+                    Text("Người có ID và mật khẩu này có thể yêu cầu xem hoặc điều khiển máy Mac.")
+                        .font(.system(size: 10))
+                        .foregroundStyle(MacTheme.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 4)
                 }
-
-                Text("Remote desktop control will start immediately after connection.")
-                    .font(.system(size: 11))
-                    .foregroundStyle(MacTheme.textSecondary)
-                    .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.top, 4)
             }
+            .padding(16)
         }
+        .background(MacTheme.surfaceSubtle)
     }
 
-    // Card 2: Share this Mac (Windows -> Mac)
-    private var hostingCard: some View {
-        utilityPanel(title: "Allow Remote Access", direction: "WINDOWS → MAC", symbol: "laptopcomputer") {
-            VStack(alignment: .leading, spacing: 14) {
-                if hosting.identifier != nil {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Your Connection ID")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundStyle(MacTheme.textPrimary)
-
-                        HStack(spacing: 8) {
-                            if let id = hosting.identifier {
-                                Text(formattedID(id))
-                                    .font(.system(size: 22, weight: .bold, design: .monospaced))
-                                    .foregroundStyle(MacTheme.textPrimary)
-                                    .textSelection(.enabled)
-
-                                Spacer(minLength: 0)
-
-                                Button {
-                                    copy(id)
-                                    copiedID = true
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { copiedID = false }
-                                } label: {
-                                    HStack(spacing: 4) {
-                                        Image(systemName: copiedID ? "checkmark" : "doc.on.doc")
-                                        if copiedID {
-                                            Text("Copied").font(.system(size: 11))
-                                        }
-                                    }
-                                    .font(.system(size: 12))
-                                    .foregroundStyle(copiedID ? MacTheme.signal : MacTheme.accent)
-                                }
-                                .buttonStyle(.borderless)
-                                .help("Copy connection ID")
-                            }
-                        }
-                        .frame(maxWidth: .infinity, minHeight: 34, alignment: .leading)
-                    }
-
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Your Password")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundStyle(MacTheme.textPrimary)
-
-                        HStack(spacing: 8) {
-                            Text(revealPassword ? hosting.password : "••••••••")
-                                .font(.system(size: 17, weight: .medium, design: .monospaced))
-                                .foregroundStyle(MacTheme.textPrimary)
-
-                            Spacer()
-
-                            Button { revealPassword.toggle() } label: {
-                                Image(systemName: revealPassword ? "eye.slash" : "eye")
-                                    .font(.system(size: 12))
-                                    .foregroundStyle(MacTheme.textSecondary)
-                            }
-                            .buttonStyle(.borderless)
-                            .help(revealPassword ? "Hide password" : "Show password")
-
-                            Button {
-                                copy(hosting.password)
-                                copiedPassword = true
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { copiedPassword = false }
-                            } label: {
-                                HStack(spacing: 4) {
-                                    Image(systemName: copiedPassword ? "checkmark" : "doc.on.doc")
-                                    if copiedPassword {
-                                        Text("Copied").font(.system(size: 11))
-                                    }
-                                }
-                                .font(.system(size: 12))
-                                .foregroundStyle(copiedPassword ? MacTheme.signal : MacTheme.accent)
-                            }
-                            .buttonStyle(.borderless)
-                            .help("Copy password")
-                        }
-                        .frame(maxWidth: .infinity, minHeight: 34, alignment: .leading)
-                    }
-                } else {
+    // Right Column: Partner Workspace
+    private var partnerWorkspace: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                // Control Remote Computer Card
+                VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 8) {
-                        if hosting.phase == .registering {
-                            ProgressView().controlSize(.small)
-                        }
-                        Text(LocalizedStringKey(hosting.phase == .registering ? "Registering session ID…" : "Start sharing to generate an ID."))
-                            .font(.system(size: 13))
+                        Image(systemName: "display")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(MacTheme.accent)
+                        Text("ĐIỀU KHIỂN MÁY TÍNH TỪ XA")
+                            .font(.system(size: 10, weight: .bold))
+                            .tracking(0.6)
                             .foregroundStyle(MacTheme.textSecondary)
                     }
-                    .frame(maxWidth: .infinity, minHeight: 40, alignment: .leading)
+
+                    VStack(alignment: .leading, spacing: 12) {
+                        // Partner ID Row
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("ID đối tác (Partner ID)")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(MacTheme.textPrimary)
+
+                            if model.isSessionActive {
+                                Text(formattedID(model.remoteInfo?.partnerID ?? model.partnerID.filter { $0.isNumber }))
+                                    .font(.system(size: 18, weight: .semibold, design: .monospaced))
+                                    .lineLimit(1)
+                                    .frame(maxWidth: .infinity, minHeight: 30, alignment: .leading)
+                            } else {
+                                TextField("Ví dụ: 12 345 678", text: $model.partnerID)
+                                    .font(.system(size: 14, weight: .medium, design: .monospaced))
+                                    .textFieldStyle(.roundedBorder)
+                                    .controlSize(.regular)
+                                    .focused($focusedField, equals: .partner)
+                                    .onSubmit { focusedField = .password }
+                            }
+                        }
+
+                        // Partner Password Row
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Mật khẩu đối tác")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(MacTheme.textPrimary)
+
+                            if model.isSessionActive {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "lock.shield.fill")
+                                        .font(.system(size: 12))
+                                        .foregroundStyle(MacTheme.signal)
+                                    Text("Phiên làm việc đã xác thực")
+                                        .font(.system(size: 12))
+                                        .foregroundStyle(MacTheme.textSecondary)
+                                }
+                                .frame(maxWidth: .infinity, minHeight: 30, alignment: .leading)
+                            } else {
+                                SecureField("Nhập mật khẩu máy từ xa", text: $model.password)
+                                    .font(.system(size: 13))
+                                    .textFieldStyle(.roundedBorder)
+                                    .controlSize(.regular)
+                                    .focused($focusedField, equals: .password)
+                                    .onSubmit { if model.canConnect { model.connect() } }
+                            }
+                        }
+
+                        if !model.isSessionActive {
+                            Toggle("Lưu mật khẩu an toàn vào Keychain của macOS", isOn: Binding(
+                                get: { model.rememberPassword }, set: { model.setRememberPassword($0) }))
+                                .toggleStyle(.checkbox)
+                                .font(.system(size: 11))
+                                .foregroundStyle(MacTheme.textSecondary)
+                        }
+
+                        if let error = model.errorMessage {
+                            errorLabel(error)
+                        }
+
+                        // Action Button
+                        if model.isSessionActive {
+                            HStack(spacing: 10) {
+                                Button { showSession = true } label: {
+                                    Label("Mở cửa sổ màn hình", systemImage: "arrow.up.right.square")
+                                        .font(.system(size: 12, weight: .semibold))
+                                        .frame(maxWidth: .infinity, minHeight: 32)
+                                }
+                                .buttonStyle(.borderedProminent)
+                                .tint(MacTheme.accent)
+
+                                Button("Ngắt kết nối", role: .destructive, action: model.disconnect)
+                                    .buttonStyle(.bordered)
+                                    .controlSize(.regular)
+                            }
+                        } else {
+                            Button(action: model.connect) {
+                                Label("Kết nối đến đối tác", systemImage: "arrow.right")
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .frame(maxWidth: .infinity, minHeight: 34)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(MacTheme.accent)
+                            .disabled(!model.canConnect)
+                        }
+                    }
+                    .padding(14)
+                    .background(MacTheme.cardBackground, in: RoundedRectangle(cornerRadius: MacTheme.radiusCard))
+                    .overlay(RoundedRectangle(cornerRadius: MacTheme.radiusCard).strokeBorder(MacTheme.cardBorder))
                 }
 
-                // Permissions Section
-                permissionRows
+                // Section 2: Recent Connections
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Image(systemName: "clock.arrow.circlepath")
+                            .font(.system(size: 12))
+                            .foregroundStyle(MacTheme.accent)
+                        Text("THIẾT BỊ ĐÃ KẾT NỐI GẦN ĐÂY")
+                            .font(.system(size: 10, weight: .bold))
+                            .tracking(0.6)
+                            .foregroundStyle(MacTheme.textSecondary)
+                        Spacer()
+                        if !model.recentPartners.isEmpty {
+                            Button("Xoá lịch sử", action: model.clearRecentPartners)
+                                .buttonStyle(.plain)
+                                .font(.system(size: 11))
+                                .foregroundStyle(MacTheme.textSecondary)
+                        }
+                    }
 
-                if let error = hosting.errorMessage {
-                    errorLabel(error)
+                    if !model.recentPartners.isEmpty {
+                        recentPartnersList
+                    } else {
+                        recentEmptyState
+                    }
                 }
-
-                Spacer(minLength: 0)
             }
-        } actions: {
-            VStack(alignment: .leading, spacing: 8) {
-                if hosting.phase == .sharing {
-                    HStack(spacing: 10) {
-                        SessionToolsButton(tools: hosting.tools, peerName: incomingPeerName, context: "Incoming")
-                            .buttonStyle(.bordered)
-                        Button("End Session", role: .destructive, action: hosting.endViewer)
-                            .buttonStyle(.bordered)
-                            .disabled(hosting.isEndingViewer)
-                        Spacer(minLength: 0)
-                    }
-                } else if hosting.isRunning {
-                    Button(action: hosting.stop) {
-                        Label("Pause Access", systemImage: "pause.fill")
-                            .frame(maxWidth: .infinity, minHeight: 34)
-                    }
-                    .buttonStyle(.bordered)
-                } else {
-                    Button(action: hosting.start) {
-                        Label(LocalizedStringKey(hosting.phase == .failed ? "Try Sharing Again" : "Start Sharing This Mac"),
-                              systemImage: "antenna.radiowaves.left.and.right")
-                            .font(.system(size: 13, weight: .semibold))
-                            .frame(maxWidth: .infinity, minHeight: 34)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(MacTheme.accent)
-                }
-
-                Text("Anyone with this ID and password can request access to your screen.")
-                    .font(.system(size: 11))
-                    .foregroundStyle(MacTheme.textSecondary)
-                    .frame(maxWidth: .infinity, alignment: .center)
-            }
+            .padding(16)
         }
     }
 
-    // Modern 3-Color Card Panel Component
-    private func utilityPanel<Content: View, Actions: View>(
-        title: String,
-        direction: String,
-        symbol: String,
-        @ViewBuilder content: () -> Content,
-        @ViewBuilder actions: () -> Actions
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // Card Header
-            HStack(spacing: 10) {
-                Image(systemName: symbol)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(MacTheme.accent)
-                    .frame(width: 32, height: 32)
-                    .background(MacTheme.accentSubtle, in: RoundedRectangle(cornerRadius: MacTheme.radiusControl))
+    // Recent Empty State
+    private var recentEmptyState: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "desktopcomputer")
+                .font(.system(size: 22))
+                .foregroundStyle(MacTheme.textSecondary.opacity(0.4))
+                .frame(width: 36, height: 36)
+                .background(MacTheme.surfaceSubtle, in: Circle())
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(direction)
-                        .font(.system(size: 10, weight: .bold))
-                        .tracking(0.5)
-                        .foregroundStyle(MacTheme.textSecondary)
-                    Text(LocalizedStringKey(title))
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(MacTheme.textPrimary)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Chưa có thiết bị lưu gần đây")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(MacTheme.textPrimary)
+                Text("Các máy tính sau khi kết nối sẽ tự động lưu lại tại đây để bạn truy cập nhanh lần sau.")
+                    .font(.system(size: 11))
+                    .foregroundStyle(MacTheme.textSecondary)
+            }
+            Spacer()
+        }
+        .padding(12)
+        .background(MacTheme.cardBackground, in: RoundedRectangle(cornerRadius: MacTheme.radiusCard))
+        .overlay(RoundedRectangle(cornerRadius: MacTheme.radiusCard).strokeBorder(MacTheme.cardBorder))
+    }
+
+    // Recent Partners List
+    private var recentPartnersList: some View {
+        VStack(spacing: 0) {
+            ForEach(model.recentPartners, id: \.self) { id in
+                Button {
+                    model.selectRecent(id)
+                    focusedField = .password
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: "pc")
+                            .font(.system(size: 13))
+                            .foregroundStyle(MacTheme.accent)
+                            .frame(width: 26, height: 26)
+                            .background(MacTheme.accentSubtle, in: RoundedRectangle(cornerRadius: MacTheme.radiusBadge))
+
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text(formattedID(id))
+                                .font(.system(size: 13, weight: .medium, design: .monospaced))
+                                .foregroundStyle(MacTheme.textPrimary)
+                            Text("Windows Remote PC")
+                                .font(.system(size: 10))
+                                .foregroundStyle(MacTheme.textSecondary)
+                        }
+                        Spacer()
+                        Text("Kết nối")
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundStyle(MacTheme.accent)
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 9))
+                            .foregroundStyle(MacTheme.textSecondary)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .disabled(model.isSessionActive)
+
+                if id != model.recentPartners.last {
+                    Divider().overlay(MacTheme.cardBorder).padding(.leading, 46)
                 }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 14)
-
-            Divider().overlay(MacTheme.cardBorder)
-
-            // Card Body
-            content()
-                .padding(16)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-
-            Divider().overlay(MacTheme.cardBorder)
-
-            // Card Action Area
-            actions()
-                .padding(14)
-                .frame(maxWidth: .infinity, minHeight: 76, alignment: .topLeading)
-                .background(MacTheme.surfaceSubtle)
         }
-        .frame(maxWidth: .infinity, minHeight: 410, maxHeight: .infinity, alignment: .topLeading)
         .background(MacTheme.cardBackground, in: RoundedRectangle(cornerRadius: MacTheme.radiusCard))
         .overlay(RoundedRectangle(cornerRadius: MacTheme.radiusCard).strokeBorder(MacTheme.cardBorder))
         .clipShape(RoundedRectangle(cornerRadius: MacTheme.radiusCard))
+    }
+
+    // Bottom Status Bar
+    private var statusBar: some View {
+        HStack(spacing: 16) {
+            HStack(spacing: 5) {
+                Circle().fill(MacTheme.signal).frame(width: 6, height: 6)
+                Text("Máy chủ UltraViewer: Trực tuyến")
+                    .font(.system(size: 11))
+                    .foregroundStyle(MacTheme.textSecondary)
+            }
+
+            HStack(spacing: 4) {
+                Image(systemName: "lock.shield.fill")
+                    .font(.system(size: 11))
+                    .foregroundStyle(MacTheme.signal)
+                Text("Mã hoá AES-128 & 3DES")
+                    .font(.system(size: 11))
+                    .foregroundStyle(MacTheme.textSecondary)
+            }
+
+            Spacer()
+
+            Text("Ultraview for Mac v2.0 • BasanCorp")
+                .font(.system(size: 11))
+                .foregroundStyle(MacTheme.textSecondary)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 6)
+        .background(MacTheme.surfaceSubtle)
     }
 
     private var incomingControlBinding: Binding<Bool> {
@@ -530,24 +635,24 @@ struct ConnectionView: View {
         hosting.isUpdatingControl || hosting.isEndingViewer || (!hosting.canControl && !hosting.allowsControl)
     }
 
-    // Permission Rows with Sage Emerald
+    // Permission Rows
     private var permissionRows: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 6) {
             if hosting.canControl {
                 HStack(spacing: 8) {
                     Image(systemName: "checkmark.shield.fill")
-                        .font(.system(size: 16))
+                        .font(.system(size: 14))
                         .foregroundStyle(MacTheme.signal)
                     VStack(alignment: .leading, spacing: 1) {
-                        Text("System Permissions Ready")
-                            .font(.system(size: 12, weight: .medium))
+                        Text("Quyền hệ thống đã đầy đủ")
+                            .font(.system(size: 11, weight: .medium))
                             .foregroundStyle(MacTheme.textPrimary)
-                        Text("Screen recording and control are active.")
-                            .font(.system(size: 11))
+                        Text("Đã cấp quyền ghi màn hình và điều khiển.")
+                            .font(.system(size: 10))
                             .foregroundStyle(MacTheme.textSecondary)
                     }
                     Spacer()
-                    Button("Manage") {
+                    Button("Cài đặt") {
                         MacPermissionsSetupWindowController.shared.show(hosting: hosting, initialPermission: .screenRecording)
                     }
                     .buttonStyle(.borderless)
@@ -556,11 +661,11 @@ struct ConnectionView: View {
                 }
             } else {
                 HStack {
-                    Text("Required Permissions")
-                        .font(.system(size: 12, weight: .medium))
+                    Text("Yêu cầu quyền truy cập")
+                        .font(.system(size: 11, weight: .medium))
                         .foregroundStyle(MacTheme.textPrimary)
                     Spacer()
-                    Button("Set Up…") {
+                    Button("Thiết lập…") {
                         MacPermissionsSetupWindowController.shared.show(hosting: hosting,
                             initialPermission: hosting.permissions.screenRecording ? .accessibility : .screenRecording)
                     }
@@ -569,88 +674,27 @@ struct ConnectionView: View {
                     .foregroundStyle(MacTheme.accent)
                 }
 
-                permissionSummary("Screen Recording", allowed: hosting.permissions.screenRecording)
-                permissionSummary("Accessibility", allowed: hosting.permissions.accessibility)
+                permissionSummary("Ghi màn hình", allowed: hosting.permissions.screenRecording)
+                permissionSummary("Trợ năng (Chuột/Phím)", allowed: hosting.permissions.accessibility)
             }
         }
         .padding(10)
-        .background(MacTheme.surfaceSubtle, in: RoundedRectangle(cornerRadius: MacTheme.radiusControl))
+        .background(MacTheme.cardBackground, in: RoundedRectangle(cornerRadius: MacTheme.radiusControl))
         .overlay(RoundedRectangle(cornerRadius: MacTheme.radiusControl).strokeBorder(MacTheme.cardBorder))
     }
 
     private func permissionSummary(_ title: String, allowed: Bool) -> some View {
         HStack(spacing: 6) {
             Image(systemName: allowed ? "checkmark.circle.fill" : "circle")
-                .font(.system(size: 12))
-                .foregroundStyle(allowed ? MacTheme.signal : MacTheme.textSecondary)
-            Text(LocalizedStringKey(title))
-                .font(.system(size: 12))
-                .foregroundStyle(MacTheme.textPrimary)
-            Spacer()
-            Text(LocalizedStringKey(allowed ? "Granted" : "Required"))
                 .font(.system(size: 11))
                 .foregroundStyle(allowed ? MacTheme.signal : MacTheme.textSecondary)
-        }
-    }
-
-    // Recent Partners History
-    private var recentPartners: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .firstTextBaseline) {
-                Text("Recent Connections")
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(MacTheme.textPrimary)
-                Spacer()
-                Button("Clear History", action: model.clearRecentPartners)
-                    .buttonStyle(.borderless)
-                    .font(.system(size: 11))
-                    .foregroundStyle(MacTheme.textSecondary)
-            }
-
-            VStack(spacing: 0) {
-                ForEach(model.recentPartners, id: \.self) { id in
-                    Button {
-                        model.selectRecent(id)
-                        focusedField = .password
-                    } label: {
-                        HStack(spacing: 12) {
-                            Image(systemName: "pc")
-                                .font(.system(size: 14))
-                                .foregroundStyle(MacTheme.accent)
-                                .frame(width: 30, height: 30)
-                                .background(MacTheme.accentSubtle, in: RoundedRectangle(cornerRadius: MacTheme.radiusBadge))
-
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(formattedID(id))
-                                    .font(.system(size: 14, weight: .medium, design: .monospaced))
-                                    .foregroundStyle(MacTheme.textPrimary)
-                                Text("Windows Remote PC")
-                                    .font(.system(size: 11))
-                                    .foregroundStyle(MacTheme.textSecondary)
-                            }
-                            Spacer()
-                            Text("Connect")
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundStyle(MacTheme.accent)
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 10))
-                                .foregroundStyle(MacTheme.textSecondary)
-                        }
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 10)
-                        .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .disabled(model.isSessionActive)
-
-                    if id != model.recentPartners.last {
-                        Divider().overlay(MacTheme.cardBorder).padding(.leading, 56)
-                    }
-                }
-            }
-            .background(MacTheme.cardBackground, in: RoundedRectangle(cornerRadius: MacTheme.radiusCard))
-            .overlay(RoundedRectangle(cornerRadius: MacTheme.radiusCard).strokeBorder(MacTheme.cardBorder))
-            .clipShape(RoundedRectangle(cornerRadius: MacTheme.radiusCard))
+            Text(LocalizedStringKey(title))
+                .font(.system(size: 11))
+                .foregroundStyle(MacTheme.textPrimary)
+            Spacer()
+            Text(LocalizedStringKey(allowed ? "Đã cấp" : "Cần cấp"))
+                .font(.system(size: 10, weight: .medium))
+                .foregroundStyle(allowed ? MacTheme.signal : MacTheme.textSecondary)
         }
     }
 
