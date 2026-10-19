@@ -446,11 +446,10 @@ public actor UltraViewerRelaySession {
     private func beginDirectLoginIfPossible(token: UUID) {
         guard token == generation, phase == .login || phase == .active,
               peerInfo != nil, directTransport != nil, let id = directState.beginLogin() else { return }
-        let previouslyAccepted = diagnostics.peerAccepted
         directLoginTask = Task { [weak self] in
             guard let self else { return }
             do {
-                try await self.login(controlMode: previouslyAccepted ? -1 : 0,
+                try await self.login(controlMode: -1,
                     clearControlMode: false, token: token, source: .direct(id))
                 await self.directLoginWasSent(id, token: token)
             } catch { await self.directCandidateEnded(id, token: token) }
@@ -518,7 +517,7 @@ public actor UltraViewerRelaySession {
             if wasLogin, relayReady {
                 do {
                     if phase == .login { armDeadline(token) }
-                    try await login(controlMode: diagnostics.peerAccepted ? -1 : 0,
+                    try await login(controlMode: -1,
                         clearControlMode: false, token: token, source: .relay)
                 } catch { if token == generation { await relayEnded(error, token: token) } }
             }
@@ -565,9 +564,9 @@ public actor UltraViewerRelaySession {
             relayFailed = false
             diagnostics.peerTransportOpened = true
             if directState.selected == nil, directState.loginCandidate == nil {
-                try emit(.status("Waiting for Windows to accept the session…"))
+                try emit(.status("Connecting to the Windows desktop…"))
                 if phase != .active { armDeadline(token) }
-                try await login(controlMode: 0, clearControlMode: false, token: token, source: .relay)
+                try await login(controlMode: -1, clearControlMode: false, token: token, source: .relay)
             }
             for try await frame in stream {
                 try Task.checkCancellation()

@@ -4,14 +4,14 @@ import SwiftUI
 import UIKit
 
 public struct MobileConnectView: View {
-    public let onConnect: (String, String) -> Void
-
+    @ObservedObject public var sessionManager: MobileSessionManager
+    @Binding public var activePartnerId: String
     @State private var partnerId = ""
     @State private var password = ""
-    @State private var isConnecting = false
 
-    public init(onConnect: @escaping (String, String) -> Void) {
-        self.onConnect = onConnect
+    public init(sessionManager: MobileSessionManager, activePartnerId: Binding<String>) {
+        self.sessionManager = sessionManager
+        self._activePartnerId = activePartnerId
     }
 
     public var body: some View {
@@ -23,15 +23,22 @@ public struct MobileConnectView: View {
                 VStack(spacing: 24) {
                     Spacer()
 
-                    VStack(spacing: 6) {
+                    // Logo & Header
+                    VStack(spacing: 8) {
+                        Image(systemName: "display.2")
+                            .font(.system(size: 48))
+                            .foregroundStyle(Color(red: 0.15, green: 0.39, blue: 0.92))
+
                         Text("Utralview")
                             .font(.system(size: 32, weight: .bold))
                             .foregroundStyle(Color(red: 0.94, green: 0.96, blue: 0.99))
+
                         Text("Điều khiển máy tính từ xa • BasanCorp")
                             .font(.system(size: 14))
                             .foregroundStyle(Color(red: 0.55, green: 0.58, blue: 0.62))
                     }
 
+                    // Card Form
                     VStack(alignment: .leading, spacing: 16) {
                         Text("KẾT NỐI ĐẾN ĐỐI TÁC")
                             .font(.system(size: 11, weight: .bold))
@@ -52,12 +59,35 @@ public struct MobileConnectView: View {
                                 .foregroundStyle(.white)
                         }
 
+                        if case let .failed(error) = sessionManager.state {
+                            HStack(spacing: 6) {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .foregroundStyle(.red)
+                                Text(error)
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(.red)
+                            }
+                            .padding(.top, 4)
+                        }
+
+                        if case let .connecting(msg) = sessionManager.state {
+                            HStack(spacing: 8) {
+                                ProgressView()
+                                    .tint(Color(red: 0.15, green: 0.39, blue: 0.92))
+                                Text(msg)
+                                    .font(.system(size: 13))
+                                    .foregroundStyle(.white.opacity(0.8))
+                            }
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(.vertical, 4)
+                        }
+
                         Button(action: {
-                            isConnecting = true
-                            onConnect(partnerId, password)
+                            activePartnerId = partnerId
+                            sessionManager.connect(partnerId: partnerId, password: password)
                         }) {
                             HStack {
-                                if isConnecting {
+                                if case .connecting = sessionManager.state {
                                     ProgressView()
                                         .tint(.white)
                                 } else {
@@ -87,6 +117,11 @@ public struct MobileConnectView: View {
                 }
             }
         }
+    }
+
+    private var isConnecting: Bool {
+        if case .connecting = sessionManager.state { return true }
+        return false
     }
 }
 #endif
