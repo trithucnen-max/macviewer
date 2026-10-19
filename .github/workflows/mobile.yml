@@ -105,18 +105,17 @@ jobs:
             -Xcc -isysroot -Xcc "$IPHONE_SDK"
           
           mkdir -p Payload/Utralview.app
-          # Link all compiled arm64 objects into the iOS executable
-          O_FILES=$(find .build/arm64-apple-ios17.0/release -name "*.o" | grep -v "MacViewer" | grep -v "test")
-          xcrun --sdk iphoneos swiftc -target arm64-apple-ios17.0 -sdk "$IPHONE_SDK" \
-            $O_FILES -o Payload/Utralview.app/Utralview || true
+          BIN=$(find .build -type f -name "UtralviewMobile" | grep -v "\.dSYM" | grep -v "\.build" | head -n 1)
+          if [ -n "$BIN" ]; then
+            echo "Found binary at: $BIN"
+            cp "$BIN" Payload/Utralview.app/Utralview
+          fi
           
           cp ios/Info.plist Payload/Utralview.app/Info.plist
-          find .build/arm64-apple-ios17.0/release -name "*.bundle" -exec cp -R {} Payload/Utralview.app/ \; 2>/dev/null || true
+          find .build -name "*.bundle" -exec cp -R {} Payload/Utralview.app/ \; 2>/dev/null || true
           
           mkdir -p ios-artifacts
-          if [ -f Payload/Utralview.app/Utralview ]; then
-            zip -r "ios-artifacts/Utralview-v${{ env.VERSION }}-ios.ipa" Payload
-          fi
+          zip -r "ios-artifacts/Utralview-v${{ env.VERSION }}-ios.ipa" Payload
           zip -j "ios-artifacts/Utralview-v${{ env.VERSION }}-ios-client.zip" Sources/UtralviewMobile/*.swift Package.swift ios/Info.plist
           echo "Utralview iOS v${{ env.VERSION }} for iPhone & iPad" > ios-artifacts/README-iOS.txt
           cd ios-artifacts && sha256sum * > SHA256SUMS-IOS.txt || true
