@@ -49,6 +49,19 @@ Bản phát hành chính thức v2.3.3 — Ký số doanh nghiệp bởi **BASAN
 | ⚙️ **macOS CLI (Universal)** | `utralview-cli-v2.3.3-macos-universal` | [Tải về](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/utralview-cli-v2.3.3-macos-universal) | Command-line tool độc lập cho lập trình viên & tự động hóa |
 | 🛡️ **Bảng mã băm kiểm tra** | `SHA256SUMS.txt` | [Xem mã băm](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/SHA256SUMS.txt) | Dùng để đối soát tính toàn vẹn và bảo mật của tập tin |
 
+### Bảng mã băm SHA-256 chính thức (Release v2.3.3 Checksums)
+```text
+10b76a76bad5ee0481ea926ee91f985e5e57642c1e7076f377d670e3dd515dd8  Utralview-for-Mac-v2.3.3-Universal.dmg
+6379c9a1052c353b68fdb22183d91da9c034950a408a1e3a3ba18b27be0aa107  Utralview-for-Mac-v2.3.3-arm64.dmg
+2bbc99556210e02568b5943db912975fbe4df853f24f012c551f780d25699a6d  Utralview-for-Mac-v2.3.3-x86_64.dmg
+6a22029e91dff078ee07e3c8e3164fcfbe72b60faebf242cc3d5a50ea4e0bd30  Utralview-v2.3.3-windows-x86_64.zip
+14264e0fefd63be32aaf3129e864b60d029de39a2c8185e4a64935117edac9de  Utralview-v2.3.3-windows-arm64-surface.zip
+6865f943c5ea31dec6acc3047d427f7e54e80c969a2e571cdb597d8955b2f2a2  Utralview-v2.3.3-linux-x86_64.tar.gz
+ccc56aacdfa9f66aa13cbfb878caf655a894f2f2d86ed7c233682b511b1c45a0  Utralview-v2.3.3-ios.ipa
+e5b5ce60bf0740e098a7130db7b54b106685f467283dd73789f66ee01ee9fb6e  Utralview-v2.3.3-android.apk
+7ea3f0368581ee08c6fddda3313f52b40dec5eb7e68ea26c02d639446fe1908b  utralview-cli-v2.3.3-macos-universal
+```
+
 ---
 
 ## 🛠️ Hướng dẫn cài đặt & Khắc phục cảnh báo mở trên macOS
@@ -78,14 +91,20 @@ Khi tải ứng dụng từ trình duyệt Web (Chrome, Safari), macOS sẽ tự
 
 ---
 
-## 🌟 Tính năng nổi bật trên bản v2.2.2
+## 🌟 Tính năng nổi bật trên bản v2.3.3
 
-### 1. Đa nền tảng toàn diện (Cross-Platform)
+### 1. Nâng cấp cốt lõi & Khắc phục quan trọng trên v2.3.3
+- **Bỏ popup bắt xác thực trên Windows:** Loại bỏ hoàn toàn thông báo bắt đối tác phải bấm "Chấp thuận" trên Windows. Kết nối điều khiển tức thì bằng mật khẩu đối tác (`controlMode: -1`).
+- **Nâng cấp iOS iPhone & iPad:** Render khung hình trực tiếp bằng CGImage siêu nét, hỗ trợ đầy đủ cử chỉ chuột cảm ứng, click trái, click phải, cuộn trang và bàn phím ảo.
+- **Ký số Developer ID chính thức:** Toàn bộ bộ cài DMG và ứng dụng macOS được ký số chính thức bởi `BASAN CORPORATION (JFT5TLZ3HK)`.
+
+### 2. Đa nền tảng toàn diện (Cross-Platform)
 - **macOS Universal (M1/M2/M3/M4 + Intel)**: Gói cài đặt tự động tương thích tối đa với mọi máy Mac chạy macOS Sonoma (14.0) trở lên.
 - **Windows x86_64 & Windows ARM64 (Surface / Copilot+ PC)**: Engine Rust siêu nhẹ hỗ trợ điều khiển trên các dòng máy tính bảng Microsoft Surface Pro X và laptop ARM64 thế hệ mới.
 - **Linux x86_64**: Daemon và CLI dành cho quản trị viên máy chủ và kỹ sư hệ thống.
+- **iOS (iPhone & iPad)** & **Android (APK)**: Bộ cài đặt di động hoàn chỉnh.
 
-### 2. Giao diện 2 cột Native & Hệ màu 3 sắc thái
+### 3. Giao diện 2 cột Native & Hệ màu 3 sắc thái
 - Bố cục 2 cột chuẩn mực gồm cột bên quản lý chia sẻ ID/Password và không gian làm việc kết nối đối tác.
 - Hệ màu 3 sắc thái tối giản (Slate `#0D1117`, Cobalt Blue `#2563EB`, Emerald Green `#10B981`), loại bỏ hoàn toàn sự rối mắt, tối ưu tập trung cao độ.
 
@@ -109,7 +128,8 @@ Khi tải ứng dụng từ trình duyệt Web (Chrome, Safari), macOS sẽ tự
 ```
 MacViewer/
 ├── Sources/
-│   ├── Utralview/              Giao diện người dùng SwiftUI v2.2.2 (Native macOS Layout)
+│   ├── Utralview/              Giao diện người dùng SwiftUI v2.3.3 (Native macOS Layout)
+│   ├── UtralviewMobile/        Giao diện & Động cơ điều khiển iOS (iPhone/iPad Touch)
 │   └── UltraViewerProtocol/    Tầng giao thức kết nối, nén hình ảnh và âm thanh
 ├── macviewer-rust/             Động cơ giao thức Rust đa nền tảng (Win, Linux, Surface, Mac)
 │   ├── crates/
@@ -117,7 +137,7 @@ MacViewer/
 │   │   ├── ultraviewer-ffi/        C-ABI dylib và static archive
 │   │   └── ultraviewer-cli/        Công cụ CLI độc lập
 │   └── bindings/swift/             Swift C-FFI Bridge
-├── PRD.md                      Tài liệu yêu cầu sản phẩm chi tiết v2.2.2
+├── PRD.md                      Tài liệu yêu cầu sản phẩm chi tiết v2.3.3
 ├── HUONG_DAN_SU_DUNG.md        Hướng dẫn sử dụng đầy đủ
 ├── DESIGN.md                   Đặc tả hệ thống thiết kế
 └── scripts/                    Script tự động đóng gói Universal và ký số BasanCorp
