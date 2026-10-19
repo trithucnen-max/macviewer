@@ -1,16 +1,16 @@
 # Product Requirements Document (PRD)
-## Dự án: Utralview for Mac v2.2.2 — BasanCorp Enterprise Edition
+## Dự án: Utralview for Mac v2.3.3 — BasanCorp Enterprise Edition
 
 ---
 
 | **Thuộc tính** | **Chi tiết** |
 | :--- | :--- |
-| **Tên sản phẩm** | **Utralview for Mac v2.2.2** |
+| **Tên sản phẩm** | **Utralview for Mac v2.3.3** |
 | **Đơn vị phát triển** | **BASAN CORPORATION (BasanCorp)** |
 | **Bản quyền** | © 2026 BASAN CORPORATION. All rights reserved. |
 | **Chứng chỉ ký số** | `Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)` |
 | **Mã định danh (Bundle ID)** | `com.basancorp.utralview` |
-| **Phiên bản** | `v2.2.2` (Build 222) |
+| **Phiên bản** | `v2.3.3` (Build 233) |
 | **Trạng thái** | Phát hành chính thức (Production Ready) |
 | **Kho mã nguồn** | `https://github.com/trithucnen-max/macviewer` |
 

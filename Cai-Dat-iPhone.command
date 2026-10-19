@@ -10,14 +10,14 @@ cd "$DIR"
 
 echo "======================================================================"
 echo "📱 CHƯƠNG TRÌNH HỖ TRỢ CÀI ĐẶT UTRALVIEW LÊN IPHONE (iOS)"
-echo "   BasanCorp Enterprise Edition v2.2.2"
+echo "   BasanCorp Enterprise Edition v2.3.3"
 echo "======================================================================"
 echo ""
 
-IPA_URL="https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-ios.ipa"
-IPA_DEST="$HOME/Downloads/Utralview-v2.2.2-ios.ipa"
+IPA_URL="https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-v2.3.3-ios.ipa"
+IPA_DEST="$HOME/Downloads/Utralview-v2.3.3-ios.ipa"
 
-echo "👉 Đang tải tệp cài đặt Utralview-v2.2.2-ios.ipa về thư mục Downloads..."
+echo "👉 Đang tải tệp cài đặt Utralview-v2.3.3-ios.ipa về thư mục Downloads..."
 curl -fsSL -o "$IPA_DEST" "$IPA_URL" || true
 
 if [ -f "$IPA_DEST" ]; then

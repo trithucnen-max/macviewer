@@ -110,7 +110,7 @@ public struct MobileConnectView: View {
 
                     Spacer()
 
-                    Text("Utralview for iPhone v2.2.2 • itngon.com")
+                    Text("Utralview for iPhone v2.3.3 • itngon.com")
                         .font(.system(size: 12))
                         .foregroundStyle(Color(red: 0.55, green: 0.58, blue: 0.62))
                         .padding(.bottom, 12)

@@ -2,20 +2,20 @@
 
 <img src="docs/images/app-icon.png" width="128" alt="Biểu tượng Utralview for Mac">
 
-# Utralview for Mac v2.2.2
+# Utralview for Mac v2.3.3
 ### BasanCorp Enterprise Edition
 
 **Dùng UltraViewer ngay trên máy Mac: điều khiển máy tính từ xa tốc độ cao, bảo mật tuyệt đối, hỗ trợ hoàn hảo Apple Silicon (M1/M2/M3/M4) và Intel.**
 
 **Tiếng Việt** · [English](README.en.md) · [Tài liệu PRD](PRD.md) · [Hướng dẫn sử dụng](HUONG_DAN_SU_DUNG.md)
 
-### [Tải về Utralview for Mac v2.2.2 cho macOS (GitHub Releases)](https://github.com/trithucnen-max/macviewer/releases/tag/v2.2.2)
+### [Tải về Utralview for Mac v2.3.3 cho macOS (GitHub Releases)](https://github.com/trithucnen-max/macviewer/releases/tag/v2.3.3)
 
-Bản phát hành chính thức v2.2.2 — Ký số doanh nghiệp bởi **BASAN CORPORATION**
+Bản phát hành chính thức v2.3.3 — Ký số doanh nghiệp bởi **BASAN CORPORATION**
 
-[![Release](https://img.shields.io/github/v/release/trithucnen-max/macviewer?sort=semver)](https://github.com/trithucnen-max/macviewer/releases/tag/v2.2.2)
+[![Release](https://img.shields.io/github/v/release/trithucnen-max/macviewer?sort=semver)](https://github.com/trithucnen-max/macviewer/releases/tag/v2.3.3)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-macOS%2014%2B%20%7C%20Windows%20%7C%20Linux%20%7C%20Surface-lightgrey)
+[![Platform](https://img.shields.io/badge/platform-macOS%2014%2B%20%7C%20Windows%20%7C%20Linux%20%7C%20iOS%20%7C%20Android-lightgrey)
 ![Architecture](https://img.shields.io/badge/architecture-Universal%20(arm64%20%2B%20x86__64)-green)
 ![Security](https://img.shields.io/badge/signed-BASAN%20CORPORATION-success)
 
@@ -25,40 +25,29 @@ Bản phát hành chính thức v2.2.2 — Ký số doanh nghiệp bởi **BASAN
 
 ## 🚀 Giới thiệu Utralview for Mac
 
-[UltraViewer](https://ultraviewer.net/vi/) là ứng dụng điều khiển máy tính phổ biến trên Windows. **Utralview for Mac v2.2.2** do **BASAN CORPORATION** phát triển là giải pháp native hiện đại cho hệ sinh thái macOS và đa nền tảng, giúp kết nối tới các máy tính chạy UltraViewer (hoặc Utralview) với hiệu năng vượt trội, độ trễ cực thấp và mức tiêu thụ tài nguyên tối thiểu.
+[UltraViewer](https://ultraviewer.net/vi/) là ứng dụng điều khiển máy tính phổ biến trên Windows. **Utralview for Mac v2.3.3** do **BASAN CORPORATION** phát triển là giải pháp native hiện đại cho hệ sinh thái macOS và đa nền tảng, giúp kết nối tới các máy tính chạy UltraViewer (hoặc Utralview) với hiệu năng vượt trội, độ trễ cực thấp và mức tiêu thụ tài nguyên tối thiểu.
 
-Ứng dụng viết hoàn toàn bằng **Swift 6 & SwiftUI** (cho macOS) kết hợp động cơ giao thức lõi viết bằng **Rust**, không chạy bất kỳ file `.exe`/`.dll` nào của Windows và không phụ thuộc Wine.
+Ứng dụng viết hoàn toàn bằng **Swift 6 & SwiftUI** (cho macOS và iOS) kết hợp động cơ giao thức lõi viết bằng **Rust**, không chạy bất kỳ file `.exe`/`.dll` nào của Windows và không phụ thuộc Wine.
 
 > [!NOTE]
 > Toàn bộ bản phát hành DMG chính thức đã được ký số bằng chứng chỉ `Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)` với Apple Hardened Runtime, Entitlements và Timestamping theo tiêu chuẩn kiểm định của Apple Gatekeeper.
 
 ---
 
-## 📦 Danh sách link tải bộ cài đặt v2.2.2 cho các nền tảng
+## 📦 Danh sách link tải bộ cài đặt v2.3.3 cho các nền tảng
 
 | Nền tảng / Thiết bị | Tên tệp phát hành | Link tải trực tiếp | Mô tả & Kiến trúc |
 | :--- | :--- | :---: | :--- |
-| 🍏 **macOS Universal** (Khuyên dùng) | `Utralview-for-Mac-v2.2.2-Universal.dmg` | [Tải về (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-for-Mac-v2.2.2-Universal.dmg) | Tối ưu cho cả chip Apple Silicon (M1/M2/M3/M4) & Intel |
-| 🍏 **macOS Apple Silicon** | `Utralview-for-Mac-v2.2.2-arm64.dmg` | [Tải về (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-for-Mac-v2.2.2-arm64.dmg) | Bản riêng siêu nhẹ cho MacBook/Mac Mini chip M1-M4 |
-| 🍏 **macOS Intel** | `Utralview-for-Mac-v2.2.2-x86_64.dmg` | [Tải về (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-for-Mac-v2.2.2-x86_64.dmg) | Bản riêng cho các dòng Mac sử dụng CPU Intel (x86_64) |
-| 🪟 **Windows 64-bit** | `Utralview-v2.2.2-windows-x86_64.zip` | [Tải về (.zip)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-windows-x86_64.zip) | Dành cho Windows 10/11 64-bit PC & Laptop |
-| 💻 **Microsoft Surface / Copilot+ PC** | `Utralview-v2.2.2-windows-arm64-surface.zip` | [Tải về (.zip)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-windows-arm64-surface.zip) | Bản tối ưu cho Surface Pro X, Surface Laptop ARM64 |
-| 🐧 **Linux 64-bit** | `Utralview-v2.2.2-linux-x86_64.tar.gz` | [Tải về (.tar.gz)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-linux-x86_64.tar.gz) | Ubuntu, Debian, Fedora, Arch Linux (CLI & Daemon) |
-| 🤖 **Android (APK)** | `Utralview-v2.2.2-android.apk` | [Tải về (.apk)](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-android.apk) | Bộ cài đặt trực tiếp cho điện thoại & máy tính bảng Android |
-| 📱 **iOS (iPhone & iPad)** | `Utralview-v2.2.2-ios.zip` | [Tải về](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/Utralview-v2.2.2-ios.zip) | Bản dành cho iPhone & iPad chạy iOS 17+ (SwiftUI Touch) |
-| ⚙️ **macOS CLI (Universal)** | `utralview-cli-v2.2.2-macos-universal` | [Tải về](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/utralview-cli-v2.2.2-macos-universal) | Command-line tool độc lập cho lập trình viên & tự động hóa |
-| 🛡️ **Bảng mã băm kiểm tra** | `SHA256SUMS.txt` | [Xem mã băm](https://github.com/trithucnen-max/macviewer/releases/download/v2.2.2/SHA256SUMS.txt) | Dùng để đối soát tính toàn vẹn và bảo mật của tập tin |
-
-### Bảng mã băm SHA-256 (Release Checksums)
-```text
-69fe873a0729cec37018b343c0660a30d08891aa040e533d7addd68e15146a2b  Utralview-for-Mac-v2.2.2-Universal.dmg
-2055bb52344fa5e1116cb89285b1d06091458a2b24f00a5fd74698d100f447f6  Utralview-for-Mac-v2.2.2-arm64.dmg
-43dcddf286eda7b61b7b407d24e711543132a38a23cde7f41ccf4cf1a1deaa6a  Utralview-for-Mac-v2.2.2-x86_64.dmg
-e76d87e5b013f1f852d47db4fbcae95f3b09c8813830c4e2f91fd1220b911865  Utralview-v2.2.2-windows-arm64-surface.zip
-bc2d52adeb844896335d660a957ff53d2ff580674c18bd7cd824e062953166ea  Utralview-v2.2.2-windows-x86_64.zip
-15bbc085277ff0527e81a571ec4bce701da5ef25cf08bd8a7c4f923a07cb2e7a  Utralview-v2.2.2-linux-x86_64.tar.gz
-4489319054d09fd08569a3e419e79db8164752965829a3c6b59a174fa62994ba  utralview-cli-v2.2.2-macos-universal
-```
+| 🍏 **macOS Universal** (Khuyên dùng) | `Utralview-for-Mac-v2.3.3-Universal.dmg` | [Tải về (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-for-Mac-v2.3.3-Universal.dmg) | Tối ưu cho cả chip Apple Silicon (M1/M2/M3/M4) & Intel |
+| 🍏 **macOS Apple Silicon** | `Utralview-for-Mac-v2.3.3-arm64.dmg` | [Tải về (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-for-Mac-v2.3.3-arm64.dmg) | Bản riêng siêu nhẹ cho MacBook/Mac Mini chip M1-M4 |
+| 🍏 **macOS Intel** | `Utralview-for-Mac-v2.3.3-x86_64.dmg` | [Tải về (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-for-Mac-v2.3.3-x86_64.dmg) | Bản riêng cho các dòng Mac sử dụng CPU Intel (x86_64) |
+| 🪟 **Windows 64-bit** | `Utralview-v2.3.3-windows-x86_64.zip` | [Tải về (.zip)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-v2.3.3-windows-x86_64.zip) | Dành cho Windows 10/11 64-bit PC & Laptop |
+| 💻 **Microsoft Surface / Copilot+ PC** | `Utralview-v2.3.3-windows-arm64-surface.zip` | [Tải về (.zip)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-v2.3.3-windows-arm64-surface.zip) | Bản tối ưu cho Surface Pro X, Surface Laptop ARM64 |
+| 🐧 **Linux 64-bit** | `Utralview-v2.3.3-linux-x86_64.tar.gz` | [Tải về (.tar.gz)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-v2.3.3-linux-x86_64.tar.gz) | Ubuntu, Debian, Fedora, Arch Linux (CLI & Daemon) |
+| 📱 **iOS (iPhone & iPad)** | `Utralview-v2.3.3-ios.ipa` | [Tải về (.ipa)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-v2.3.3-ios.ipa) | Bản cài đặt IPA dành cho iPhone & iPad iOS 17+ (SwiftUI Touch & Live Display) |
+| 🤖 **Android (APK)** | `Utralview-v2.3.3-android.apk` | [Tải về (.apk)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-v2.3.3-android.apk) | Bộ cài đặt trực tiếp cho điện thoại & máy tính bảng Android |
+| ⚙️ **macOS CLI (Universal)** | `utralview-cli-v2.3.3-macos-universal` | [Tải về](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/utralview-cli-v2.3.3-macos-universal) | Command-line tool độc lập cho lập trình viên & tự động hóa |
+| 🛡️ **Bảng mã băm kiểm tra** | `SHA256SUMS.txt` | [Xem mã băm](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/SHA256SUMS.txt) | Dùng để đối soát tính toàn vẹn và bảo mật của tập tin |
 
 ---
 

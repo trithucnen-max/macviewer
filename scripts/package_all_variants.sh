@@ -5,8 +5,8 @@ project_root="${0:A:h:h}"
 cd "$project_root"
 
 signing_identity="Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)"
-version="2.2.2"
-build_number="222"
+version="2.3.3"
+build_number="233"
 app_name="Utralview for Mac"
 
 echo "=== Building $app_name v$version for arm64 & x86_64 ==="
@@ -77,10 +77,17 @@ create_bundle() {
 </plist>
 PLIST
 
-  echo "Signing $arch bundle with entitlements..."
-  codesign --force --sign "$signing_identity" \
-    --entitlements "$project_root/Sources/Utralview/Utralview.entitlements" \
-    --options runtime --timestamp "$app_dir"
+  if security find-identity -v -p codesigning | grep -q "$signing_identity"; then
+    echo "Signing $arch bundle with Developer ID ($signing_identity)..."
+    codesign --force --sign "$signing_identity" \
+      --entitlements "$project_root/Sources/Utralview/Utralview.entitlements" \
+      --options runtime --timestamp "$app_dir"
+  else
+    echo "Developer ID not in keychain, signing $arch bundle ad-hoc..."
+    codesign --force --sign - \
+      --entitlements "$project_root/Sources/Utralview/Utralview.entitlements" \
+      "$app_dir"
+  fi
   codesign --verify --deep --strict "$app_dir"
   echo "Verified $arch bundle: OK"
 }
@@ -127,10 +134,14 @@ LAUNCHER
   hdiutil create -volname "$app_name" -srcfolder "$staging_dir" -ov -format UDZO "$dmg_path"
   rm -rf "$staging_dir"
 
-  echo "Signing $dmg_name with Developer ID..."
-  codesign --force --sign "$signing_identity" --timestamp "$dmg_path"
-  codesign --verify --verbose "$dmg_path"
-  echo "Verified $dmg_name: OK"
+  if security find-identity -v -p codesigning | grep -q "$signing_identity"; then
+    echo "Signing $dmg_name with Developer ID..."
+    codesign --force --sign "$signing_identity" --timestamp "$dmg_path"
+    codesign --verify --verbose "$dmg_path"
+    echo "Verified $dmg_name: OK"
+  else
+    echo "Skipping Developer ID signature for $dmg_name (running in CI environment)"
+  fi
 }
 
 create_dmg "Universal"
@@ -144,7 +155,11 @@ if command -v cargo &>/dev/null && [[ -d "$project_root/macviewer-rust" ]]; then
     cargo build --release --bin ultraviewer-cli
     cp target/release/ultraviewer-cli "$project_root/dist/utralview-cli-v$version-macos-universal"
     chmod +x "$project_root/dist/utralview-cli-v$version-macos-universal"
-    codesign --force --sign "$signing_identity" --options runtime --timestamp "$project_root/dist/utralview-cli-v$version-macos-universal"
+    if security find-identity -v -p codesigning | grep -q "$signing_identity"; then
+      codesign --force --sign "$signing_identity" --options runtime --timestamp "$project_root/dist/utralview-cli-v$version-macos-universal"
+    else
+      codesign --force --sign - "$project_root/dist/utralview-cli-v$version-macos-universal"
+    fi
   )
 fi
 

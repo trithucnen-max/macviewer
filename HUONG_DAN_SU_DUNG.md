@@ -1,13 +1,13 @@
-# Hướng Dẫn Sử Dụng Utralview for Mac v2.2.2
+# Hướng Dẫn Sử Dụng Utralview for Mac v2.3.3
 ### Phát triển và bảo trợ bởi BASAN CORPORATION (BasanCorp)
 
 ---
 
 ## 1. Giới thiệu tổng quan
 
-**Utralview for Mac v2.2.2** là giải pháp phần mềm chuyên dụng cho người dùng macOS để kết nối, điều khiển hoặc chia sẻ màn hình với các máy tính đang chạy phần mềm UltraViewer trên Windows (hoặc trên máy Mac khác).
+**Utralview for Mac v2.3.3** là giải pháp phần mềm chuyên dụng cho người dùng macOS để kết nối, điều khiển hoặc chia sẻ màn hình với các máy tính đang chạy phần mềm UltraViewer trên Windows (hoặc trên máy Mac khác).
 
-Phiên bản **v2.2.2** sở hữu động cơ xử lý hình ảnh và giao thức thế hệ mới, bố cục 2 cột gọn gàng chuẩn mực, tính năng **Smart Clipboard Guard** bảo vệ dữ liệu nhạy cảm, tăng tốc kết nối mạng nội bộ **LAN Direct**, đồng thời hỗ trợ trọn vẹn cả hai thế hệ chip: **Apple Silicon (M1, M2, M3, M4)** và **Intel (x86_64)**.
+Phiên bản **v2.3.3** sở hữu động cơ xử lý hình ảnh và giao thức thế hệ mới, hỗ trợ kết nối trực tiếp không cần xác thực chấp thuận trên máy tính Windows đối tác, tính năng **Smart Clipboard Guard** bảo vệ dữ liệu nhạy cảm, tăng tốc kết nối mạng nội bộ **LAN Direct**, đồng thời hỗ trợ trọn vẹn cả hai thế hệ chip: **Apple Silicon (M1, M2, M3, M4)** và **Intel (x86_64)**.
 
 ---
 
@@ -15,9 +15,9 @@ Phiên bản **v2.2.2** sở hữu động cơ xử lý hình ảnh và giao th�
 
 ### Cách 1: Tải file cài đặt DMG (Khuyên dùng)
 1. Tải phiên bản phù hợp từ trang GitHub Releases:
-   - **`Utralview-for-Mac-v2.2.2-Universal.dmg`**: Bản hợp nhất, chạy hoàn hảo trên cả chip Apple Silicon (M1/M2/M3/M4) và chip Intel.
-   - **`Utralview-for-Mac-v2.2.2-arm64.dmg`**: Dành riêng cho MacBook, Mac mini, iMac, Mac Studio dùng chip Apple Silicon.
-   - **`Utralview-for-Mac-v2.2.2-x86_64.dmg`**: Dành riêng cho các dòng máy Mac dùng vi xử lý Intel.
+   - **`Utralview-for-Mac-v2.3.3-Universal.dmg`**: Bản hợp nhất, chạy hoàn hảo trên cả chip Apple Silicon (M1/M2/M3/M4) và chip Intel.
+   - **`Utralview-for-Mac-v2.3.3-arm64.dmg`**: Dành riêng cho MacBook, Mac mini, iMac, Mac Studio dùng chip Apple Silicon.
+   - **`Utralview-for-Mac-v2.3.3-x86_64.dmg`**: Dành riêng cho các dòng máy Mac dùng vi xử lý Intel.
 2. Nhấp đúp chuột để mở file `.dmg`.
 3. Kéo biểu tượng **`Utralview for Mac.app`** và thả vào thư mục **Applications**.
 4. Mở ứng dụng từ Launchpad, Spotlight (`⌘ + Space`) hoặc thư mục Applications.
