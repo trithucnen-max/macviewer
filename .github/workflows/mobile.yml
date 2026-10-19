@@ -100,19 +100,20 @@ jobs:
       - name: Build iOS Target with SwiftPM & Package IPA
         run: |
           IPHONE_SDK=$(xcrun --sdk iphoneos --show-sdk-path)
-          swift build --target UtralviewMobile -c release --triple arm64-apple-ios17.0 \
+          swift build --product UtralviewMobile -c release --triple arm64-apple-ios17.0 \
             -Xswiftc -sdk -Xswiftc "$IPHONE_SDK" \
             -Xcc -isysroot -Xcc "$IPHONE_SDK"
           
+          BIN_DIR=$(swift build --product UtralviewMobile -c release --triple arm64-apple-ios17.0 --show-bin-path)
+          echo "BIN_DIR is $BIN_DIR"
+          ls -la "$BIN_DIR"
+          
           mkdir -p Payload/Utralview.app
-          BIN=$(find .build -type f -name "UtralviewMobile" | grep -v "\.dSYM" | grep -v "\.build" | head -n 1)
-          if [ -n "$BIN" ]; then
-            echo "Found binary at: $BIN"
-            cp "$BIN" Payload/Utralview.app/Utralview
-          fi
+          cp "$BIN_DIR/UtralviewMobile" Payload/Utralview.app/Utralview
+          chmod +x Payload/Utralview.app/Utralview
           
           cp ios/Info.plist Payload/Utralview.app/Info.plist
-          find .build -name "*.bundle" -exec cp -R {} Payload/Utralview.app/ \; 2>/dev/null || true
+          find "$BIN_DIR" -name "*.bundle" -exec cp -R {} Payload/Utralview.app/ \; 2>/dev/null || true
           
           mkdir -p ios-artifacts
           zip -r "ios-artifacts/Utralview-v${{ env.VERSION }}-ios.ipa" Payload
