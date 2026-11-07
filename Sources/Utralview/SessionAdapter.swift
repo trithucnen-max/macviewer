@@ -114,21 +114,3 @@ enum NativeSessionError: LocalizedError {
     }
 }
 
-/// Intentionally makes no network connection. Replace at the application composition
-/// root only when a compatible, verified session engine has been implemented.
-@MainActor
-final class UnavailableUltraViewerAdapter: MacViewerSessionAdapter {
-    let availability: SessionAvailability = .unavailable(
-        "This build cannot connect to UltraViewer yet. Partner authentication and remote-screen streaming are not available."
-    )
-
-    func connect(partnerID: String, password: String) async throws -> AsyncThrowingStream<RemoteSessionEvent, Error> {
-        throw NativeSessionError.unavailable(availability.explanation ?? "The connection engine is unavailable.")
-    }
-
-    func send(_ input: RemoteInput) async throws {
-        throw NativeSessionError.unavailable("There is no connected remote session.")
-    }
-
-    func disconnect() {}
-}

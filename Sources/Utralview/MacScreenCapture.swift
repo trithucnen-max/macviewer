@@ -143,7 +143,11 @@ final class MacScreenCapture {
         }
         guard CGPreflightScreenCaptureAccess() else { throw MacScreenCaptureError.screenRecordingRequired }
         guard image.width == target.width, image.height == target.height else { throw MacScreenCaptureError.invalidFrame }
-        let pixels = try MacScreenPixels.rgb555BottomUp(image: image)
+        let pixels = try await Task.detached(priority: .userInitiated) {
+            try MacScreenPixels.rgb555BottomUp(image: image)
+        }.value
+        try Task.checkCancellation()
+        guard revision == token else { throw CancellationError() }
         geometry = MacCaptureGeometry(displayID: key.id, width: target.width, height: target.height,
                                       displayBounds: key.bounds)
         return HostedScreenFrame(width: target.width, height: target.height, rgb555BottomUp: pixels)

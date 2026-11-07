@@ -29,6 +29,20 @@ import Testing
     #expect(release.pageURL.absoluteString.hasSuffix("/releases/tag/v0.3.2"))
 }
 
+@Test func updateReleaseParsingPrefersUniversalDMGWhenMultipleExist() throws {
+    let json = """
+    {"tag_name": "v2.3.3", "html_url": "https://github.com/trithucnen-max/macviewer/releases/tag/v2.3.3",
+     "draft": false, "prerelease": false,
+     "assets": [
+       {"name": "Utralview-for-Mac-v2.3.3-arm64.dmg", "browser_download_url": "https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-for-Mac-v2.3.3-arm64.dmg"},
+       {"name": "Utralview-for-Mac-v2.3.3-Universal.dmg", "browser_download_url": "https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-for-Mac-v2.3.3-Universal.dmg"}
+     ]}
+    """
+    let release = try UpdateChecker.parseRelease(Data(json.utf8))
+    #expect(release.version == "2.3.3")
+    #expect(release.dmgURL?.lastPathComponent == "Utralview-for-Mac-v2.3.3-Universal.dmg")
+}
+
 @Test func updateReleaseParsingRejectsPrereleasesAndForeignDownloadHosts() {
     let prerelease = """
     {"tag_name": "v0.4.0-beta", "html_url": "https://github.com/DeanOpen/MacViewer/releases/tag/v0.4.0-beta",

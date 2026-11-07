@@ -173,4 +173,3 @@ final class NativeUtralviewAdapter: UtralviewSessionAdapter {
     func waitUntilClosed() async { await closing?.value }
 }
 
-typealias NativeUltraViewerAdapter = NativeUtralviewAdapter

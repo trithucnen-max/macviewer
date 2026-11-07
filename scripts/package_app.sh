@@ -10,33 +10,35 @@ if [[ "$configuration" != "release" && "$configuration" != "debug" ]]; then
   exit 2
 fi
 
-# Pin the chosen local identity so a later update cannot silently switch back
-# to an ad-hoc signature and invalidate the user's privacy grants.
 signing_identity="${MACVIEWER_SIGNING_IDENTITY:-}"
 identity_file="$project_root/dist/.macviewer-signing-identity"
 if [[ -z "$signing_identity" && -f "$identity_file" ]]; then
   signing_identity="$(cat "$identity_file")"
 fi
 if [[ -z "$signing_identity" ]]; then
-  development_identities=("${(@f)$(security find-identity -v -p codesigning 2>/dev/null | awk '/"Apple Development:/{print $2}')}" )
-  if (( ${#development_identities[@]} == 1 )) && [[ "${development_identities[1]}" =~ '^[A-Fa-f0-9]{40}$' ]]; then
-    signing_identity="${development_identities[1]}"
+  if security find-identity -v -p codesigning 2>/dev/null | grep -q "Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)"; then
+    signing_identity="Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)"
   else
-    signing_identity="-"
+    development_identities=("${(@f)$(security find-identity -v -p codesigning 2>/dev/null | awk '/"Apple Development:/{print $2}')}" )
+    if (( ${#development_identities[@]} == 1 )) && [[ "${development_identities[1]}" =~ '^[A-Fa-f0-9]{40}$' ]]; then
+      signing_identity="${development_identities[1]}"
+    else
+      signing_identity="-"
+    fi
   fi
 fi
 
-# CI sets these; local builds keep the current development values.
-app_version="${MACVIEWER_VERSION:-2.0.0}"
-build_number="${MACVIEWER_BUILD_NUMBER:-1}"
+app_name="Utralview for Mac"
+app_version="${MACVIEWER_VERSION:-2.3.3}"
+build_number="${MACVIEWER_BUILD_NUMBER:-233}"
 build_flags=(--configuration "$configuration")
-if [[ "${MACVIEWER_UNIVERSAL:-0}" == "1" ]]; then
+if [[ "${MACVIEWER_UNIVERSAL:-1}" == "1" ]]; then
   build_flags+=(--arch arm64 --arch x86_64)
 fi
 
 swift build "${build_flags[@]}" --product MacViewer
 binary_directory="$(swift build "${build_flags[@]}" --show-bin-path)"
-app_directory="$project_root/dist/MacViewer.app"
+app_directory="$project_root/dist/$app_name.app"
 mkdir -p "$app_directory/Contents/MacOS" "$app_directory/Contents/Resources"
 icon_directory="$project_root/.build/MacViewer.iconset"
 swift scripts/make_app_icon.swift "$icon_directory"
@@ -45,27 +47,31 @@ for language in en vi; do
   mkdir -p "$app_directory/Contents/Resources/$language.lproj"
   cp "Sources/Utralview/Resources/$language.lproj/Localizable.strings" "$app_directory/Contents/Resources/$language.lproj/Localizable.strings"
 done
-cp -R "$binary_directory/MacViewer_MacViewer.bundle" "$app_directory/Contents/Resources/"
+for bundle_name in MacViewer_MacViewer.bundle MacViewer_UltraViewerProtocol.bundle; do
+  if [[ -d "$binary_directory/$bundle_name" ]]; then
+    rm -rf "$app_directory/Contents/Resources/$bundle_name"
+    cp -R "$binary_directory/$bundle_name" "$app_directory/Contents/Resources/"
+  fi
+done
 mkdir -p "$app_directory/Contents/Resources/Licenses/Zstandard"
 cp ThirdParty/zstd/LICENSE "$app_directory/Contents/Resources/Licenses/Zstandard/LICENSE"
 cp ThirdParty/zstd/COPYING "$app_directory/Contents/Resources/Licenses/Zstandard/COPYING"
 mkdir -p "$app_directory/Contents/Resources/Licenses/G722"
 cp ThirdParty/g722/LICENSE "$app_directory/Contents/Resources/Licenses/G722/LICENSE"
 cp ThirdParty/g722/WEBRTC_LICENSE "$app_directory/Contents/Resources/Licenses/G722/WEBRTC_LICENSE"
-# Replace the executable atomically so an already-running development app keeps
-# its original mapped inode while a newly launched process gets the new build.
-cp "$binary_directory/MacViewer" "$app_directory/Contents/MacOS/MacViewer.new"
-mv -f "$app_directory/Contents/MacOS/MacViewer.new" "$app_directory/Contents/MacOS/MacViewer"
+cp "$binary_directory/MacViewer" "$app_directory/Contents/MacOS/Utralview.new"
+mv -f "$app_directory/Contents/MacOS/Utralview.new" "$app_directory/Contents/MacOS/Utralview"
+chmod +x "$app_directory/Contents/MacOS/Utralview"
 cp Sources/UltraViewerProtocol/Resources/8bit.dat "$app_directory/Contents/Resources/8bit.dat"
 cat > "$app_directory/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <key>CFBundleExecutable</key><string>MacViewer</string>
-  <key>CFBundleIdentifier</key><string>com.basancorp.macviewer</string>
-  <key>CFBundleName</key><string>MacViewer</string>
-  <key>CFBundleDisplayName</key><string>MacViewer</string>
+  <key>CFBundleExecutable</key><string>Utralview</string>
+  <key>CFBundleIdentifier</key><string>com.basancorp.utralview</string>
+  <key>CFBundleName</key><string>$app_name</string>
+  <key>CFBundleDisplayName</key><string>$app_name</string>
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>CFBundleIconFile</key><string>MacViewer.icns</string>
   <key>CFBundleDevelopmentRegion</key><string>en</string>
@@ -79,11 +85,12 @@ cat > "$app_directory/Contents/Info.plist" <<PLIST
 </dict>
 </plist>
 PLIST
-codesign --force --sign "$signing_identity" --options runtime --timestamp "$app_directory"
+if [[ "$signing_identity" == "-" ]]; then
+  codesign --force --sign - --entitlements "$project_root/Sources/Utralview/Utralview.entitlements" "$app_directory"
+else
+  codesign --force --sign "$signing_identity" --entitlements "$project_root/Sources/Utralview/Utralview.entitlements" --options runtime --timestamp "$app_directory"
+fi
 codesign --verify --deep --strict "$app_directory"
-# Updating nested resources leaves the bundle directory's timestamp unchanged.
-# Finder/Launch Services can then retain the first build's generic app icon.
-# Refresh the package metadata after signing; timestamps are not signed content.
 touch "$app_directory/Contents" "$app_directory"
 registration_tool="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
 if [[ "${CI:-}" != "true" && -x "$registration_tool" ]]; then

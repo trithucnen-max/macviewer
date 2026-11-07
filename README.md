@@ -5,17 +5,17 @@
 # Utralview for Mac v2.3.3
 ### BasanCorp Enterprise Edition
 
-**Dùng UltraViewer ngay trên máy Mac: điều khiển máy tính từ xa tốc độ cao, bảo mật tuyệt đối, hỗ trợ hoàn hảo Apple Silicon (M1/M2/M3/M4) và Intel.**
+**Dùng UltraViewer ngay trên máy Mac: điều khiển máy tính từ xa tốc độ cao, bảo mật tuyệt đối, hỗ trợ hoàn hảo mọi dòng máy Mac (Apple Silicon M1/M2/M3/M4 và Intel).**
 
 **Tiếng Việt** · [English](README.en.md) · [Tài liệu PRD](PRD.md) · [Hướng dẫn sử dụng](HUONG_DAN_SU_DUNG.md)
 
-### [Tải về Utralview for Mac v2.3.3 cho macOS (GitHub Releases)](https://github.com/trithucnen-max/macviewer/releases/tag/v2.3.3)
+### [Tải về Utralview for Mac v2.3.3 (GitHub Releases)](https://github.com/trithucnen-max/macviewer/releases/tag/v2.3.3)
 
 Bản phát hành chính thức v2.3.3 — Ký số doanh nghiệp bởi **BASAN CORPORATION**
 
 [![Release](https://img.shields.io/github/v/release/trithucnen-max/macviewer?sort=semver)](https://github.com/trithucnen-max/macviewer/releases/tag/v2.3.3)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-macOS%2014%2B%20%7C%20Windows%20%7C%20Linux%20%7C%20iOS%20%7C%20Android-lightgrey)
+![Platform](https://img.shields.io/badge/platform-macOS%2014.0%2B-lightgrey)
 ![Architecture](https://img.shields.io/badge/architecture-Universal%20(arm64%20%2B%20x86__64)-green)
 ![Security](https://img.shields.io/badge/signed-BASAN%20CORPORATION-success)
 
@@ -25,41 +25,27 @@ Bản phát hành chính thức v2.3.3 — Ký số doanh nghiệp bởi **BASAN
 
 ## 🚀 Giới thiệu Utralview for Mac
 
-[UltraViewer](https://ultraviewer.net/vi/) là ứng dụng điều khiển máy tính phổ biến trên Windows. **Utralview for Mac v2.3.3** do **BASAN CORPORATION** phát triển là giải pháp native hiện đại cho hệ sinh thái macOS và đa nền tảng, giúp kết nối tới các máy tính chạy UltraViewer (hoặc Utralview) với hiệu năng vượt trội, độ trễ cực thấp và mức tiêu thụ tài nguyên tối thiểu.
+[UltraViewer](https://ultraviewer.net/vi/) là ứng dụng điều khiển máy tính phổ biến trên Windows. **Utralview for Mac v2.3.3** do **BASAN CORPORATION** phát triển là giải pháp native chuyên biệt cho hệ điều hành macOS, giúp kết nối hai chiều tới các máy tính chạy UltraViewer (Windows) hoặc Utralview (macOS) với hiệu năng vượt trội, độ trễ cực thấp và mức tiêu thụ tài nguyên tối thiểu.
 
-Ứng dụng viết hoàn toàn bằng **Swift 6 & SwiftUI** (cho macOS và iOS) kết hợp động cơ giao thức lõi viết bằng **Rust**, không chạy bất kỳ file `.exe`/`.dll` nào của Windows và không phụ thuộc Wine.
+Ứng dụng được viết hoàn toàn bằng **Swift 6 & SwiftUI** kết hợp các thư viện C chuẩn (`CZstd` v0.4–v0.7 và `CG722` WebRTC Audio Decoder), không chạy bất kỳ file `.exe`/`.dll` nào của Windows và không phụ thuộc Wine.
 
 > [!NOTE]
-> Toàn bộ bản phát hành DMG chính thức đã được ký số bằng chứng chỉ `Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)` với Apple Hardened Runtime, Entitlements và Timestamping theo tiêu chuẩn kiểm định của Apple Gatekeeper.
+> Bản cài đặt DMG Universal duy nhất đã được ký số bằng chứng chỉ `Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)` với Apple Hardened Runtime, Entitlements và Timestamping theo tiêu chuẩn kiểm định của Apple Gatekeeper.
 
 ---
 
-## 📦 Danh sách link tải bộ cài đặt v2.3.3 cho các nền tảng
+## 📦 Tải bộ cài đặt macOS Universal (Duy nhất cho mọi dòng máy Mac)
+
+Chỉ cần **1 bản cài đặt duy nhất** tương thích tự động với tất cả các dòng máy Mac (MacBook Air, MacBook Pro, Mac mini, iMac, Mac Studio, Mac Pro dùng cả chip **Apple Silicon M1/M2/M3/M4** và chip **Intel x86_64** chạy macOS 14.0 Sonoma trở lên):
 
 | Nền tảng / Thiết bị | Tên tệp phát hành | Link tải trực tiếp | Mô tả & Kiến trúc |
 | :--- | :--- | :---: | :--- |
-| 🍏 **macOS Universal** (Khuyên dùng) | `Utralview-for-Mac-v2.3.3-Universal.dmg` | [Tải về (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-for-Mac-v2.3.3-Universal.dmg) | Tối ưu cho cả chip Apple Silicon (M1/M2/M3/M4) & Intel |
-| 🍏 **macOS Apple Silicon** | `Utralview-for-Mac-v2.3.3-arm64.dmg` | [Tải về (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-for-Mac-v2.3.3-arm64.dmg) | Bản riêng siêu nhẹ cho MacBook/Mac Mini chip M1-M4 |
-| 🍏 **macOS Intel** | `Utralview-for-Mac-v2.3.3-x86_64.dmg` | [Tải về (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-for-Mac-v2.3.3-x86_64.dmg) | Bản riêng cho các dòng Mac sử dụng CPU Intel (x86_64) |
-| 🪟 **Windows 64-bit** | `Utralview-v2.3.3-windows-x86_64.zip` | [Tải về (.zip)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-v2.3.3-windows-x86_64.zip) | Dành cho Windows 10/11 64-bit PC & Laptop |
-| 💻 **Microsoft Surface / Copilot+ PC** | `Utralview-v2.3.3-windows-arm64-surface.zip` | [Tải về (.zip)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-v2.3.3-windows-arm64-surface.zip) | Bản tối ưu cho Surface Pro X, Surface Laptop ARM64 |
-| 🐧 **Linux 64-bit** | `Utralview-v2.3.3-linux-x86_64.tar.gz` | [Tải về (.tar.gz)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-v2.3.3-linux-x86_64.tar.gz) | Ubuntu, Debian, Fedora, Arch Linux (CLI & Daemon) |
-| 📱 **iOS (iPhone & iPad)** | `Utralview-v2.3.3-ios.ipa` | [Tải về (.ipa)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-v2.3.3-ios.ipa) | Bản cài đặt IPA dành cho iPhone & iPad iOS 17+ (SwiftUI Touch & Live Display) |
-| 🤖 **Android (APK)** | `Utralview-v2.3.3-android.apk` | [Tải về (.apk)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-v2.3.3-android.apk) | Bộ cài đặt trực tiếp cho điện thoại & máy tính bảng Android |
-| ⚙️ **macOS CLI (Universal)** | `utralview-cli-v2.3.3-macos-universal` | [Tải về](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/utralview-cli-v2.3.3-macos-universal) | Command-line tool độc lập cho lập trình viên & tự động hóa |
+| 🍏 **macOS Universal (Mọi máy Mac)** | `Utralview-for-Mac-v2.3.3-Universal.dmg` | [Tải về (.dmg)](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/Utralview-for-Mac-v2.3.3-Universal.dmg) | Bản cài đặt hợp nhất duy nhất cho cả Apple Silicon (M1–M4 `arm64`) & Intel (`x86_64`) |
 | 🛡️ **Bảng mã băm kiểm tra** | `SHA256SUMS.txt` | [Xem mã băm](https://github.com/trithucnen-max/macviewer/releases/download/v2.3.3/SHA256SUMS.txt) | Dùng để đối soát tính toàn vẹn và bảo mật của tập tin |
 
-### Bảng mã băm SHA-256 chính thức (Release v2.3.3 Checksums)
+### Mã băm SHA-256 chính thức (`v2.3.3` — Apple Notarized & Stapled)
 ```text
-10b76a76bad5ee0481ea926ee91f985e5e57642c1e7076f377d670e3dd515dd8  Utralview-for-Mac-v2.3.3-Universal.dmg
-6379c9a1052c353b68fdb22183d91da9c034950a408a1e3a3ba18b27be0aa107  Utralview-for-Mac-v2.3.3-arm64.dmg
-2bbc99556210e02568b5943db912975fbe4df853f24f012c551f780d25699a6d  Utralview-for-Mac-v2.3.3-x86_64.dmg
-6a22029e91dff078ee07e3c8e3164fcfbe72b60faebf242cc3d5a50ea4e0bd30  Utralview-v2.3.3-windows-x86_64.zip
-14264e0fefd63be32aaf3129e864b60d029de39a2c8185e4a64935117edac9de  Utralview-v2.3.3-windows-arm64-surface.zip
-6865f943c5ea31dec6acc3047d427f7e54e80c969a2e571cdb597d8955b2f2a2  Utralview-v2.3.3-linux-x86_64.tar.gz
-ccc56aacdfa9f66aa13cbfb878caf655a894f2f2d86ed7c233682b511b1c45a0  Utralview-v2.3.3-ios.ipa
-e5b5ce60bf0740e098a7130db7b54b106685f467283dd73789f66ee01ee9fb6e  Utralview-v2.3.3-android.apk
-7ea3f0368581ee08c6fddda3313f52b40dec5eb7e68ea26c02d639446fe1908b  utralview-cli-v2.3.3-macos-universal
+e674e01b1cd1c533b3ad5ce830dd708adaf8cd15a7ceecd248f45fdda387489e  Utralview-for-Mac-v2.3.3-Universal.dmg
 ```
 
 ---
@@ -67,7 +53,7 @@ e5b5ce60bf0740e098a7130db7b54b106685f467283dd73789f66ee01ee9fb6e  Utralview-v2.3
 ## 🛠️ Hướng dẫn cài đặt & Khắc phục cảnh báo mở trên macOS
 
 ### 1. Cài đặt thông thường
-1. Tải tệp `.dmg` phù hợp (khuyên dùng bản **Universal**).
+1. Tải tệp **`Utralview-for-Mac-v2.3.3-Universal.dmg`**.
 2. Nhấp đúp vào tệp DMG đã tải về.
 3. Kéo biểu tượng **`Utralview for Mac.app`** thả vào thư mục **`/Applications`**.
 
@@ -93,33 +79,28 @@ Khi tải ứng dụng từ trình duyệt Web (Chrome, Safari), macOS sẽ tự
 
 ## 🌟 Tính năng nổi bật trên bản v2.3.3
 
-### 1. Nâng cấp cốt lõi & Khắc phục quan trọng trên v2.3.3
-- **Bỏ popup bắt xác thực trên Windows:** Loại bỏ hoàn toàn thông báo bắt đối tác phải bấm "Chấp thuận" trên Windows. Kết nối điều khiển tức thì bằng mật khẩu đối tác (`controlMode: -1`).
-- **Nâng cấp iOS iPhone & iPad:** Render khung hình trực tiếp bằng CGImage siêu nét, hỗ trợ đầy đủ cử chỉ chuột cảm ứng, click trái, click phải, cuộn trang và bàn phím ảo.
-- **Ký số Developer ID chính thức:** Toàn bộ bộ cài DMG và ứng dụng macOS được ký số chính thức bởi `BASAN CORPORATION (JFT5TLZ3HK)`.
+### 1. Kiến trúc Native Swift 6 tinh gọn & Hiệu năng cao
+- **1 bản macOS Universal duy nhất (`arm64` + `x86_64`)**: Tương thích toàn diện với mọi máy Mac từ macOS Sonoma (14.0) trở lên.
+- **Bỏ popup bắt xác thực trên Windows**: Kết nối điều khiển tức thì bằng mật khẩu đối tác (`controlMode: -1`).
+- **Xử lý khung hình bất đồng bộ (Non-blocking Screen Capture)**: Chuyển đổi pixel `RGB555` tách biệt khỏi `@MainActor`, giữ giao diện luôn mượt mà 120Hz.
+- **Ký số Developer ID chính thức**: Ký số bởi `BASAN CORPORATION (JFT5TLZ3HK)`.
 
-### 2. Đa nền tảng toàn diện (Cross-Platform)
-- **macOS Universal (M1/M2/M3/M4 + Intel)**: Gói cài đặt tự động tương thích tối đa với mọi máy Mac chạy macOS Sonoma (14.0) trở lên.
-- **Windows x86_64 & Windows ARM64 (Surface / Copilot+ PC)**: Engine Rust siêu nhẹ hỗ trợ điều khiển trên các dòng máy tính bảng Microsoft Surface Pro X và laptop ARM64 thế hệ mới.
-- **Linux x86_64**: Daemon và CLI dành cho quản trị viên máy chủ và kỹ sư hệ thống.
-- **iOS (iPhone & iPad)** & **Android (APK)**: Bộ cài đặt di động hoàn chỉnh.
-
-### 3. Giao diện 2 cột Native & Hệ màu 3 sắc thái
-- Bố cục 2 cột chuẩn mực gồm cột bên quản lý chia sẻ ID/Password và không gian làm việc kết nối đối tác.
+### 2. Giao diện 2 cột Native & Hệ màu 3 sắc thái
+- Bố cục 2 cột chuẩn mực gồm cột bên quản lý chia sẻ ID/Password của máy Mac và không gian làm việc kết nối đối tác.
 - Hệ màu 3 sắc thái tối giản (Slate `#0D1117`, Cobalt Blue `#2563EB`, Emerald Green `#10B981`), loại bỏ hoàn toàn sự rối mắt, tối ưu tập trung cao độ.
 
 ### 3. Kết nối mượt mà & Điều khiển tức thì
 - Kết nối thông qua mã hoá AES-128 và 3DES chuẩn giao thức UltraViewer.
 - Tự động nhận diện kết nối ngang hàng mạng cục bộ (LAN Direct P2P) để đạt tốc độ hiển thị khung hình tối đa.
-- Hỗ trợ màn hình Retina độ phân giải cao lên đến 4K/5K.
+- Hỗ trợ màn hình Retina độ phân giải cao lên đến 4K/5K và chọn màn hình phụ (Multi-monitor).
 - Ánh xạ bàn phím thông minh: Phím <kbd>⌘</kbd> trên Mac tự động chuyển đổi thành phím <kbd>Win</kbd>, <kbd>⌥</kbd> thành <kbd>Alt</kbd>, và <kbd>⌃</kbd> thành <kbd>Ctrl</kbd>.
 - Tích hợp nghe âm thanh từ máy đối tác theo thời gian thực (Audio Streaming qua G.722 WebRTC decoder).
-- Hỗ trợ Chat trực tiếp và đồng bộ Clipboard hai chiều.
+- Hỗ trợ Chat trực tiếp, chụp ảnh/quay video phiên điều khiển và đồng bộ Clipboard hai chiều.
 
 ### 4. Smart Clipboard Guard & Bảo mật doanh nghiệp
-- **Clipboard Guard:** Ngăn chặn tuyệt đối việc vô tình chia sẻ các thông tin nhạy cảm (Private Keys, JWT tokens, GitHub PAT, API keys `sk-`, `ghp-`) qua clipboard.
-- **Không Telemetry:** Ứng dụng không thu thập bất kỳ dữ liệu cá nhân hay lịch sử hoạt động nào của người dùng.
-- **macOS Keychain:** Lưu trữ thông tin đăng nhập và mật khẩu an toàn trực tiếp trong Keychain của macOS.
+- **Clipboard Guard**: Ngăn chặn tuyệt đối việc vô tình chia sẻ các thông tin nhạy cảm (Private Keys, JWT tokens, GitHub PAT, API keys `sk-`, `ghp-`) qua clipboard.
+- **Không Telemetry**: Ứng dụng không thu thập bất kỳ dữ liệu cá nhân hay lịch sử hoạt động nào của người dùng.
+- **macOS Keychain**: Lưu trữ thông tin đăng nhập và mật khẩu an toàn trực tiếp trong Keychain của macOS.
 
 ---
 
@@ -128,19 +109,18 @@ Khi tải ứng dụng từ trình duyệt Web (Chrome, Safari), macOS sẽ tự
 ```
 MacViewer/
 ├── Sources/
-│   ├── Utralview/              Giao diện người dùng SwiftUI v2.3.3 (Native macOS Layout)
-│   ├── UtralviewMobile/        Giao diện & Động cơ điều khiển iOS (iPhone/iPad Touch)
-│   └── UltraViewerProtocol/    Tầng giao thức kết nối, nén hình ảnh và âm thanh
-├── macviewer-rust/             Động cơ giao thức Rust đa nền tảng (Win, Linux, Surface, Mac)
-│   ├── crates/
-│   │   ├── ultraviewer-protocol/   Crypto (AES/3DES), Zstd Legacy, G722, Renderer
-│   │   ├── ultraviewer-ffi/        C-ABI dylib và static archive
-│   │   └── ultraviewer-cli/        Công cụ CLI độc lập
-│   └── bindings/swift/             Swift C-FFI Bridge
+│   ├── Utralview/              Giao diện & điều khiển macOS Native (Swift 6 / SwiftUI / AppKit)
+│   └── UltraViewerProtocol/    Tầng giao thức kết nối, mã hoá AES/3DES, LAN P2P, Zstd & G.722
+├── ThirdParty/
+│   ├── zstd/                   Thư viện C Zstandard (hỗ trợ legacy format v0.4 - v0.7)
+│   └── g722/                   Thư viện C WebRTC G.722 Audio Decoder
+├── Tests/
+│   ├── UtralviewTests/         Kiểm thử đơn vị tầng ứng dụng macOS
+│   └── UltraViewerProtocolTests/ Kiểm thử đơn vị tầng giao thức, mã hoá & giải nén
 ├── PRD.md                      Tài liệu yêu cầu sản phẩm chi tiết v2.3.3
 ├── HUONG_DAN_SU_DUNG.md        Hướng dẫn sử dụng đầy đủ
 ├── DESIGN.md                   Đặc tả hệ thống thiết kế
-└── scripts/                    Script tự động đóng gói Universal và ký số BasanCorp
+└── scripts/                    Script tự động đóng gói macOS Universal và ký số BasanCorp
 ```
 
 ---

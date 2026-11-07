@@ -5,11 +5,14 @@ project_root="${0:A:h:h}"
 cd "$project_root"
 
 signing_identity="Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)"
-version="2.3.3"
-build_number="233"
+version="${MACVIEWER_VERSION:-2.3.3}"
+build_number="${MACVIEWER_BUILD_NUMBER:-233}"
 app_name="Utralview for Mac"
+app_dir="$project_root/dist/$app_name.app"
+dmg_name="Utralview-for-Mac-v$version-Universal.dmg"
+dmg_path="$project_root/dist/$dmg_name"
 
-echo "=== Building $app_name v$version for arm64 & x86_64 ==="
+echo "=== Building $app_name v$version Universal (arm64 + x86_64) ==="
 
 swift build -c release --triple arm64-apple-macosx14.0 --product MacViewer
 swift build -c release --triple x86_64-apple-macosx14.0 --product MacViewer
@@ -25,36 +28,34 @@ swift scripts/make_app_icon.swift "$icon_directory"
 mkdir -p "$project_root/.build"
 iconutil -c icns "$icon_directory" -o "$project_root/.build/MacViewer.icns"
 
-create_bundle() {
-  local arch="$1"
-  local bin_src="$2"
-  local app_dir="$project_root/dist/$arch/$app_name.app"
+echo "=== Assembling Universal App Bundle ==="
+rm -rf "$app_dir"
+mkdir -p "$app_dir/Contents/MacOS" "$app_dir/Contents/Resources"
+cp "$project_root/.build/MacViewer.icns" "$app_dir/Contents/Resources/MacViewer.icns"
 
-  rm -rf "$app_dir"
-  mkdir -p "$app_dir/Contents/MacOS" "$app_dir/Contents/Resources"
-  cp "$project_root/.build/MacViewer.icns" "$app_dir/Contents/Resources/MacViewer.icns"
+for language in en vi; do
+  mkdir -p "$app_dir/Contents/Resources/$language.lproj"
+  cp "Sources/Utralview/Resources/$language.lproj/Localizable.strings" "$app_dir/Contents/Resources/$language.lproj/Localizable.strings"
+done
 
-  for language in en vi; do
-    mkdir -p "$app_dir/Contents/Resources/$language.lproj"
-    cp "Sources/Utralview/Resources/$language.lproj/Localizable.strings" "$app_dir/Contents/Resources/$language.lproj/Localizable.strings"
-  done
-
-  if [[ -d ".build/arm64-apple-macosx/release/MacViewer_MacViewer.bundle" ]]; then
-    cp -R ".build/arm64-apple-macosx/release/MacViewer_MacViewer.bundle" "$app_dir/Contents/Resources/"
+for bundle_name in MacViewer_MacViewer.bundle MacViewer_UltraViewerProtocol.bundle; do
+  if [[ -d ".build/arm64-apple-macosx/release/$bundle_name" ]]; then
+    cp -R ".build/arm64-apple-macosx/release/$bundle_name" "$app_dir/Contents/Resources/"
   fi
+done
 
-  mkdir -p "$app_dir/Contents/Resources/Licenses/Zstandard"
-  cp ThirdParty/zstd/LICENSE "$app_dir/Contents/Resources/Licenses/Zstandard/LICENSE"
-  cp ThirdParty/zstd/COPYING "$app_dir/Contents/Resources/Licenses/Zstandard/COPYING"
-  mkdir -p "$app_dir/Contents/Resources/Licenses/G722"
-  cp ThirdParty/g722/LICENSE "$app_dir/Contents/Resources/Licenses/G722/LICENSE"
-  cp ThirdParty/g722/WEBRTC_LICENSE "$app_dir/Contents/Resources/Licenses/G722/WEBRTC_LICENSE"
+mkdir -p "$app_dir/Contents/Resources/Licenses/Zstandard"
+cp ThirdParty/zstd/LICENSE "$app_dir/Contents/Resources/Licenses/Zstandard/LICENSE"
+cp ThirdParty/zstd/COPYING "$app_dir/Contents/Resources/Licenses/Zstandard/COPYING"
+mkdir -p "$app_dir/Contents/Resources/Licenses/G722"
+cp ThirdParty/g722/LICENSE "$app_dir/Contents/Resources/Licenses/G722/LICENSE"
+cp ThirdParty/g722/WEBRTC_LICENSE "$app_dir/Contents/Resources/Licenses/G722/WEBRTC_LICENSE"
 
-  cp "$bin_src" "$app_dir/Contents/MacOS/Utralview"
-  chmod +x "$app_dir/Contents/MacOS/Utralview"
-  cp Sources/UltraViewerProtocol/Resources/8bit.dat "$app_dir/Contents/Resources/8bit.dat"
+cp ".build/universal/MacViewer" "$app_dir/Contents/MacOS/Utralview"
+chmod +x "$app_dir/Contents/MacOS/Utralview"
+cp Sources/UltraViewerProtocol/Resources/8bit.dat "$app_dir/Contents/Resources/8bit.dat"
 
-  cat > "$app_dir/Contents/Info.plist" <<PLIST
+cat > "$app_dir/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -77,42 +78,26 @@ create_bundle() {
 </plist>
 PLIST
 
-  if security find-identity -v -p codesigning | grep -q "$signing_identity"; then
-    echo "Signing $arch bundle with Developer ID ($signing_identity)..."
-    codesign --force --sign "$signing_identity" \
-      --entitlements "$project_root/Sources/Utralview/Utralview.entitlements" \
-      --options runtime --timestamp "$app_dir"
-  else
-    echo "Developer ID not in keychain, signing $arch bundle ad-hoc..."
-    codesign --force --sign - \
-      --entitlements "$project_root/Sources/Utralview/Utralview.entitlements" \
-      "$app_dir"
-  fi
-  codesign --verify --deep --strict "$app_dir"
-  echo "Verified $arch bundle: OK"
-}
+if security find-identity -v -p codesigning | grep -q "$signing_identity"; then
+  echo "Signing Universal bundle with Developer ID ($signing_identity)..."
+  codesign --force --sign "$signing_identity" \
+    --entitlements "$project_root/Sources/Utralview/Utralview.entitlements" \
+    --options runtime --timestamp "$app_dir"
+else
+  echo "Developer ID not in keychain, signing Universal bundle ad-hoc..."
+  codesign --force --sign - \
+    --entitlements "$project_root/Sources/Utralview/Utralview.entitlements" \
+    "$app_dir"
+fi
+codesign --verify --deep --strict "$app_dir"
+echo "Verified Universal bundle: OK"
 
-create_bundle "arm64" ".build/arm64-apple-macosx/release/MacViewer"
-create_bundle "x86_64" ".build/x86_64-apple-macosx/release/MacViewer"
-create_bundle "universal" ".build/universal/MacViewer"
+echo "=== Building Single Universal DMG Installer ==="
+staging_dir="$(mktemp -d)"
+cp -R "$app_dir" "$staging_dir/"
+ln -s /Applications "$staging_dir/Applications"
 
-# Copy Universal to dist/Utralview for Mac.app as main app
-rm -rf "$project_root/dist/$app_name.app"
-cp -R "$project_root/dist/universal/$app_name.app" "$project_root/dist/$app_name.app"
-
-echo "=== Building DMG Installers with Gatekeeper Bypass Helper ==="
-create_dmg() {
-  local arch="$1"
-  local dmg_name="Utralview-for-Mac-v$version-$arch.dmg"
-  local dmg_path="$project_root/dist/$dmg_name"
-  local staging_dir="$(mktemp -d)"
-
-  echo "Creating DMG for $arch -> $dmg_name..."
-  cp -R "$project_root/dist/$arch/$app_name.app" "$staging_dir/"
-  ln -s /Applications "$staging_dir/Applications"
-
-  # Helper script for 1-click Gatekeeper bypass
-  cat > "$staging_dir/Mo-Utralview-Lan-Dau.command" <<'LAUNCHER'
+cat > "$staging_dir/Mo-Utralview-Lan-Dau.command" <<'LAUNCHER'
 #!/bin/bash
 clear
 echo "=========================================================="
@@ -128,47 +113,31 @@ echo "🚀 Đang khởi động Utralview for Mac..."
 open /Applications/"Utralview for Mac.app" 2>/dev/null || open "$(dirname "$0")"/"Utralview for Mac.app"
 exit 0
 LAUNCHER
-  chmod +x "$staging_dir/Mo-Utralview-Lan-Dau.command"
+chmod +x "$staging_dir/Mo-Utralview-Lan-Dau.command"
 
-  rm -f "$dmg_path"
-  hdiutil create -volname "$app_name" -srcfolder "$staging_dir" -ov -format UDZO "$dmg_path"
-  rm -rf "$staging_dir"
+rm -f "$dmg_path"
+hdiutil create -volname "$app_name" -srcfolder "$staging_dir" -ov -format UDZO "$dmg_path"
+rm -rf "$staging_dir"
 
-  if security find-identity -v -p codesigning | grep -q "$signing_identity"; then
-    echo "Signing $dmg_name with Developer ID..."
-    codesign --force --sign "$signing_identity" --timestamp "$dmg_path"
-    codesign --verify --verbose "$dmg_path"
-    echo "Verified $dmg_name: OK"
-  else
-    echo "Skipping Developer ID signature for $dmg_name (running in CI environment)"
+if security find-identity -v -p codesigning | grep -q "$signing_identity"; then
+  echo "Signing $dmg_name with Developer ID..."
+  codesign --force --sign "$signing_identity" --timestamp "$dmg_path"
+  codesign --verify --verbose "$dmg_path"
+  echo "Verified $dmg_name: OK"
+  if [[ -x "$project_root/scripts/notarize_dmg.sh" && "${CI:-}" != "true" ]]; then
+    "$project_root/scripts/notarize_dmg.sh" "$dmg_path" || true
   fi
-}
-
-create_dmg "Universal"
-create_dmg "arm64"
-create_dmg "x86_64"
-
-echo "=== Building Rust CLI (Universal) ==="
-if command -v cargo &>/dev/null && [[ -d "$project_root/macviewer-rust" ]]; then
-  (
-    cd "$project_root/macviewer-rust"
-    cargo build --release --bin ultraviewer-cli
-    cp target/release/ultraviewer-cli "$project_root/dist/utralview-cli-v$version-macos-universal"
-    chmod +x "$project_root/dist/utralview-cli-v$version-macos-universal"
-    if security find-identity -v -p codesigning | grep -q "$signing_identity"; then
-      codesign --force --sign "$signing_identity" --options runtime --timestamp "$project_root/dist/utralview-cli-v$version-macos-universal"
-    else
-      codesign --force --sign - "$project_root/dist/utralview-cli-v$version-macos-universal"
-    fi
-  )
+else
+  echo "Skipping Developer ID signature for $dmg_name (running in CI environment)"
 fi
 
 echo "=== Generating SHA256SUMS.txt ==="
 (
   cd "$project_root/dist"
-  shasum -a 256 *.dmg utralview-cli-* 2>/dev/null > SHA256SUMS.txt || true
+  shasum -a 256 "$dmg_name" > SHA256SUMS.txt
+  cp SHA256SUMS.txt "$project_root/SHA256SUMS.txt"
 )
 
-echo "=== All DMG variants packaged, signed, and checksummed! ==="
-ls -lh "$project_root/dist/"Utralview-for-Mac-v$version-*.dmg
+echo "=== Universal DMG packaged, signed, and checksummed! ==="
+ls -lh "$dmg_path"
 cat "$project_root/dist/SHA256SUMS.txt"

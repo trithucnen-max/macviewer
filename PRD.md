@@ -11,6 +11,7 @@
 | **Chứng chỉ ký số** | `Developer ID Application: BASAN CORPORATION (JFT5TLZ3HK)` |
 | **Mã định danh (Bundle ID)** | `com.basancorp.utralview` |
 | **Phiên bản** | `v2.3.3` (Build 233) |
+| **Nền tảng mục tiêu** | macOS 14.0 Sonoma trở lên — Universal (`arm64` + `x86_64`) |
 | **Trạng thái** | Phát hành chính thức (Production Ready) |
 | **Kho mã nguồn** | `https://github.com/trithucnen-max/macviewer` |
 
@@ -21,17 +22,13 @@
 ### 1.1 Bối cảnh
 UltraViewer là giải pháp điều khiển máy tính từ xa phổ biến rộng rãi tại Việt Nam và khu vực, tuy nhiên phần mềm gốc chỉ hỗ trợ hệ điều hành Windows. Trước đây, người dùng máy Mac hoàn toàn bị cô lập hoặc phải chạy qua máy ảo nặng nề, không bảo đảm tính ổn định và bảo mật.
 
-**Utralview for Mac v2.2.2** do **BASAN CORPORATION** phát triển và bảo trợ là phiên bản kiến trúc thế hệ mới, tái thiết kế toàn bộ hệ thống từ tầng protocol, engine tính toán cho đến giao diện hiển thị người dùng, mang lại trải nghiệm điều khiển từ xa nguyên bản, tốc độ cao, tiêu thụ tài nguyên tối thiểu và tuân thủ các chuẩn mực bảo mật khắt khe nhất của Apple và các nền tảng hiện đại.
+**Utralview for Mac v2.3.3** do **BASAN CORPORATION** phát triển và bảo trợ là ứng dụng macOS Native thế hệ mới, tái thiết kế toàn bộ hệ thống từ tầng giao thức (`UltraViewerProtocol`) đến giao diện hiển thị người dùng (`Utralview`), mang lại trải nghiệm điều khiển từ xa nguyên bản, tốc độ cao, tiêu thụ tài nguyên tối thiểu và tuân thủ các chuẩn mực bảo mật khắt khe nhất của Apple.
 
 ### 1.2 Mục tiêu cốt lõi
-1. **Bảo mật tuyệt đối (Zero Windows Execution on Mac):** Tuyệt đối không thực thi binary Windows (`.exe`/`.dll`), không sử dụng Wine. Toàn bộ logic giao thức được thiết kế và thực thi an toàn trong môi trường sandbox của macOS.
-2. **Ký số định danh doanh nghiệp (Developer ID Application):** Ứng dụng và bộ cài đặt DMG được ký số chính thức bởi `BASAN CORPORATION (JFT5TLZ3HK)` với Apple Hardened Runtime, Entitlements và Secure Timestamping, vượt qua kiểm định Apple Gatekeeper không cảnh báo rủi ro.
-3. **Đa nền tảng toàn diện:**
-   - **macOS Apple Silicon (M1/M2/M3/M4)**: Tối ưu hoá tối đa cho kiến trúc ARM64 Apple Silicon.
-   - **macOS Intel (x86_64)**: Hỗ trợ trọn vẹn cho các dòng Mac Intel trước đây.
-   - **macOS Universal 2**: Gói nhị phân hợp nhất hỗ trợ cả hai kiến trúc trong 1 file cài đặt duy nhất.
-   - **Windows x86_64 & Windows ARM64 (Surface Pro / Copilot+ PC)**: Engine Rust độc lập phục vụ điều khiển và tự động hoá CLI/GUI.
-   - **Linux x86_64 & aarch64**: Binary daemon và CLI siêu nhẹ cho server và máy trạm Linux.
+1. **Bảo mật tuyệt đối (Zero Windows Execution on Mac):** Tuyệt đối không thực thi binary Windows (`.exe`/`.dll`), không sử dụng Wine. Toàn bộ logic giao thức được thiết kế và thực thi bằng Swift 6 an toàn trên macOS.
+2. **Ký số định danh doanh nghiệp (Developer ID Application):** Ứng dụng và bộ cài đặt DMG được ký số chính thức bởi `BASAN CORPORATION (JFT5TLZ3HK)` với Apple Hardened Runtime, Entitlements và Secure Timestamping.
+3. **1 bản cài đặt macOS Universal duy nhất:**
+   - Gói nhị phân hợp nhất (`arm64` + `x86_64`) chạy nguyên bản trên tất cả các dòng máy Mac dùng chip **Apple Silicon (M1/M2/M3/M4)** và chip **Intel** từ macOS 14.0 trở lên, giúp người dùng không bao giờ chọn nhầm phiên bản.
 4. **Hệ thống thiết kế tối giản Chuẩn 3 Màu (Strict 3-Color Visual System):** Triệt tiêu hoàn toàn sự lộn xộn về màu sắc, mang lại diện mạo cơ khí hiện đại, tập trung vào năng suất và độ chính xác.
 5. **Smart Clipboard Guard:** Ngăn chặn lộ lọt các chuỗi khoá nhạy cảm (Private Key, API token, JWT) khi bật tính năng đồng bộ clipboard.
 
@@ -39,23 +36,20 @@ UltraViewer là giải pháp điều khiển máy tính từ xa phổ biến r�
 
 ## 2. Kiến trúc kỹ thuật (System Architecture)
 
-### 2.1 Tầng Giao thức & Động cơ lõi (Core Engine - Rust & Swift)
-- **Crate `ultraviewer-protocol`**:
-  - **Mã hoá lệnh (Legacy Command Cipher - 3DES)**: Tương thích thuật toán 3DES cấu hình tĩnh với khóa chuyển đổi chuẩn, xử lý an toàn unicode password và block boundary.
-  - **Mã hoá AES truyền thông (Legacy AES)**: Tương thích cơ chế MD5 overlap key derivation đặc thù, sinh vector khởi tạo (IV) ngẫu nhiên tươi mới cho từng frame dữ liệu.
-  - **Giải nén hình ảnh siêu tốc (Zstandard Legacy Decoder)**: Tích hợp thư viện C FFI `libzstd` với cờ `ZSTD_LEGACY_SUPPORT=4` giải mã các block dữ liệu nén định dạng v0.4 của UltraViewer gốc.
-  - **Giải mã âm thanh (G.722 WebRTC Decoder)**: Thuật toán giải nén âm thanh sub-band ADPCM 64 kbps băng rộng với độ trễ dưới 15ms.
-  - **Framing & Chunking**: Ghép nối frame `[Header: 4 bytes length] [Payload]` và phân rã multipart payload mượt mà.
-  - **Modern Screen Bitmap Renderer**: Thuật toán render và blit pixel trực tiếp lên bộ đệm frame RGBA/BGRA với khả năng co giãn đa màn hình Retina 4K/5K.
-- **Crate `ultraviewer-ffi`**: Cung cấp C-ABI an toàn (`libultraviewer_ffi.dylib` và `libultraviewer_ffi.a`) để liên kết động/tĩnh với Swift hoặc các ngôn ngữ bậc cao khác.
-- **Crate `ultraviewer-cli`**: Công cụ dòng lệnh độc lập hỗ trợ kết nối, truyền lệnh, benchmark và tự động hoá từ xa.
+### 2.1 Tầng Giao thức & Động cơ lõi (`UltraViewerProtocol` — Swift 6 + C)
+- **Mã hoá lệnh (Legacy Command Cipher — 3DES)**: Tương thích thuật toán 3DES cấu hình tĩnh qua CommonCrypto, xử lý an toàn mật khẩu và block boundary.
+- **Mã hoá AES truyền thông (`UltraViewerAES`)**: Tương thích cơ chế MD5 overlap key derivation đặc thù, sinh vector khởi tạo (IV) ngẫu nhiên tươi mới cho từng frame dữ liệu.
+- **Giải nén & Nén hình ảnh siêu tốc (`CZstd`)**: Tích hợp thư viện C `libzstd` với cờ `ZSTD_LEGACY_SUPPORT=4` giải mã và nén các block dữ liệu định dạng v0.4–v0.7 của UltraViewer gốc.
+- **Giải mã âm thanh (`CG722`)**: Thuật toán giải nén âm thanh WebRTC G.722 sub-band ADPCM 64 kbps băng rộng với độ trễ cực thấp.
+- **Framing & Multipart Payload**: Ghép nối frame `[Header: 4 bytes length] [Payload]`, hỗ trợ kênh song song LAN Direct P2P (`TCPDirectPeerTransport`) và Relay (`FramedTCPTransport`).
+- **Modern Screen Bitmap Renderer**: Giải mã và vẽ pixel trực tiếp lên bộ đệm frame RGBA với khả năng hỗ trợ đa màn hình Retina 4K/5K.
 
-### 2.2 Tầng Giao diện & Trải nghiệm macOS (SwiftUI / AppKit)
-- **Kiến trúc Native:** Viết 100% bằng Swift 6 và SwiftUI, tận dụng Apple Silicon Metal Acceleration để hiển thị màn hình mượt mà ở tần số quét ProMotion 120Hz.
+### 2.2 Tầng Giao diện & Trải nghiệm macOS (`Utralview` — SwiftUI / AppKit)
+- **Kiến trúc Native:** Viết 100% bằng Swift 6, SwiftUI và AppKit, xử lý chụp màn hình qua `ScreenCaptureKit` và tách việc đóng gói pixel `RGB555` khỏi `@MainActor` để giữ tốc độ phản hồi giao diện mượt mà.
 - **Cơ chế quyền riêng tư hai lớp:**
-  - **Xem màn hình (Screen Recording)**: Hướng dẫn người dùng cấp quyền rõ ràng theo chuẩn Privacy & Security của macOS Sequoia / Sonoma.
+  - **Xem màn hình (Screen Recording)**: Hướng dẫn người dùng cấp quyền rõ ràng theo chuẩn Privacy & Security của macOS.
   - **Điều khiển chuột & bàn phím (Accessibility)**: Quyền điều khiển được cách ly độc lập, người dùng có thể cấp quyền xem mà không cho phép thao tác chuột/phím.
-  - **Quản lý mật khẩu an toàn (macOS Keychain)**: Mật khẩu đối tác và mật khẩu ngẫu nhiên lưu trữ mã hóa trong Keychain của máy, không lưu plain text.
+  - **Quản lý mật khẩu an toàn (macOS Keychain)**: Mật khẩu đối tác được lưu trữ mã hoá trong Keychain (`com.basancorp.utralview.partner-passwords`), tuyệt đối không lưu plaintext trong `UserDefaults`.
   - **Bảo vệ Bảng tạm (Clipboard Guard)**: Kiểm tra tự động các mẫu chuỗi bảo mật trước khi gửi qua mạng.
 
 ---
@@ -70,30 +64,21 @@ Tuân thủ nghiêm ngặt nguyên tắc thiết kế chuyên nghiệp không d�
 | **Màu 2** | **Accent Core** (Hành động chính) | `#2563EB` (Cobalt) | `#2563EB` (Cobalt) | Nút bấm chính (Connect), Focus Ring, Active Tab, Icon thương hiệu |
 | **Màu 3** | **Status Signal** (Trạng thái hệ thống) | `#10B981` (Emerald) | `#059669` (Emerald) | Đèn tín hiệu Sẵn sàng kết nối, Badge trạng thái mạng, Checkmark xác nhận |
 
-*Quy tắc cấm:* Tuyệt đối không dùng các màu phụ (tím gradient, cam, vàng chói lọi) làm rối mắt người dùng kỹ thuật.
-
 ---
 
-## 4. Ma trận hỗ trợ nền tảng & Gói cài đặt v2.2.2
+## 4. Gói cài đặt phát hành chính thức v2.3.3
 
 | Nền tảng | Kiến trúc chip | Tên gói phát hành | Định dạng | Trạng thái ký số |
 | :--- | :--- | :--- | :--- | :--- |
-| **macOS Universal** | Apple Silicon & Intel | `Utralview-for-Mac-v2.2.2-Universal.dmg` | DMG Drag-and-Drop | Ký số Developer ID: BASAN CORPORATION |
-| **macOS Apple Silicon** | M1/M2/M3/M4 (arm64) | `Utralview-for-Mac-v2.2.2-arm64.dmg` | DMG Drag-and-Drop | Ký số Developer ID: BASAN CORPORATION |
-| **macOS Intel** | Intel Core i5/i7/i9 (x86_64) | `Utralview-for-Mac-v2.2.2-x86_64.dmg` | DMG Drag-and-Drop | Ký số Developer ID: BASAN CORPORATION |
-| **macOS CLI** | Universal (arm64 + x86_64) | `utralview-cli-v2.2.2-macos-universal` | Mach-O Universal Binary | Ký số Developer ID: BASAN CORPORATION |
-| **Windows x86_64** | Intel / AMD 64-bit | `Utralview-v2.2.2-windows-x86_64.zip` | Portable Zip | CI/CD Automated Build |
-| **Windows ARM64** | Surface Pro / Copilot+ PC | `Utralview-v2.2.2-windows-arm64-surface.zip` | Portable Zip | CI/CD Automated Build |
-| **Linux x86_64** | Ubuntu / Debian / RHEL | `Utralview-v2.2.2-linux-x86_64.tar.gz` | Tarball Archive | CI/CD Automated Build |
+| **macOS Universal (Mọi máy Mac)** | Apple Silicon (`arm64`) & Intel (`x86_64`) | `Utralview-for-Mac-v2.3.3-Universal.dmg` | DMG Drag-and-Drop | Ký số Developer ID: BASAN CORPORATION (`JFT5TLZ3HK`) |
 
 ---
 
 ## 5. Tiêu chuẩn chất lượng & Kiểm thử (Verification & Quality Assurance)
 
-1. **Swift Test Suite:** Đạt 100% (210 tests / 10 suites passed) bao gồm kiểm thử logic điều khiển từ xa, clipboard bảo mật, session tools, xác thực Keychain, nén giải nén hình ảnh và giải mã đa kênh.
-2. **Rust Core Tests:** Đạt 100% (21/21 test suites passed) bao gồm kiểm tra block padding, AES overlap, 3DES static key vectors, G.722 audio decoding, và Zstd decompression.
-3. **Apple Gatekeeper Verification:** Lệnh `codesign --verify --deep --strict` và `spctl` xác nhận tính hợp lệ của chữ ký BASAN CORPORATION.
-4. **Không thu thập dữ liệu (No Telemetry):** Không gửi dữ liệu người dùng, vị trí địa lý hoặc telemetry về bất kỳ máy chủ bên thứ ba nào.
+1. **Swift Test Suite:** Kiểm thử tự động toàn diện trên cả hai tầng `UltraViewerProtocolTests` và `MacViewerTests` (bao gồm kiểm thử logic điều khiển từ xa, clipboard bảo mật, session tools, xác thực Keychain, nén/giải nén hình ảnh Zstd và giải mã âm thanh G.722).
+2. **Apple Gatekeeper & Codesign Verification:** Lệnh `codesign --verify --deep --strict` xác nhận tính hợp lệ của chữ ký `BASAN CORPORATION` trên Universal binary (`arm64` + `x86_64`).
+3. **Không thu thập dữ liệu (No Telemetry):** Không gửi dữ liệu người dùng, vị trí địa lý hoặc telemetry về bất kỳ máy chủ bên thứ ba nào.
 
 ---
 *Biên soạn bởi Phòng Kỹ thuật BASAN CORPORATION (BasanCorp) — 2026.*

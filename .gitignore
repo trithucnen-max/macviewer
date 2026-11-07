@@ -65,6 +65,3 @@ venv/
 *.swp
 *~
 
-# Rust
-target/
-**/target/

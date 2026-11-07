@@ -146,7 +146,10 @@ final class UpdateChecker: ObservableObject {
         let payload = try JSONDecoder().decode(Payload.self, from: data)
         guard payload.draft != true, payload.prerelease != true else { throw URLError(.cannotParseResponse) }
         let version = payload.tag_name.hasPrefix("v") ? String(payload.tag_name.dropFirst()) : payload.tag_name
-        let dmg = payload.assets.first { ($0.name.contains("Utralview") || $0.name.contains("Ultraview") || $0.name.contains("MacViewer")) && $0.name.hasSuffix(".dmg") }
+        let dmgs = payload.assets.filter {
+            ($0.name.contains("Utralview") || $0.name.contains("Ultraview") || $0.name.contains("MacViewer")) && $0.name.hasSuffix(".dmg")
+        }
+        let dmg = dmgs.first(where: { $0.name.localizedCaseInsensitiveContains("Universal") }) ?? dmgs.first
         guard dmg.map({ $0.browser_download_url.host == "github.com" }) ?? true else { throw URLError(.cannotParseResponse) }
         return Release(version: version, pageURL: payload.html_url, dmgURL: dmg?.browser_download_url,
                        notes: releaseNotes(payload.body ?? ""))

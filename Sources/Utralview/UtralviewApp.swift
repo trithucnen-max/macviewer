@@ -101,7 +101,7 @@ struct UtralviewSettings: View {
             }
             Section("About") {
                 LabeledContent("Application", value: "Utralview for Mac v\(Self.version)")
-                LabeledContent("Developed by", value: "itngon.com")
+                LabeledContent("Developed by", value: "BASAN CORPORATION")
                 LabeledContent("Website", value: "https://itngon.com")
                 Toggle("Automatically check for updates", isOn: $checkForUpdates)
                 Button(L("Check for Updates…")) { updater.check(userInitiated: true) }
@@ -115,9 +115,6 @@ struct UtralviewSettings: View {
         .frame(width: 520, height: 600)
     }
 }
-
-typealias MacViewerApp = UtralviewApp
-typealias MacViewerSettings = UtralviewSettings
 
 @MainActor
 final class UtralviewAppDelegate: NSObject, NSApplicationDelegate {
@@ -157,4 +154,3 @@ final class UtralviewAppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
-typealias MacViewerAppDelegate = UtralviewAppDelegate

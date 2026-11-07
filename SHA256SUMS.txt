@@ -1,10 +1,1 @@
-10b76a76bad5ee0481ea926ee91f985e5e57642c1e7076f377d670e3dd515dd8  Utralview-for-Mac-v2.3.3-Universal.dmg
-6379c9a1052c353b68fdb22183d91da9c034950a408a1e3a3ba18b27be0aa107  Utralview-for-Mac-v2.3.3-arm64.dmg
-2bbc99556210e02568b5943db912975fbe4df853f24f012c551f780d25699a6d  Utralview-for-Mac-v2.3.3-x86_64.dmg
-e5b5ce60bf0740e098a7130db7b54b106685f467283dd73789f66ee01ee9fb6e  Utralview-v2.3.3-android.apk
-841b133653a7cf0e6061ad9c56b5e0807c636a854fddf76999664bc3676182ef  Utralview-v2.3.3-ios-client.zip
-ccc56aacdfa9f66aa13cbfb878caf655a894f2f2d86ed7c233682b511b1c45a0  Utralview-v2.3.3-ios.ipa
-6865f943c5ea31dec6acc3047d427f7e54e80c969a2e571cdb597d8955b2f2a2  Utralview-v2.3.3-linux-x86_64.tar.gz
-14264e0fefd63be32aaf3129e864b60d029de39a2c8185e4a64935117edac9de  Utralview-v2.3.3-windows-arm64-surface.zip
-6a22029e91dff078ee07e3c8e3164fcfbe72b60faebf242cc3d5a50ea4e0bd30  Utralview-v2.3.3-windows-x86_64.zip
-7ea3f0368581ee08c6fddda3313f52b40dec5eb7e68ea26c02d639446fe1908b  utralview-cli-v2.3.3-macos-universal
+e674e01b1cd1c533b3ad5ce830dd708adaf8cd15a7ceecd248f45fdda387489e  Utralview-for-Mac-v2.3.3-Universal.dmg
